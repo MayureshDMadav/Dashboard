@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "@/app/ui/dashboard/users/users.module.css";
 import Search from "@/app/ui/dashboard/search/search";
+import Pagination from "@/app/ui/dashboard/pagination/pagination";
 
 const UsersPage = () => {
   return (
@@ -42,7 +43,7 @@ const UsersPage = () => {
               <td> Admin </td>
               <td>active</td>
               <td>
-                <Link href="/">
+                <Link href="/dashboard/users/test">
                   <button className={`${styles.button} ${styles.view}`}>
                     View
                   </button>
@@ -54,7 +55,7 @@ const UsersPage = () => {
             </tr>
           </tbody>
         </table>
-     
+     <Pagination/>
     </div>
   );
 };

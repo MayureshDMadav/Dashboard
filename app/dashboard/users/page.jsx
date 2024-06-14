@@ -3,8 +3,11 @@ import Link from "next/link";
 import styles from "@/app/ui/dashboard/users/users.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
+import { getAllUsers } from "@/backend/query";
 
-const UsersPage = () => {
+const UsersPage = async () => {
+  const userData = await getAllUsers();
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -12,50 +15,53 @@ const UsersPage = () => {
         <Link href="/dashboard/users/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
-        </div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Email</td>
-              <td>Created At</td>
-              <td>Role</td>
-              <td>Status</td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div className={styles.user}>
-                  <Image
-                    src={"/noavatar.png"}
-                    alt=""
-                    width={40}
-                    height={40}
-                    className={styles.userImage}
-                  />
-                  Mayuresh
-                </div>
-              </td>
-              <td>test@gmail.com</td>
-              <td> 22 Jan </td>
-              <td> Admin </td>
-              <td>active</td>
-              <td>
-                <Link href="/dashboard/users/test">
-                  <button className={`${styles.button} ${styles.view}`}>
-                    View
+      </div>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Created At</td>
+            <td>Role</td>
+            <td>Status</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          {userData &&
+            userData?.userData.map((data) => (
+              <tr key={data.id}>
+                <td>
+                  <div className={styles.user}>
+                    <Image
+                      src={"/noavatar.png"}
+                      alt=""
+                      width={40}
+                      height={40}
+                      className={styles.userImage}
+                    />
+                    {data.username}
+                  </div>
+                </td>
+                <td>{data.email}</td>
+                <td>{data.createdAt.toDateString()}</td>
+                <td> {data?.isAdmin ? "admin" : "user"}</td>
+                <td>{data?.isActive ? "active" : "inactive"}</td>
+                <td>
+                  <Link href={`/dashboard/users/${data.id}/${data.username}`}>
+                    <button className={`${styles.button} ${styles.view}`}>
+                      View
+                    </button>
+                  </Link>
+                  <button className={`${styles.button} ${styles.delete}`}>
+                    Delete
                   </button>
-                </Link>
-                <button className={`${styles.button} ${styles.delete}`}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-     <Pagination/>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+      <Pagination />
     </div>
   );
 };

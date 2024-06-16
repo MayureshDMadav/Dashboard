@@ -1,6 +1,6 @@
 {
-  "/dashboard/merchants/page": "app/dashboard/merchants/page.js",
-  "/dashboard/merchants/add/page": "app/dashboard/merchants/add/page.js",
+  "/not-found": "app/not-found.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/dashboard/users/page": "app/dashboard/users/page.js",
-  "/dashboard/users/add/page": "app/dashboard/users/add/page.js"
+  "/dashboard/merchants/page": "app/dashboard/merchants/page.js"
 }

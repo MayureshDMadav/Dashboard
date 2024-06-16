@@ -1,17 +1,25 @@
 "use client";
 // import { addProduct } from "@/app/lib/actions";
 import styles from "@/app/ui/dashboard/merchants/addmerchant/addmerchant.module.css";
-import { useState } from "react";
-import { createNewMerchant, getAllUsers } from "@/backend/query.js";
+import { useEffect, useState } from "react";
+import { createNewMerchant, getAllUserData } from "@/backend/query.js";
 import toast from "react-hot-toast";
 
 const AddNewMerchant = () => {
   const [data, setData] = useState({});
+  const [setUser, getUserData] = useState({});
   const getFormData = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    const allUserData = async () => {
+      const { status, userData } = await getAllUserData();
+      getUserData(userData);
+    };
+    allUserData();
+  }, [setUser.length > 0]);
 
   const pushFormData = async (e) => {
     e.preventDefault();
@@ -34,13 +42,21 @@ const AddNewMerchant = () => {
   return (
     <div className={styles.container} onSubmit={pushFormData}>
       <form className={styles.form}>
-        <input
-          type="text"
-          placeholder="customer engineer name"
-          name="cename"
-          required
-          onChange={getFormData}
-        />
+        {/* {setUser.length < 0 && (
+          <input
+            type="text"
+            placeholder="customer engineer name"
+            name="cename"
+            required
+            onChange={getFormData}
+          />
+        )} */}
+        <select name="cename" id="cename" onChange={getFormData}>
+          {setUser.length > 0 &&
+            setUser.map((data) => (
+              <option value={data.username}>{data.username}</option>
+            ))}
+        </select>
         <input
           type="text"
           placeholder="merchantname"

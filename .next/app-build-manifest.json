@@ -6,11 +6,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/dashboard/merchants/page": [
+    "/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/dashboard/merchants/page.css",
-      "static/chunks/app/dashboard/merchants/page.js"
+      "static/css/app/dashboard/page.css",
+      "static/chunks/app/dashboard/page.js"
     ],
     "/dashboard/layout": [
       "static/chunks/webpack.js",
@@ -18,29 +18,22 @@
       "static/css/app/dashboard/layout.css",
       "static/chunks/app/dashboard/layout.js"
     ],
-    "/dashboard/merchants/add/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/dashboard/merchants/add/page.css",
-      "static/chunks/app/dashboard/merchants/add/page.js"
-    ],
-    "/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/dashboard/page.css",
-      "static/chunks/app/dashboard/page.js"
-    ],
     "/dashboard/users/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/dashboard/users/page.css",
       "static/chunks/app/dashboard/users/page.js"
     ],
-    "/dashboard/users/add/page": [
+    "/dashboard/merchants/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/dashboard/users/add/page.css",
-      "static/chunks/app/dashboard/users/add/page.js"
+      "static/css/app/dashboard/merchants/page.css",
+      "static/chunks/app/dashboard/merchants/page.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
     ]
   }
 }

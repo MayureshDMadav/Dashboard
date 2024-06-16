@@ -15,13 +15,22 @@ export const createUserData = async (data) => {
   }
 };
 
-//Get All Users
-export const getAllUsers = async (userName, page) => {
+//Get All Users Data
+export const getAllUserData = async () => {
+  try {
+    const userData = await prisma.user.findMany();
+    return { userData, status: 200 };
+  } catch (e) {
+    return { error: 500, description: "something went wrong" };
+  }
+};
+
+//function for Pagination
+export const userPaginationFunc = async (userName, page) => {
   const itemsPerPage = 5;
   const skip = (page - 1) * itemsPerPage;
   try {
     const count = await prisma.user.count();
-    const allUserData = await prisma.user.findMany();
     const userData = await prisma.user.findMany({
       where: {
         username: {
@@ -32,7 +41,7 @@ export const getAllUsers = async (userName, page) => {
       take: itemsPerPage,
       skip: skip,
     });
-    return {allUserData, userData, status: 200, count };
+    return { userData, status: 200, count };
   } catch (e) {
     console.log(e);
     return { error: 500, description: "something went wrong" };
@@ -60,18 +69,17 @@ export const createNewMerchant = async (data) => {
     });
     return { status: 201, description: "Merchant Added Successfully" };
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return { error: 500, description: "something went wrong" };
   }
 };
 
 //Get All Merchants
-export const getAllMerchantsList = async () =>{
-  try{
+export const getAllMerchantsList = async () => {
+  try {
     const merchantList = await prisma.merchants.findMany();
-    return {status:200,merchantList}
-  }catch(e){
-    return {error:500,description:"something went wrong"}
+    return { status: 200, merchantList };
+  } catch (e) {
+    return { error: 500, description: "something went wrong" };
   }
-}
-
+};

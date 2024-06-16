@@ -1,6 +1,1 @@
-{
-  "/not-found": "app/not-found.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/users/page": "app/dashboard/users/page.js",
-  "/dashboard/merchants/page": "app/dashboard/merchants/page.js"
-}
+{}

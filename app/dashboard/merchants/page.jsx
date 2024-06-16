@@ -4,12 +4,12 @@ import Link from "next/link";
 import React from "react";
 import styles from "@/app/ui/dashboard/merchants/merchants.module.css";
 import Search from "@/app/ui/dashboard/search/search";
-import { getAllMerchantsList } from "@/backend/query";
+import { paginationForMerchantList } from "@/backend/query";
 
-const MerchantDataList = async () => {
-  const { merchantList } = await getAllMerchantsList();
-
-
+const MerchantDataList = async ({ searchParams }) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const { count, merchantData } = await paginationForMerchantList(q, page);
 
   return (
     <div className={styles.container}>
@@ -32,8 +32,8 @@ const MerchantDataList = async () => {
           </tr>
         </thead>
         <tbody>
-          {merchantList &&
-            merchantList.map((data) => (
+          {merchantData &&
+            merchantData.map((data) => (
               <tr key={data.id}>
                 <td>
                   <div className={styles.product}>
@@ -52,7 +52,7 @@ const MerchantDataList = async () => {
                 <td>{data.platform} </td>
                 <td>{data.merchantwebsite}</td>
                 <td>{data.kickoff.split("T")[0]}</td>
-                <td>{data.age + " days"}  </td>
+                <td>{data.age + " days"} </td>
                 <td>
                   <Link href="/dashboard/products/test">
                     <button className={`${styles.button} ${styles.view}`}>
@@ -67,7 +67,7 @@ const MerchantDataList = async () => {
             ))}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={count} />
     </div>
   );
 };

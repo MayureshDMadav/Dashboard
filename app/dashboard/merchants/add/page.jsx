@@ -16,7 +16,9 @@ const AddNewMerchant = () => {
   useEffect(() => {
     const allUserData = async () => {
       const { status, userData } = await getAllUserData();
-      getUserData(userData);
+      if(status === 200){
+        getUserData(userData);
+      }
     };
     allUserData();
   }, [setUser.length > 0]);
@@ -42,7 +44,7 @@ const AddNewMerchant = () => {
   return (
     <div className={styles.container} onSubmit={pushFormData}>
       <form className={styles.form}>
-        {/* {setUser.length < 0 && (
+        {setUser.length < 0 && (
           <input
             type="text"
             placeholder="customer engineer name"
@@ -50,8 +52,9 @@ const AddNewMerchant = () => {
             required
             onChange={getFormData}
           />
-        )} */}
+        )}
         <select name="cename" id="cename" onChange={getFormData}>
+        <option value="NA">Select a customer engineer</option>
           {setUser.length > 0 &&
             setUser.map((data) => (
               <option value={data.username}>{data.username}</option>

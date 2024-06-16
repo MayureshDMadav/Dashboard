@@ -24,3 +24,22 @@ model User {
   phone     String
   address   String
 }
+
+model merchants {
+  id              Int      @id @default(autoincrement())
+  cename          String
+  merchantname    String
+  merchantwebsite String
+  email           String
+  platform        String
+  category        String
+  kickoff         String
+  targetgolive    String
+  checkouttype    String
+  mintcomment     String
+  golivecommit    String
+  merchantstate   String
+  opscomment      String
+  age             String
+  createdAt       DateTime @default(now())
+}

@@ -1,5 +1,6 @@
 {
+  "/dashboard/merchants/page": "app/dashboard/merchants/page.js",
+  "/dashboard/merchants/add/page": "app/dashboard/merchants/add/page.js",
   "/dashboard/users/page": "app/dashboard/users/page.js",
-  "/dashboard/users/[...id]/page": "app/dashboard/users/[...id]/page.js",
   "/dashboard/users/add/page": "app/dashboard/users/add/page.js"
 }

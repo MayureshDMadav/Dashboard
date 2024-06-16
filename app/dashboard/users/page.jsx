@@ -5,9 +5,11 @@ import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import { getAllUsers } from "@/backend/query";
 
-const UsersPage = async () => {
-  const userData = await getAllUsers();
-
+const UsersPage = async ({searchParams}) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const {count,userData} = await getAllUsers(q,page);
+  
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -29,7 +31,7 @@ const UsersPage = async () => {
         </thead>
         <tbody>
           {userData &&
-            userData?.userData.map((data) => (
+            userData.map((data) => (
               <tr key={data.id}>
                 <td>
                   <div className={styles.user}>
@@ -61,7 +63,7 @@ const UsersPage = async () => {
             ))}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={count}  />
     </div>
   );
 };

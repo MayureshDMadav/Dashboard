@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import {getUserData} from '@/backend/query.js';
+import {createUserData} from '@/backend/query.js';
 import styles from '@/app/ui/dashboard/users/addUser/addUser.module.css';
 import toast from 'react-hot-toast';
 
@@ -16,14 +16,15 @@ const AddUserPage = () => {
   const formSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await getUserData(formData);
+      const response = await createUserData(formData);
       if(response.status === 201){
         toast.success('Form Submitted Successfully',{position: 'top-right'})
+        setTimeout(() => {
+          window.location.replace("/dashboard/users");
+        }, 2000);
       }else{
         toast.error('Error While Processing Your request',{position: 'top-right',style: {color:"red"}})
       }
-
-
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -47,7 +48,7 @@ const AddUserPage = () => {
           <option value={false}>No</option>
         </select>
         <textarea name="address" id="address" rows="4" placeholder="Address" onChange={getFormData}></textarea>
-        <button type="submit">Submit</button>
+        <button type="submit">Add New User</button>
       </form>
     </div>
   );

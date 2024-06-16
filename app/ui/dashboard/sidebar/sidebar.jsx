@@ -5,7 +5,6 @@ import {
   MdDashboard,
   MdSupervisedUserCircle,
   MdShoppingBag,
-  MdAttachMoney,
   MdWork,
   MdAnalytics,
   MdPeople,
@@ -29,15 +28,10 @@ const menuItems = [
         icon: <MdSupervisedUserCircle />,
       },
       {
-        title: "Products",
-        path: "/dashboard/products",
+        title: "Merchant List",
+        path: "/dashboard/merchants",
         icon: <MdShoppingBag />,
-      },
-      {
-        title: "Transactions",
-        path: "/dashboard/transactions",
-        icon: <MdAttachMoney />,
-      },
+      }
     ],
   },
   {

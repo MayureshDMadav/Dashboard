@@ -16,9 +16,9 @@ const DashbaordPage = () => {
         <Transactions />
         <Chart />
       </div>
-      <div className={styles.side}>
+      {/* <div className={styles.side}>
         <Rightbar />
-      </div>
+      </div> */}
     </div>
   );
 };

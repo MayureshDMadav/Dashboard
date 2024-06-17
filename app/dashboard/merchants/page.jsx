@@ -4,7 +4,10 @@ import Link from "next/link";
 import React from "react";
 import styles from "@/app/ui/dashboard/merchants/merchants.module.css";
 import Search from "@/app/ui/dashboard/search/search";
-import { paginationForMerchantList } from "@/backend/query";
+import {
+  deletEntryForMerchant,
+  paginationForMerchantList,
+} from "@/backend/query";
 
 const MerchantDataList = async ({ searchParams }) => {
   const q = searchParams?.q || "";
@@ -29,6 +32,7 @@ const MerchantDataList = async ({ searchParams }) => {
             <td>Website</td>
             <td>KickOff Date</td>
             <td>Age</td>
+            <td>Actions</td>
           </tr>
         </thead>
         <tbody>
@@ -53,15 +57,18 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.merchantwebsite}</td>
                 <td>{data.kickoff.split("T")[0]}</td>
                 <td>{data.age + " days"} </td>
-                <td>
+                <td style={{ display: "flex", gap: "6px" }}>
                   <Link href="/dashboard/products/test">
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
                   </Link>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
+                  <form action={deletEntryForMerchant}>
+                    <input type="hidden" name="id" value={data.id} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
                 </td>
               </tr>
             ))}

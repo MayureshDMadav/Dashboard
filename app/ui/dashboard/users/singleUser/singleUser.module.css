@@ -36,7 +36,7 @@
   }
   
   .form input, .form textarea, .form select{
-    padding: 20px;
+    padding: 15px;
     border: 2px solid #2e374a;
     border-radius: 5px;
     background-color: var(--bg);
@@ -49,12 +49,14 @@
   }
   
   .form button{
-    width: 100%;
-    padding: 20px;
+    width: 15rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:1rem;
+    padding: 15px;
     background-color: teal;
     color: var(--text);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
   }

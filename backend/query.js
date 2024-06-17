@@ -1,6 +1,32 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import bcrypt from "bcrypt";
+import { revalidatePath } from "next/cache";
+
+/* ====================================  USER  =================================== */
+
+// For Passowrd Encryption
+export const encryptData = async (data) => {
+  const salt = await bcrypt.genSalt(10);
+  const hasedPassword = await bcrypt.hash(data, salt);
+  return hasedPassword;
+};
+
+//For Finding single User
+export const findUserByUserName = async (data) => {
+  try {
+    const userData = await prisma.user.findUnique({
+      where: {
+        username: data,
+      },
+    });
+
+    return { userData, status: 200 };
+  } catch (e) {
+    return { description: "Somethin went wrong", status: 500 };
+  }
+};
 
 //Add New Users
 export const createUserData = async (data) => {
@@ -8,7 +34,6 @@ export const createUserData = async (data) => {
     await prisma.user.create({
       data: data,
     });
-
     return { status: 201, description: "User was created succesfully" };
   } catch (e) {
     return { error: 500, description: "something went wrong" };
@@ -61,6 +86,48 @@ export const getUserById = async (userId) => {
   } catch (e) {}
 };
 
+// Delete User Entry
+export const deletEntryForUsers = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+  try {
+    await prisma.user.delete({
+      where: {
+        id: Number.parseInt(id),
+      },
+    });
+    revalidatePath("/dashboard/users");
+  } catch (e) {}
+};
+
+// Update User
+export const updateUserByID = async (id, formData) => {
+  try {
+    await prisma.user.update({
+      where: { id: Number.parseInt(id) },
+      data: formData,
+    });
+    return { status: 200, description: "User Updated Successfully" };
+  } catch (e) {
+    console.log(e);
+    return { status: 500, description: "Something Went Wrong" };
+  }
+};
+
+/* ==================================  MERCHANT  ===================================== */
+
+// Delete Mercahant Entry
+export const deletEntryForMerchant = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+  try {
+    await prisma.merchants.delete({
+      where: {
+        id: Number.parseInt(id),
+      },
+    });
+    revalidatePath("/dashboard/merchants");
+  } catch (e) {}
+};
+
 //Add New Merchant
 export const createNewMerchant = async (data) => {
   try {
@@ -85,7 +152,7 @@ export const getAllMerchantsList = async () => {
 };
 
 //Handle Merchant List pagination and search part
-export const paginationForMerchantList = async (userName, page) =>{
+export const paginationForMerchantList = async (userName, page) => {
   const itemsPerPage = 5;
   const skip = (page - 1) * itemsPerPage;
   try {
@@ -105,4 +172,4 @@ export const paginationForMerchantList = async (userName, page) =>{
     console.log(e);
     return { error: 500, description: "something went wrong" };
   }
-}
+};

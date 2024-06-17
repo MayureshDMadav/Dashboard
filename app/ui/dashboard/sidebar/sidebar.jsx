@@ -12,10 +12,12 @@ import {
   MdHelpCenter,
   MdLogout,
 } from "react-icons/md";
+import { auth } from "@/app/auth";
+import { useSignOut } from "@/app/authentication";
 
 const menuItems = [
   {
-    title: "Pages",
+    title: "Main",
     list: [
       {
         title: "Dashboard",
@@ -31,7 +33,7 @@ const menuItems = [
         title: "Merchant List",
         path: "/dashboard/merchants",
         icon: <MdShoppingBag />,
-      }
+      },
     ],
   },
   {
@@ -47,11 +49,6 @@ const menuItems = [
         path: "/dashboard/reports",
         icon: <MdAnalytics />,
       },
-      {
-        title: "Teams",
-        path: "/dashboard/teams",
-        icon: <MdPeople />,
-      },
     ],
   },
   {
@@ -62,16 +59,12 @@ const menuItems = [
         path: "/dashboard/settings",
         icon: <MdOutlineSettings />,
       },
-      {
-        title: "Help",
-        path: "/dashboard/help",
-        icon: <MdHelpCenter />,
-      },
     ],
   },
 ];
 
-const SideBar = () => {
+const SideBar = async () => {
+  const session = await auth();
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -83,8 +76,10 @@ const SideBar = () => {
           height="50"
         />
         <div className={styles.userDetail}>
-          <span className={styles.username}>Mayuresh Madav</span>
-          <span className={styles.userTitle}>Administrator</span>
+          <span className={styles.username}>{session?.user?.username ? session?.user?.username :"Unknow"}</span>
+          <span className={styles.userTitle}>
+            {session?.user?.isAdmin ? "Admin" : "User"}
+          </span>
         </div>
       </div>
       <ul className={styles.list}>
@@ -97,10 +92,12 @@ const SideBar = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.logout}>
-        <MdLogout />
-        Logout
-      </button>
+      <form action={useSignOut}>
+        <button className={styles.logout}>
+          <MdLogout />
+          Logout
+        </button>
+      </form>
     </div>
   );
 };

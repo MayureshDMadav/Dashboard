@@ -3,13 +3,13 @@ import Link from "next/link";
 import styles from "@/app/ui/dashboard/users/users.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
-import { userPaginationFunc } from "@/backend/query";
+import { userPaginationFunc, deletEntryForUsers } from "@/backend/query";
 
-const UsersPage = async ({searchParams}) => {
+const UsersPage = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
-  const {count,userData} = await userPaginationFunc(q,page);
-  
+  const { count, userData } = await userPaginationFunc(q, page);
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -49,21 +49,24 @@ const UsersPage = async ({searchParams}) => {
                 <td>{data.createdAt.toDateString()}</td>
                 <td> {data?.isAdmin ? "admin" : "user"}</td>
                 <td>{data?.isActive ? "active" : "inactive"}</td>
-                <td>
+                <td style={{display:"flex",gap:"6px",}} >
                   <Link href={`/dashboard/users/${data.id}/${data.username}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
                   </Link>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
+                  <form action={deletEntryForUsers}>
+                    <input type="hidden" name="id"  value={data.id} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
-      <Pagination count={count}  />
+      <Pagination count={count} />
     </div>
   );
 };

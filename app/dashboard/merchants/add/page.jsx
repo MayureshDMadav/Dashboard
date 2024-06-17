@@ -31,7 +31,7 @@ const AddNewMerchant = () => {
         toast.success("Form Submitted Successfully", { position: "top-right" });
         setTimeout(() => {
           window.location.replace("/dashboard/merchants");
-        }, 2000);
+        }, 1500);
       } else {
         toast.error("Error While Processing Your request", {
           position: "top-right",

@@ -26,5 +26,6 @@ next-env.d.ts
 .DS_Store
 *.pem
 
-# Ignore this file in commits
-.gitignore
+# Ignore package lock files
+package-lock.json
+yarn.lock

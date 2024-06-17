@@ -1,2 +1,30 @@
-node_modules
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Next.js
 .next/
+out/
+build/
+
+# Test coverage
+coverage/
+
+# Environment variables
+.env*
+!.env.example
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Miscellaneous
+.DS_Store
+*.pem
+
+# Ignore this file in commits
+.gitignore

@@ -1,9 +1,10 @@
 "use client";
 import { updateUserByID, encryptData } from "@/backend/query";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const UpdateForm = ({ user, style }) => {
-    
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -23,9 +24,7 @@ const UpdateForm = ({ user, style }) => {
       toast.success(updateUserInDataBase.description, {
         position: "top-right",
       });
-      setTimeout(() => {
-        window.location.replace("/dashboard/users");
-      }, 1500);
+      router.push("/dashboard/users");
     } else {
       toast.error(updateUserInDataBase.description, { position: "top-right" });
     }

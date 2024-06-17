@@ -173,3 +173,30 @@ export const paginationForMerchantList = async (userName, page) => {
     return { error: 500, description: "something went wrong" };
   }
 };
+
+
+export const updateMerchantByID = async (id, formData) => {
+  try {
+    await prisma.merchants.update({
+      where: { id: Number.parseInt(id) },
+      data: formData,
+    });
+    return { status: 200, description: "Merchant Updated Successfully" };
+  } catch (e) {
+    console.log(e);
+    return { status: 500, description: "Something Went Wrong" };
+  }
+};
+
+
+export const getMerchantById = async (userId) => {
+  try {
+    const merchant = await prisma.merchants.findMany({
+      where: {
+        id: userId,
+      },
+    });
+
+    return merchant;
+  } catch (e) {}
+};

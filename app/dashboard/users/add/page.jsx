@@ -1,33 +1,27 @@
 "use client";
-import React, { useState } from "react";
-import { encryptData,createUserData } from "@/backend/query.js";
+import { encryptData, createUserData } from "@/backend/query.js";
 import styles from "@/app/ui/dashboard/users/addUser/addUser.module.css";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 
 const AddUserPage = () => {
-  const [formData, setFormData] = useState({});
-
-  const getFormData = (e) => {
-    const { name, value } = e.target;
-    const newValue =
-      name === "isActive" || name === "isAdmin" ? value === "true" : value;
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
-  };
+  const router = useRouter()
 
   const formSubmit = async (e) => {
     e.preventDefault();
     try {
-      const hasedPassword = await encryptData(formData.password)
-      formData.password = hasedPassword;  
-      const response = await createUserData(formData);
-      if (response.status === 201) {
-        toast.success("Form Submitted Successfully", { position: "top-right" });
-        setTimeout(()=>{
-          window.location.replace("/dashboard/users")
-        },1500)
-       } else {
-        toast.error("Error While Processing Your request", {
+      const formTemplate = new FormData(e.target);
+      const formData = Object.fromEntries(formTemplate.entries());
+      const hasedPassword = await encryptData(formData.password);
+      formData.isActive = formData.isActive === "true" ? true : false;
+      formData.isAdmin = formData.isAdmin === "true" ? true : false;
+      formData.password = hasedPassword;
+      const {status,description} = await createUserData(formData);
+      if (status === 201) {
+        toast.success(description, { position: "top-right" });
+        router.push("/dashboard/users")
+      } else {
+        toast.error(description, {
           position: "top-right",
           style: { color: "red" },
         });
@@ -40,39 +34,21 @@ const AddUserPage = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={formSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          name="username"
-          onChange={getFormData}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          onChange={getFormData}
-          required
-        />
+        <input type="text" placeholder="Username" name="username" required />
+        <input type="email" placeholder="Email" name="email" required />
         <input
           type="password"
           placeholder="Password"
           name="password"
           required
-          onChange={getFormData}
         />
-        <input
-          type="tel"
-          placeholder="Phone"
-          name="phone"
-          onChange={getFormData}
-        />
-        <select name="isAdmin" id="isAdmin" onChange={getFormData}>
+        <input type="tel" placeholder="Phone" name="phone" />
+        <select name="isAdmin" id="isAdmin" >
           <option value={false}>Is Admin?</option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
-        <select name="isActive" id="isActive" onChange={getFormData}>
+        <select name="isActive" id="isActive" >
           <option value={true}>Is Active?</option>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
@@ -82,7 +58,6 @@ const AddUserPage = () => {
           id="address"
           rows="4"
           placeholder="Address"
-          onChange={getFormData}
         ></textarea>
         <button type="submit">Add New User</button>
       </form>

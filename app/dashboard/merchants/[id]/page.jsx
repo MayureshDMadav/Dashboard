@@ -1,17 +1,12 @@
-import React from "react";
-import styles from "@/app/ui/dashboard/products/singleProduct/singleProduct.module.css";
+import styles from "@/app/ui/dashboard/merchants/singleMerchants/singleMerchant.module.css";
 import Image from "next/image";
+import { getMerchantById } from "@/backend/query";
+import UpdateForm from "./updateForm";
 
-const SingleProductPage = () => {
-  const product = {
-    id: "123",
-    title: "mayuresh",
-    price: "mmm",
-    stock: "test@gmail.com",
-    size: "555555555",
-    color: "00000",
-    desc: "true",
-  };
+const singleMerchantPage = async (context) => {
+  const { params } = context;
+  const mercahntid = Number.parseInt(params.id);
+  const merchantData = await getMerchantById(mercahntid);
 
   return (
     <div className={styles.container}>
@@ -19,46 +14,12 @@ const SingleProductPage = () => {
         <div className={styles.imgContainer}>
           <Image src="/noavatar.png" alt="" fill />
         </div>
-        {product.title}
       </div>
       <div className={styles.formContainer}>
-        <form action="updateProduct" className={styles.form}>
-          <input type="hidden" name="id" value={product.id} />
-          <label>Title</label>
-          <input type="text" name="title" placeholder={product.title} />
-          <label>Price</label>
-          <input type="number" name="price" placeholder={product.price} />
-          <label>Stock</label>
-          <input type="number" name="stock" placeholder={product.stock} />
-          <label>Color</label>
-          <input
-            type="text"
-            name="color"
-            placeholder={product.color || "color"}
-          />
-          <label>Size</label>
-          <textarea
-            type="text"
-            name="size"
-            placeholder={product.size || "size"}
-          />
-          <label>Cat</label>
-          <select name="cat" id="cat">
-            <option value="kitchen">Kitchen</option>
-            <option value="computers">Computers</option>
-          </select>
-          <label>Description</label>
-          <textarea
-            name="desc"
-            id="desc"
-            rows="10"
-            placeholder={product.desc}
-          ></textarea>
-          <button>Update</button>
-        </form>
+        <UpdateForm styles={styles} merchantData={merchantData} />
       </div>
     </div>
   );
 };
 
-export default SingleProductPage;
+export default singleMerchantPage;

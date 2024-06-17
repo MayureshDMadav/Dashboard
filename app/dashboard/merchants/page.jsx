@@ -58,7 +58,7 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.kickoff.split("T")[0]}</td>
                 <td>{data.age + " days"} </td>
                 <td style={{ display: "flex", gap: "6px" }}>
-                  <Link href="/dashboard/products/test">
+                  <Link href={`/dashboard/merchants/${data.id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>

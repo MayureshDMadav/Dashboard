@@ -42,7 +42,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         }
       });
     }
-  }, [merchantData]);
+  }, [merchantData?.length > 0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +52,9 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
       const response = await createNewMerchant(formEntries);
       if (response.status === 201) {
         toast.success("Form Submitted Successfully", { position: "top-right" });
-        window.location.replace("/dashboard/merchants");
+        setTimeout(() => {
+          window.location.replace("/dashboard/merchants");
+        }, 500);
       } else {
         toast.error("Error While Processing Your request", {
           position: "top-right",
@@ -73,7 +75,9 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         toast.success(updateUserInDataBase.description, {
           position: "top-right",
         });
-        window.location.replace("/dashboard/merchants");
+        setTimeout(() => {
+          window.location.replace("/dashboard/merchants");
+        }, 500);
       } else {
         toast.error(updateUserInDataBase.description, {
           position: "top-right",
@@ -91,7 +95,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <label>CE Name</label>
-      <select name="cename" id="cename" defaultValue={formData.cename || ""}>
+      <select name="cename" id="cename">
         <option value="">
           {formData.cename
             ? "Change Customer engineer"
@@ -129,6 +133,34 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
       <input type="datetime-local" id="kickoff" name="kickoff" />
       <label>Target Go Live</label>
       <input type="datetime-local" id="targetGoLive" name="targetgolive" />
+      <label>Go-Live Date</label>
+      <input type="datetime-local" id="livedate" name="livedate" />
+      <label>Booked Arr</label>
+      <input
+        type="text"
+        name="bookedarr"
+        placeholder={formData.bookedarr || "enter booked arr"}
+      />
+      <label>Expected Arr</label>
+      <input
+        type="text"
+        name="expectedarr"
+        placeholder={formData.expectedarr || "enter expected arr"}
+      />
+      <label>GMV</label>
+      <input type="text" name="gmv" placeholder={formData.gmv || "enter GMV"} />
+      <label>CSM</label>
+      <input
+        type="text"
+        name="ms"
+        placeholder={formData.ms || "enter ms team member name"}
+      />
+      <label>Sales Rep</label>
+      <input
+        type="text"
+        name="salesrep"
+        placeholder={formData.salesrep || "enter sales representative"}
+      />
       <label>Checkout Type</label>
       <select name="checkouttype" id="checkouttype">
         <option value="general">Choose a checkout type</option>

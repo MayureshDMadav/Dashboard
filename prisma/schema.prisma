@@ -26,10 +26,15 @@ model User {
 }
 
 model merchants {
-  id              Int      @id @default(autoincrement())
+  id              Int    @id @default(autoincrement())
   cename          String
   merchantname    String
   merchantwebsite String
+  bookedarr       String
+  expectedarr     String
+  gmv             String
+  ms              String
+  salesrep        String
   email           String
   platform        String
   category        String
@@ -41,5 +46,7 @@ model merchants {
   merchantstate   String
   opscomment      String
   age             String
-  createdAt       DateTime @default(now())
+  livedate        String
+
+  createdAt DateTime @default(now())
 }

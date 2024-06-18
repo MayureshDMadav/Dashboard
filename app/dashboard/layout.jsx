@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SideBar from "../ui/dashboard/sidebar/sidebar";
 import Navbar from "../ui/dashboard/navbar/navbar";
 import styles from '../ui/dashboard/dashboard.module.css'
 import Footer from "../ui/dashboard/footer/footer";
+import Loading from "./loading";
 
 const Layout = ({ children }) => {
   return (
@@ -12,7 +13,9 @@ const Layout = ({ children }) => {
       </div>
       <div className={styles.content}>
         <Navbar />
+        <Suspense fallback={<Loading/>}>
         {children}
+        </Suspense>
         <Footer/>
       </div>
     </div>

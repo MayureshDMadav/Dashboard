@@ -13,7 +13,7 @@ const Navbar = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{pathname.split("/").pop()}</div>
+      <div className={styles.title}>{decodeURI(pathname.split("/").pop())}</div>
       <div className={styles.menu}>
         {/* <div className={styles.search}>
           <MdSearch />

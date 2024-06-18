@@ -8,6 +8,7 @@ import {
   deletEntryForMerchant,
   paginationForMerchantList,
 } from "@/backend/query";
+import { formatDistance } from "date-fns";
 
 const MerchantDataList = async ({ searchParams }) => {
   const q = searchParams?.q || "";
@@ -56,9 +57,9 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.platform} </td>
                 <td>{data.merchantwebsite}</td>
                 <td>{data.kickoff.split("T")[0]}</td>
-                <td>{data.age + " days"} </td>
+                <td>{formatDistance(data.kickoff,new Date()) } </td>
                 <td style={{ display: "flex", gap: "6px" }}>
-                  <Link href={`/dashboard/merchants/${data.id}`}>
+                  <Link href={`/dashboard/merchants/${data.id}/${data.merchantname.trim()}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>

@@ -3,6 +3,7 @@
   padding: 20px;
   border-radius: 10px;
   margin-top: 20px;
+  
 }
 
 .form {
@@ -23,7 +24,7 @@
 }
 
 .form input, .form select {
-  width: 45%;
+  width: 100%;
 }
 
 .form textarea{

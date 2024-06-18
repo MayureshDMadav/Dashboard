@@ -1,55 +1,56 @@
 .container {
-    background-color: var(--bgSoft);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
-  
-  .form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .form input,
-  .form textarea,
-  .form select {
-    padding: 10px;
-    background-color: var(--bg);
-    color: var(--text);
-    border: 2px solid #2e374a;
-    border-radius: 5px;
-    margin: 0.3rem;
-  }
-  
-  .form input, .form select {
-    width: 45%;
-  }
-  
-  .form textarea{
-    width: 45%;
-  }
+  background-color: var(--bgSoft);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
 
-  .datesNtime{
-    display: flex ;
-    width: 45%;
-    text-align: center;
-    align-items: center;
-  }
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  white-space: inherit;
+  margin: 0.2rem;
+  padding: 0.2rem;
+  text-align: left;
+  justify-content: flex-end;
+}
 
-  .datesNtime input{
-    width: 100%;
-  }
-  
-  .form button{
-    width: 15rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top:1rem;
-    padding: 15px;
-    background-color: teal;
-    color: var(--text);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.form input,
+.form textarea,
+.form select {
+  padding: 10px;
+  margin: 0.6rem;
+  background-color: var(--bg);
+  color: var(--text);
+  border: 2px solid #2e374a;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.form textarea {
+  width: 100%;
+}
+
+.form label{
+  font-size: 14px;
+  padding: 0.2rem;
+  margin-left: 0.4rem;
+  text-align: left;
+}
+
+
+
+.form button {
+  width: 15rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  padding: 15px;
+  background-color: teal;
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

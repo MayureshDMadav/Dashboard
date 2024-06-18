@@ -1,14 +1,26 @@
 "use client";
 
-import { updateMerchantByID } from "@/backend/query";
+import { getAllUserData, updateMerchantByID } from "@/backend/query";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const UpdateForm = ({ styles, merchantData }) => {
+  const [setUser, getUserData] = useState({});
+
   const merchant =
     merchantData && merchantData.length > 0 ? merchantData[0] : {};
-  const router = useRouter()
+  const router = useRouter();
+
+  useEffect(() => {
+    const allUserData = async () => {
+      const { status, userData } = await getAllUserData();
+      if (status === 200) {
+        getUserData(userData);
+      }
+    };
+    allUserData();
+  }, [setUser.length > 0]);
 
   const updateMerchantData = async (e) => {
     e.preventDefault();
@@ -18,7 +30,10 @@ const UpdateForm = ({ styles, merchantData }) => {
       (key) =>
         (formEnteries[key] === "" || undefined) && delete formEnteries[key]
     );
-    const updateUserInDataBase = await updateMerchantByID(merchant.id, formEnteries);
+    const updateUserInDataBase = await updateMerchantByID(
+      merchant.id,
+      formEnteries
+    );
     if (updateUserInDataBase.status === 200) {
       toast.success(updateUserInDataBase.description, {
         position: "top-right",
@@ -29,37 +44,34 @@ const UpdateForm = ({ styles, merchantData }) => {
     }
   };
 
-  useEffect(() => {
-    if (merchantData && merchantData.length > 0) {
-      const data = merchantData[0];
-      Object.keys(data).forEach((key) => {
-        const element = document.getElementsByName(key)[0];
-        if (element) {
-          if (element.type === "datetime-local") {
-            const date = new Date(data[key]);
-            const formattedDate = date.toISOString().slice(0, 16);
-            element.value = formattedDate;
-          } else if (element.tagName === "SELECT") {
-            element.value = data[key];
-          } else if (element.tagName === "TEXTAREA") {
-            element.value = data[key];
-          } else {
-            element.value = data[key];
-          }
+  if (merchantData && merchantData.length > 0) {
+    const data = merchantData[0];
+    Object.keys(data).forEach((key) => {
+      const element = document.getElementsByName(key)[0];
+      if (element) {
+        if (element.type === "datetime-local") {
+          const date = new Date(data[key]);
+          const formattedDate = date.toISOString().slice(0, 16);
+          element.value = formattedDate;
+        } else if (element.tagName === "SELECT") {
+          element.value = data[key];
+        } else if (element.tagName === "TEXTAREA") {
+          element.value = data[key];
+        } else {
+          element.value = data[key];
         }
-      });
-    }
-  }, [merchantData]);
+      }
+    });
+  }
 
   return (
     <form className={styles.form} onSubmit={updateMerchantData}>
-      <input
-        type="text"
-        placeholder={merchant.cename || "customer engineer name"}
-        name="cename"
-        disabled
-        required
-      />
+      <select name="cename" id="cename" placeholder="change engineer">
+        {setUser.length > 0 &&
+          setUser.map((data) => (
+            <option value={data.username}>{data.username}</option>
+          ))}
+      </select>
       <input
         type="text"
         placeholder={merchant.merchantname || "merchantname"}

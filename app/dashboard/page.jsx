@@ -13,6 +13,11 @@ const DashbaordPage = () => {
           <Card />
           <Card />
         </div>
+        <div className={styles.cards}>
+          <Card />
+          <Card />
+          <Card />
+        </div>
         <Transactions />
         <Chart />
       </div>

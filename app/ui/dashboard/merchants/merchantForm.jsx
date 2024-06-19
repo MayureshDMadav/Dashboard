@@ -5,12 +5,15 @@ import {
   createNewMerchant,
   updateMerchantByID,
 } from "@/backend/query";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const MerchantForm = ({ styles, merchantData, mode }) => {
   const [setUser, getUserData] = useState({});
   const [formData, setFormData] = useState(merchantData ? merchantData[0] : {});
+  const router = useRouter();
 
   useEffect(() => {
     const allUserData = async () => {
@@ -49,12 +52,11 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
     const formEntries = Object.fromEntries(new FormData(e.target).entries());
 
     if (mode === "add") {
-      const response = await createNewMerchant(formEntries);
-      if (response.status === 201) {
-        toast.success("Form Submitted Successfully", { position: "top-right" });
-        setTimeout(() => {
-          window.location.replace("/dashboard/merchants");
-        }, 500);
+      const { description, status } = await createNewMerchant(formEntries);
+      if (status === 201) {
+        toast.success(description, { position: "top-right" });
+
+        router.push("/dashboard/merchants");
       } else {
         toast.error("Error While Processing Your request", {
           position: "top-right",
@@ -75,9 +77,8 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         toast.success(updateUserInDataBase.description, {
           position: "top-right",
         });
-        setTimeout(() => {
-          window.location.replace("/dashboard/merchants");
-        }, 500);
+        router.push("/dashboard/merchants");
+        revalidatePath("/dashboard/merchants");
       } else {
         toast.error(updateUserInDataBase.description, {
           position: "top-right",

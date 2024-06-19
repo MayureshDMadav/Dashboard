@@ -34,6 +34,7 @@ export const createUserData = async (data) => {
     await prisma.user.create({
       data: data,
     });
+    revalidatePath("/dashboard/users");
     return { status: 201, description: "User was created succesfully" };
   } catch (e) {
     return { error: 500, description: "something went wrong" };
@@ -106,6 +107,7 @@ export const updateUserByID = async (id, formData) => {
       where: { id: Number.parseInt(id) },
       data: formData,
     });
+    revalidatePath("/dashboard/merchants");
     return { status: 200, description: "User Updated Successfully" };
   } catch (e) {
     console.log(e);
@@ -134,6 +136,7 @@ export const createNewMerchant = async (data) => {
     await prisma.merchants.create({
       data: data,
     });
+    revalidatePath("/dashboard/merchants");
     return { status: 201, description: "Merchant Added Successfully" };
   } catch (e) {
     console.log(e);
@@ -174,7 +177,7 @@ export const paginationForMerchantList = async (userName, page) => {
   }
 };
 
-
+//Update Data By Mercahnt Id
 export const updateMerchantByID = async (id, formData) => {
   try {
     await prisma.merchants.update({
@@ -188,7 +191,7 @@ export const updateMerchantByID = async (id, formData) => {
   }
 };
 
-
+//Get Data By Merchant ID
 export const getMerchantById = async (userId) => {
   try {
     const merchant = await prisma.merchants.findMany({
@@ -200,3 +203,22 @@ export const getMerchantById = async (userId) => {
     return merchant;
   } catch (e) {}
 };
+
+
+//Get Data by Date Range
+export const getMerchantsByDateRange = async(startDate, endDate) => {
+  try {
+    const merchants = await prisma.merchants.findMany({
+      where: {
+        AND: [
+          { livedate: { gte: startDate } }, 
+          { livedate: { lte: endDate } }   
+        ]
+      }
+    });
+
+    return {merchants, status:200};
+  } catch (error) {
+    return {status:500,description:"something went wrong"};
+  }
+}

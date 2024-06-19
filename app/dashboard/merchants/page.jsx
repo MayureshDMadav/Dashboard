@@ -57,7 +57,7 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.platform} </td>
                 <td>{data.merchantwebsite}</td>
                 <td>{data.kickoff.split("T")[0]}</td>
-                <td>{formatDistance(data.kickoff,new Date()) } </td>
+                <td>{formatDistance(data.kickoff,new Date() ,  { addSuffix: true }) } </td>
                 <td style={{ display: "flex", gap: "6px" }}>
                   <Link href={`/dashboard/merchants/${data.id}/${data.merchantname.trim()}`}>
                     <button className={`${styles.button} ${styles.view}`}>

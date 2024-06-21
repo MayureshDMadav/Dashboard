@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    flex-wrap: nowrap;
   }
   
   .menu {
@@ -36,3 +37,5 @@
   .side {
     flex: 1;
   }
+
+ 

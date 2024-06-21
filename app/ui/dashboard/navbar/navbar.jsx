@@ -4,7 +4,6 @@ import styles from "./navbar.module.css";
 import {
   MdSearch,
 } from "react-icons/md";
-import { getMerchantsByDateRange } from "@/backend/query";
 
 const Navbar = () => {
   const pathname = usePathname();

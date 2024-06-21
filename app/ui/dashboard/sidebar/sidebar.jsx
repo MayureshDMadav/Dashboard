@@ -11,6 +11,7 @@ import {
   MdOutlineSettings,
   MdHelpCenter,
   MdLogout,
+  MdUpload,
 } from "react-icons/md";
 import { auth } from "@/app/auth";
 import { useSignOut } from "@/app/authentication";
@@ -55,10 +56,16 @@ const menuItems = [
     title: "User",
     list: [
       {
+        title: "Upload",
+        path: "/dashboard/upload",
+        icon: <MdUpload />,
+      },
+      {
         title: "Settings",
         path: "/dashboard/settings",
         icon: <MdOutlineSettings />,
       },
+    
     ],
   },
 ];

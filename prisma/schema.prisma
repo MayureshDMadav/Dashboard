@@ -30,9 +30,9 @@ model merchants {
   cename          String
   merchantname    String
   merchantwebsite String
-  bookedarr       String
-  expectedarr     String
-  gmv             String
+  bookedarr       Int    @default(0)
+  expectedarr     Int    @default(0)
+  gmv             Int    @default(0)
   ms              String
   salesrep        String
   email           String
@@ -45,8 +45,9 @@ model merchants {
   golivecommit    String
   merchantstate   String
   opscomment      String
-  age             String
+  age             Int    @default(0)
   livedate        String
+  txn             Int    @default(0)
 
   createdAt DateTime @default(now())
 }

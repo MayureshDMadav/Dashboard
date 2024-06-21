@@ -31,9 +31,9 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
       Object.keys(data).forEach((key) => {
         const element = document.getElementsByName(key)[0];
         if (element) {
-          if (element.type === "datetime-local") {
+          if (element.type === "datetime-local" && element.value != "" ) {
             const date = new Date(data[key]);
-            const formattedDate = date.toISOString().slice(0, 16);
+            const formattedDate = date?.toISOString().slice(0, 16);
             element.value = formattedDate;
           } else if (element.tagName === "SELECT") {
             element.value = data[key];
@@ -149,7 +149,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         placeholder={formData.expectedarr || "enter expected arr"}
       />
       <label>GMV</label>
-      <input type="text" name="gmv" placeholder={formData.gmv || "enter GMV"} />
+      <input type="number" step="0.01" name="gmv" placeholder={formData.gmv || "enter GMV"} />
       <label>CSM</label>
       <input
         type="text"

@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "merchants" ALTER COLUMN "bookedarr" SET DATA TYPE TEXT,
-ALTER COLUMN "expectedarr" SET DATA TYPE TEXT,
-ALTER COLUMN "gmv" SET DATA TYPE TEXT;

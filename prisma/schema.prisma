@@ -30,9 +30,9 @@ model merchants {
   cename          String
   merchantname    String
   merchantwebsite String
-  bookedarr       Int    @default(0)
-  expectedarr     Int    @default(0)
-  gmv             Int    @default(0)
+  bookedarr       String
+  expectedarr     String
+  gmv             String
   ms              String
   salesrep        String
   email           String

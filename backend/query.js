@@ -156,7 +156,7 @@ export const getAllMerchantsList = async () => {
 
 //Handle Merchant List pagination and search part
 export const paginationForMerchantList = async (userName, page) => {
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const skip = (page - 1) * itemsPerPage;
   try {
     const count = await prisma.merchants.count();
@@ -184,6 +184,7 @@ export const updateMerchantByID = async (id, formData) => {
       where: { id: Number.parseInt(id) },
       data: formData,
     });
+    revalidatePath("/dashboard/merchants");
     return { status: 200, description: "Merchant Updated Successfully" };
   } catch (e) {
     console.log(e);
@@ -204,21 +205,23 @@ export const getMerchantById = async (userId) => {
   } catch (e) {}
 };
 
-
 //Get Data by Date Range
-export const getMerchantsByDateRange = async(startDate, endDate) => {
+export const getGoLiveMerchantsByDateRange = async (
+  startDate,
+  endDate,
+  fieldName
+) => {
   try {
     const merchants = await prisma.merchants.findMany({
       where: {
         AND: [
-          { livedate: { gte: startDate } }, 
-          { livedate: { lte: endDate } }   
-        ]
-      }
+          { [fieldName]: { gte: startDate } },
+          { [fieldName]: { lte: endDate } },
+        ],
+      },
     });
-
-    return {merchants, status:200};
+    return { merchants, status: 200 };
   } catch (error) {
-    return {status:500,description:"something went wrong"};
+    return { status: 500, description: "something went wrong" };
   }
-}
+};

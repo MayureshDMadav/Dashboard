@@ -1,16 +1,22 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import styles from "./navbar.module.css";
-import {
-  MdSearch,
-} from "react-icons/md";
+import { MdSearch } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const pathname = usePathname();
-
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);  
   const actualPath = pathname.split("/").pop();
+  const router = useRouter()
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const formEntries = Object.fromEntries(formData.entries());
+    router.push(`/dashboard?start=${encodeURIComponent(formEntries.startDate)}&end=${encodeURIComponent(formEntries.endDate)}&mode=${encodeURIComponent(formEntries.mode)}`)
+  };
 
   return (
     <div className={styles.container}>
@@ -18,6 +24,12 @@ const Navbar = () => {
       <div className={styles.menu}>
         {actualPath === "dashboard" && (
           <form onSubmit={handleSubmit} className={styles.form}>
+            <select name="mode" className={styles.select}  required>
+              <option value="">Select a State</option>
+              <option value="kickoff">Merchant In Queue</option>
+              <option value="targetgolive">Targeted Merchant</option>
+              <option value="livedate">Live Merchant</option>
+            </select>
             <label htmlFor="startDate" className={styles.label}>
               Start Date:
             </label>
@@ -26,6 +38,7 @@ const Navbar = () => {
               id="startDate"
               name="startDate"
               className={styles.input}
+              required
             />
             <br />
             <label htmlFor="endDate" className={styles.label}>
@@ -36,10 +49,11 @@ const Navbar = () => {
               id="endDate"
               name="endDate"
               className={styles.input}
+              required
             />
-            <buttn type="submit" className={styles.button}>
+            <button className={styles.button}>
               <MdSearch className={styles.mdSearch} />
-            </buttn>
+            </button>
           </form>
         )}
       </div>

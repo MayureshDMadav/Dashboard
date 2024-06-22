@@ -6,7 +6,10 @@ import * as XLSX from "xlsx";
 import { MdCloudUpload } from "react-icons/md";
 import { createNewMerchant } from "@/backend/query";
 import Loading from "@/app/dashboard/loading";
-import { convertExcelDate } from "@/backend/backendservice";
+import {
+  convertExcelDate,
+  convertExcelDateTimeToISO,
+} from "@/backend/backendservice";
 
 const UploadMerchants = () => {
   const [typeError, setTypeError] = useState(false);
@@ -15,7 +18,7 @@ const UploadMerchants = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [entriesPerPage] = useState(5);
-  const[count,setCount]  = useState(0)
+  const [count, setCount] = useState(0);
 
   const handleFileUpload = (event, mode) => {
     if (mode == "uploadData") {
@@ -47,19 +50,33 @@ const UploadMerchants = () => {
   const pushDataToDataBase = (e) => {
     e.preventDefault();
     setLoading(true);
-    setCount(excelData.length - 1)
     excelData.forEach(async (data) => {
-      data.kickoff = await convertExcelDate(data.kickoff).then((data) => data);
-      data.livedate = await convertExcelDate(data.livedate).then(
-        (data) => data
-      );
-      data.targetgolive = await convertExcelDate(data.targetgolive).then(
-        (data) => data
-      );
+      data.checkouttype = data.checkouttype.toLowerCase().trim();
+      data.golivecommit = data.golivecommit.toLowerCase().trim();
+      data.platform = data.platform.toLowerCase().trim();
+      data.kickoff !== "NA"
+        ? (data.kickoff = await convertExcelDateTimeToISO(data.kickoff).then(
+            (data) => data
+          ))
+        : "";
+      data.livedate !== "NA"
+        ? (data.livedate = await convertExcelDateTimeToISO(data.livedate).then(
+            (data) => data
+          ))
+        : "";
+      data.targetgolive !== "NA"
+        ? (data.targetgolive = await convertExcelDateTimeToISO(
+            data.targetgolive
+          ).then((data) => data))
+        : "";
+      
+      data.bookedarr = data.bookedarr.toString()
+      data.expectedarr = data.expectedarr.toString()
+      data.gmv = data.gmv.toString() 
       const dataFromAPi = await createNewMerchant(data);
       if (dataFromAPi.status === 201) {
         excelData.shift();
-        setCount(excelData.length)
+        setCount(excelData.length - 1);
       }
 
       if (excelData.length === 0) {
@@ -140,9 +157,7 @@ const UploadMerchants = () => {
       </div>
       <div className={style.view}>
         {loading && (
-          <Loading
-            message={`Date Uploading complete for ${count}`}
-          />
+          <Loading message={`Date Uploading complete for ${count}`} />
         )}
         {!loading && excelData.length > 0 ? (
           <>

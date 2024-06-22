@@ -58,7 +58,21 @@
 
 
   .button{
-    display: inline;
     margin-top: 3px;  
     cursor: pointer;
+    border: none;
+    background-color: transparent;
+  }
+
+  .mdSearch{
+    color: white;
+    font-size: 1rem;
+  }
+
+  .select{
+    border-radius: 5px;
+    padding: 6px;
+    border: none;
+    background-color:#2e374a;
+    color:white;
   }

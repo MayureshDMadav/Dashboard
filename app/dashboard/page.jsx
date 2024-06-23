@@ -10,7 +10,7 @@ import {
 import {
   filterMerchantByGolive,
   filterMerchantByPending,
-  filterAllTheMerchant
+  filterAllTheMerchant,
 } from "@/backend/backendservice";
 
 const DashbaordPage = async (context) => {
@@ -30,11 +30,11 @@ const DashbaordPage = async (context) => {
     merchantData = filterMerchantByPending(merchants);
   }
 
-  if(status === 200 && mode == "kickoff"){
+  if (status === 200 && mode == "kickoff") {
     merchantData = filterMerchantByPending(merchants);
   }
 
-  const alltheMerchantList = filterAllTheMerchant(merchantList)
+  const alltheMerchantList = filterAllTheMerchant(merchantList);
 
   return (
     <div className={styles.wrapper}>
@@ -42,23 +42,27 @@ const DashbaordPage = async (context) => {
         <div className={styles.cards}>
           <Card
             title={"Emerging"}
-            value={
-              merchantData.emergingData ? merchantData.emergingData.length : 0
+            value={merchantData.emergingData ? merchantData.emergingData : 0}
+            noOfMerchant={
+              alltheMerchantList && alltheMerchantList.emergingData.length
             }
-            noOfMerchant = {alltheMerchantList.emergingData.length}
             mode={mode}
           />
           <Card
             title={"SMB"}
-            value={merchantData.smbData ? merchantData.smbData.length : 0}
+            value={merchantData.smbData ? merchantData.smbData :0 }
             mode={mode}
-            noOfMerchant = {alltheMerchantList.smbData.length}
+            noOfMerchant={
+              alltheMerchantList && alltheMerchantList.smbData.length
+            }
           />
           <Card
             title={"ENT"}
-            value={merchantData.entData ? merchantData.entData.length : 0}
+            value={merchantData.entData ? merchantData.entData : 0}
             mode={mode}
-            noOfMerchant = {alltheMerchantList.entData.length}
+            noOfMerchant={
+              alltheMerchantList && alltheMerchantList.entData.length
+            }
           />
         </div>
         <Transactions />

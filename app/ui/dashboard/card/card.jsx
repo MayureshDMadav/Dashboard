@@ -1,18 +1,29 @@
 import { MdSupervisedUserCircle } from "react-icons/md";
 import styles from "./card.module.css";
-const Card = ({title,value,mode,noOfMerchant}) => {
+import PopupComponent from "./popup";
+const Card = ({ title, value, mode, noOfMerchant }) => {
   return (
     <div className={styles.container}>
       <MdSupervisedUserCircle size={24} />
       <div className={styles.texts}>
         <span className={styles.title}>{title}</span>
         <span className={styles.number}>{noOfMerchant}</span>
-        <span className={styles.detail}>
-          <span className={styles.positive}>
-          {value}
-          </span>{" "}
-          {mode === "livedate" ? "gone live so far" : mode === "kickoff"  ? "merchant in queue" : "targeted Merchant" }
-        </span>
+        {value.length <= 0  && (
+           <span className={styles.detail}>
+             <span className={styles.negative}>No Data to display</span>
+           </span>
+        ) }
+        {value.length > 0 && (
+            <span className={styles.detail}>
+              <span className={styles.positive}>{value.length}</span>{" "}
+              {mode === "livedate"
+                ? "gone live so far"
+                : mode === "kickoff"
+                ? "merchant in queue"
+                : "targeted Merchant"}
+              <PopupComponent merchantData={value} />
+            </span>
+          )}
       </div>
     </div>
   );

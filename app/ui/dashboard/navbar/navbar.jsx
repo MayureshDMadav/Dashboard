@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);  
   const actualPath = pathname.split("/").pop();
   const router = useRouter()
 

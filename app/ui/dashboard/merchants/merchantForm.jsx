@@ -51,10 +51,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEntries = Object.fromEntries(new FormData(e.target).entries());
-    formEntries.bookedarr = formEntries.bookedarr ?  Number.parseInt(formEntries.bookedarr) : 0  
     formEntries.age = formEntries.age ?  Number.parseInt(formEntries.age) : 0
-    formEntries.gmv = formEntries.gmv ?  Number.parseInt(formEntries.gmv) : 0
-    formEntries.expectedarr = formEntries.expectedarr ?  Number.parseInt(formEntries.expectedarr) : 0
     formEntries.txn = formEntries.txn ?  Number.parseInt(formEntries.txn) : 0
 
     if (mode === "add") {

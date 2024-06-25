@@ -8,22 +8,22 @@ const Card = ({ title, value, mode, noOfMerchant }) => {
       <div className={styles.texts}>
         <span className={styles.title}>{title}</span>
         <span className={styles.number}>{noOfMerchant}</span>
-        {value.length <= 0  && (
-           <span className={styles.detail}>
-             <span className={styles.negative}>No Data to display</span>
-           </span>
-        ) }
+        {value.length <= 0 && (
+          <span className={styles.detail}>
+            <span className={styles.negative}>No Data to display</span>
+          </span>
+        )}
         {value.length > 0 && (
-            <span className={styles.detail}>
-              <span className={styles.positive}>{value.length}</span>{" "}
-              {mode === "livedate"
-                ? "gone live so far"
-                : mode === "kickoff"
-                ? "merchant in queue"
-                : "targeted Merchant"}
-              <PopupComponent merchantData={value} />
-            </span>
-          )}
+          <span className={styles.detail}>
+            <span className={styles.positive}>{value.length}</span>{" "}
+            {mode === "livedate"
+              ? "gone live"
+              : mode === "kickoff"
+              ? "kick Off"
+              : "targeted"}
+            <PopupComponent merchantData={value} />
+          </span>
+        )}
       </div>
     </div>
   );

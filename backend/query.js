@@ -30,6 +30,7 @@ export const findUserByUserName = async (data) => {
 
 //Add New Users
 export const createUserData = async (data) => {
+  console.log(data,"=======>")
   try {
     await prisma.user.create({
       data: data,
@@ -155,8 +156,7 @@ export const getAllMerchantsList = async () => {
 };
 
 //Handle Merchant List pagination and search part
-export const paginationForMerchantList = async (userName, page) => {
-  const itemsPerPage = 10;
+export const paginationForMerchantList = async (userName, page , itemsPerPage) => {
   const skip = (page - 1) * itemsPerPage;
   try {
     const count = await prisma.merchants.count();

@@ -11,9 +11,14 @@ import {
 import { formatDistance } from "date-fns";
 
 const MerchantDataList = async ({ searchParams }) => {
+  const ITEM_PER_PAGE = 10;
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
-  const { count, merchantData } = await paginationForMerchantList(q, page);
+  const { count, merchantData } = await paginationForMerchantList(
+    q,
+    page,
+    ITEM_PER_PAGE
+  );
 
   return (
     <div className={styles.container}>
@@ -57,9 +62,17 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.platform} </td>
                 <td>{data.merchantwebsite}</td>
                 <td>{data.kickoff.split("T")[0]}</td>
-                <td>{formatDistance(data.kickoff,new Date() ,  { addSuffix: true }) } </td>
+                <td>
+                  {formatDistance(data.kickoff, new Date(), {
+                    addSuffix: true,
+                  })}{" "}
+                </td>
                 <td style={{ display: "flex", gap: "6px" }}>
-                  <Link href={`/dashboard/merchants/${data.id}/${data.merchantname.trim()}`}>
+                  <Link
+                    href={`/dashboard/merchants/${
+                      data.id
+                    }/${data.merchantname.trim()}`}
+                  >
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
@@ -75,7 +88,7 @@ const MerchantDataList = async ({ searchParams }) => {
             ))}
         </tbody>
       </table>
-      <Pagination count={count} />
+      <Pagination count={count} ITEM_PER_PAGE={ITEM_PER_PAGE} />
     </div>
   );
 };

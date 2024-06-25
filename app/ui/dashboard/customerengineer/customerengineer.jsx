@@ -1,17 +1,37 @@
 import Image from "next/image";
-import styles from "./transactions.module.css";
+import styles from "./customerengineer.module.css";
+import { getAllUserData } from "@/backend/query";
+import { auth } from "@/app/auth";
 
-const Transactions = () => {
+const CustomerEngineerData = async ({merchantData}) => {
+  const {user} = await auth();
+  const { userData } = await getAllUserData();
+
+
+
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Latest Transactions</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Priority List</h2>
+        {user.isAdmin && (
+          <select>
+            <option value="cename">Select a CE Name</option>
+            {userData &&
+              userData.map((data) => (
+                <option value={data.username}>{data.username}</option>
+              ))}
+            {!userData && <option value="cename">No Data To Display</option>}
+          </select>
+        )}
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
             <td>Name</td>
             <td>Status</td>
-            <td>Date</td>
-            <td>Amount</td>
+            <td>Category</td>
+            <td>Platform</td>
+            <td>Age</td>
           </tr>
         </thead>
         <tbody>
@@ -103,4 +123,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default CustomerEngineerData;

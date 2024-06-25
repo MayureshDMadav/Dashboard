@@ -11,15 +11,15 @@ const UserForm = ({ styles, userData, mode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+    
       const formTemplates = new FormData(e.target);
       const formData = Object.fromEntries(formTemplates.entries());
       const hashedPassword = await encryptData(formData.password);
       formData.password = hashedPassword;
       formData.isActive = formData.isActive === "true" ? true : false;
       formData.isAdmin = formData.isAdmin === "true" ? true : false;
-
       if (mode === "add") {
-        const { status, description } = await createUserData(data);
+        const { status, description } = await createUserData(formData);
         if (status === 201) {
           toast.success(description, { position: "top-right" });
           router.push("/dashboard/users");
@@ -28,7 +28,7 @@ const UserForm = ({ styles, userData, mode }) => {
             position: "top-right",
             style: { color: "red" },
           });
-        }
+        } 
       } else {
         const id = userData.id;
         Object.keys(formData).forEach(
@@ -57,13 +57,13 @@ const UserForm = ({ styles, userData, mode }) => {
         <input
           type="text"
           name="username"
-          placeholder={userData.username || "username"}
+          placeholder={userData?.username || "username"}
           required={mode === "add"}
         />
         <input
           type="email"
           name="email"
-          placeholder={userData.email || "Email"}
+          placeholder={userData?.email || "Email"}
           required={mode === "add"}
         />
         <input
@@ -76,23 +76,23 @@ const UserForm = ({ styles, userData, mode }) => {
           type="tel"
           name="phone"
           required={mode === "add"}
-          placeholder={userData.phone || "Phone"}
+          placeholder={userData?.phone || "Phone"}
         />
         <label>Is Admin?</label>
         <select name="isAdmin" id="isAdmin">
-          <option value={true} selected={userData.isAdmin}>
+          <option value={true} selected={userData?.isAdmin}>
             Yes
           </option>
-          <option value={false} selected={!userData.isAdmin}>
+          <option value={false} selected={!userData?.isAdmin}>
             No
           </option>
         </select>
         <label>Is Active?</label>
         <select name="isActive" id="isActive">
-          <option value={true} selected={userData.isActive}>
+          <option value={true} selected={userData?.isActive}>
             Yes
           </option>
-          <option value={false} selected={!userData.isActive}>
+          <option value={false} selected={!userData?.isActive}>
             No
           </option>
         </select>
@@ -100,8 +100,7 @@ const UserForm = ({ styles, userData, mode }) => {
           name="address"
           id="address"
           rows="4"
-          placeholder="Address"
-          value={userData.address || ""}
+          placeholder={userData?.address || ""}
           required={mode === "add"}
         ></textarea>
         <button type="submit">

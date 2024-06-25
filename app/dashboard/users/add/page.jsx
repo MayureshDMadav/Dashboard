@@ -4,7 +4,7 @@ import UserForm from "@/app/ui/dashboard/users/userForm";
 const AddUserPage = () => {
   return (
     <div className={styles.container}>
-      <UserForm styles={styles} userData={""} mode={"add"} />
+      <UserForm styles={styles} userData={null} mode={"add"} />
     </div>
   );
 };

@@ -6,8 +6,29 @@
 
 .title{
   margin-bottom: 20px;
-  font-weight: 200;
+  font-weight: 600;
   color: var(--textSoft);
+}
+
+.header{
+  display: flex;
+  padding: 15px;
+  font-size: 12px;
+  justify-content: space-between;
+}
+
+.header select{
+  padding: 0px;
+  height: 30px;
+  border: 12px;
+  background: var(--bgSoft);
+  color: white;
+}
+
+.header select option{
+  border-radius: 2px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
 }
 
 .table{

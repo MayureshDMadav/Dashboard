@@ -14,19 +14,20 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
   password  String
   email     String
-  createdAt DateTime @default(now())
-  isAdmin   Boolean  @default(false)
-  isActive  Boolean  @default(true)
+  createdAt DateTime   @default(now())
+  isAdmin   Boolean    @default(false)
+  isActive  Boolean    @default(true)
   phone     String
   address   String
+  merchant  Merchant[]
 }
 
-model merchants {
-  id              Int    @id @default(autoincrement())
+model Merchant {
+  id              Int      @id @default(autoincrement())
   cename          String
   merchantname    String
   merchantwebsite String
@@ -45,9 +46,10 @@ model merchants {
   golivecommit    String
   merchantstate   String
   opscomment      String
-  age             Int    @default(0)
+  age             Int      @default(0)
   livedate        String
-  txn             Int    @default(0)
-
-  createdAt DateTime @default(now())
+  txn             Int      @default(0)
+  createdAt       DateTime @default(now())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
 }

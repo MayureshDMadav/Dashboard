@@ -1,4 +1,3 @@
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authConfig } from "./authconfig";
@@ -7,17 +6,18 @@ import bcrypt from "bcrypt";
 
 const login = async (credentials) => {
   try {
-    const { userData } = await findUserByUserName(credentials.username);
-    if (!userData) throw new Error("Wrong Credentails");
+    const {userData} = await findUserByUserName(credentials.username);
+    if (!userData) throw console.log("Wrong UserName");
+
     const isPasswordCorrect = await bcrypt.compare(
       credentials.password,
       userData.password
     );
-    if (!isPasswordCorrect) throw new Error("Wrong Credentails");
+
+    if (!isPasswordCorrect) console.log("Wrong Password");
     return userData;
   } catch (e) {
-    console.log(e)
-    throw new Error("Failed to Login");
+    console.log("Failed to Login");
   }
 };
 
@@ -30,7 +30,7 @@ export const { signIn, signOut, auth } = NextAuth({
           const user = await login(credentials);
           return user;
         } catch (e) {
-          console.log(e)
+          console.log(e);
           return null;
         }
       },
@@ -41,6 +41,7 @@ export const { signIn, signOut, auth } = NextAuth({
       if (user) {
         token.username = user.username;
         token.isAdmin = user.isAdmin;
+        token.id = user.id;
       }
       return token;
     },
@@ -48,6 +49,7 @@ export const { signIn, signOut, auth } = NextAuth({
       if (token) {
         session.user.username = token.username;
         session.user.isAdmin = token.isAdmin;
+        session.user.id = token.id;
       }
       return session;
     },

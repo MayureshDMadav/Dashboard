@@ -9,10 +9,12 @@ import {
   paginationForMerchantList,
 } from "@/backend/query";
 import { formatDistance } from "date-fns";
+import { auth } from "@/app/auth";
 
 const MerchantDataList = async ({ searchParams }) => {
+  const { user } = await auth();
   const ITEM_PER_PAGE = 10;
-  const q = searchParams?.q || "";
+  const q = user.isAdmin ? searchParams?.q : user.username;
   const page = searchParams?.page || 1;
   const { count, merchantData } = await paginationForMerchantList(
     q,
@@ -23,11 +25,13 @@ const MerchantDataList = async ({ searchParams }) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a user..." />
+        {user.isAdmin && <Search placeholder="Search for a user..." />}
+        {!user.isAdmin && (<span>Hello {user.username} please find below list of your Merchants</span>)}
         <Link href="/dashboard/merchants/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -61,11 +65,11 @@ const MerchantDataList = async ({ searchParams }) => {
                 <td>{data.category}</td>
                 <td>{data.platform} </td>
                 <td>{data.merchantwebsite}</td>
-                <td>{data.kickoff.split("T")[0]}</td>
+                <td>{data.kickoff ? data.kickoff.split("T")[0] : "No Date Added"}</td>
                 <td>
-                  {formatDistance(data.kickoff, new Date(), {
+                  {data.kickoff ? formatDistance(data.kickoff, new Date(), {
                     addSuffix: true,
-                  })}{" "}
+                  }):"No Date Added"}{" "}
                 </td>
                 <td style={{ display: "flex", gap: "6px" }}>
                   <Link

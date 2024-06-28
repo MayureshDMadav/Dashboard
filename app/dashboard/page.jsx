@@ -16,33 +16,33 @@ import {
 import { auth } from "@/app/auth";
 
 const DashbaordPage = async (context) => {
-  const { user } = await auth();
-  const { userData } = await getAllUserData();
-  const { merchantList } = await getAllMerchantsList();
-  const { start, end, mode } = context.searchParams;
-  const { merchants, status } = await getGoLiveMerchantsByDateRange(
-    start,
-    end,
-    mode
-  );
-  let merchantData = {};
-  if (status === 200 && mode == "livedate") {
-    merchantData = filterMerchantByGolive(merchants);
-  }
+  // const { user } = await auth();
+  // const { userData } = await getAllUserData();
+  // const { merchantList } = await getAllMerchantsList();
+  // const { start, end, mode } = context.searchParams;
+  // const { merchants, status } = await getGoLiveMerchantsByDateRange(
+  //   start,
+  //   end,
+  //   mode
+  // );
+  // let merchantData = {};
+  // if (status === 200 && mode == "livedate") {
+  //   merchantData = filterMerchantByGolive(merchants);
+  // }
 
-  if (status === 200 && mode == "targetgolive") {
-    merchantData = filterMerchantByPending(merchants);
-  }
+  // if (status === 200 && mode == "targetgolive") {
+  //   merchantData = filterMerchantByPending(merchants);
+  // }
 
-  if (status === 200 && mode == "kickoff") {
-    merchantData = filterMerchantByPending(merchants);
-  }
+  // if (status === 200 && mode == "kickoff") {
+  //   merchantData = filterMerchantByPending(merchants);
+  // }
 
-  const alltheMerchantList = filterAllTheMerchant(merchantList);
+  // const alltheMerchantList = filterAllTheMerchant(merchantList);
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.main}>
+      {/* <div className={styles.main}>
         <div className={styles.cards}>
           <Card
             title={"Emerging"}
@@ -74,7 +74,7 @@ const DashbaordPage = async (context) => {
       </div>
       <div className={styles.side}>
         <Rightbar />
-      </div>
+      </div> */}
     </div>
   );
 };

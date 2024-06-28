@@ -4,16 +4,17 @@ import {
   getAllUserData,
   createNewMerchant,
   updateMerchantByID,
+  getUserByUserName,
 } from "@/backend/query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { parse, format } from "date-fns";
 
-const MerchantForm = ({ styles, merchantData, mode }) => {
+const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId }) => {
   const [setUser, getUserData] = useState({});
-  const [formData, setFormData] = useState(merchantData ? merchantData[0] : {});
+  const [formData, setFormData] = useState(merchantData ? merchantData : {});
   const router = useRouter();
-
   useEffect(() => {
     const allUserData = async () => {
       const { status, userData } = await getAllUserData();
@@ -25,37 +26,39 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
   }, [setUser.length > 0]);
 
   useEffect(() => {
-    console.log(merchantData)
-    if (merchantData && merchantData.length > 0) {
-      const data = merchantData[0];
+    if (formData) {
+      const data = formData ? formData : "";
       Object.keys(data).forEach((key) => {
         const element = document.getElementsByName(key)[0];
+
         if (element) {
-          if (element.type === "datetime-local" && element.value != "" ) {
-            const date = new Date(data[key]);
-            console.log(date)
-            const formattedDate = date?.toISOString().slice(0, 16);
-            element.value = formattedDate;
+          if (element.type === "datetime-local") {
+            if (data[key] !== "NA" && data[key] !== "") {
+              const parsedDate = new Date(data[key]);
+              const formattedDate = format(parsedDate, "yyyy-MM-dd'T'HH:mm");
+              element.value = formattedDate;
+            }
           } else if (element.tagName === "SELECT") {
             element.value = data[key];
           } else if (element.tagName === "TEXTAREA") {
-            element.placeholder = data[key];
-          } else {
             element.placeholder = data[key];
           }
         }
       });
     }
-  }, [merchantData?.length > 0]);
+  }, [formData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEntries = Object.fromEntries(new FormData(e.target).entries());
-    formEntries.age = formEntries.age ?  Number.parseInt(formEntries.age) : 0
-    formEntries.txn = formEntries.txn ?  Number.parseInt(formEntries.txn) : 0
+    formEntries.age = formEntries.age ? Number.parseInt(formEntries.age) : 0;
+    formEntries.txn = formEntries.txn ? Number.parseInt(formEntries.txn) : 0;
 
     if (mode === "add") {
-      const { description, status } = await createNewMerchant(formEntries);
+      const { description, status } = await createNewMerchant(
+        formEntries,
+        userId
+      );
       if (status === 201) {
         toast.success(description, { position: "top-right" });
 
@@ -73,7 +76,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
       );
 
       const updateUserInDataBase = await updateMerchantByID(
-        merchantData[0].id,
+        formData.id,
         formEntries
       );
       if (updateUserInDataBase.status === 200) {
@@ -91,26 +94,35 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
 
   useEffect(() => {
     if (merchantData && merchantData.length > 0) {
-      setFormData(merchantData[0]);
+      setFormData(merchantData);
     }
   }, [merchantData]);
 
+ 
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <label>CE Name</label>
-      <select name="cename" id="cename">
-        <option value="">
-          {formData.cename
-            ? "Change Customer engineer"
-            : "Select a Customer Engineer"}
-        </option>
-        {setUser.length > 0 &&
-          setUser.map((data) => (
-            <option key={data.username} value={data.username}>
-              {data.username}
+      {isAdmin  && (
+        <span>
+          <label>CE Name</label>
+          <select name="cename" id="cename">
+            <option value="">
+              {formData && formData.cename
+                ? "Change Customer engineer"
+                : "Select a Customer Engineer"}
             </option>
-          ))}
-      </select>
+            {setUser.length > 0 &&
+              setUser.map((data) => (
+                <option key={data.username} value={data.username}>
+                  {data.username}
+                </option>
+              ))}
+          </select>
+        </span>
+      )}
+      {!isAdmin && (
+        <input type="hidden" name="cename" value={userName} />
+      ) }
       <label>Merchant Name</label>
       <input
         type="text"
@@ -151,7 +163,12 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         placeholder={formData.expectedarr || "enter expected arr"}
       />
       <label>GMV</label>
-      <input type="text" step="0.01" name="gmv" placeholder={formData.gmv || "enter GMV"} />
+      <input
+        type="text"
+        step="0.01"
+        name="gmv"
+        placeholder={formData.gmv || "enter GMV"}
+      />
       <label>CSM</label>
       <input
         type="text"
@@ -159,7 +176,7 @@ const MerchantForm = ({ styles, merchantData, mode }) => {
         placeholder={formData.ms || "enter ms team member name"}
       />
       <label>Transaction</label>
-        <input
+      <input
         type="text"
         name="txn"
         placeholder={formData.txn || "enter ms team member name"}

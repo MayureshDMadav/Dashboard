@@ -10,6 +10,7 @@ const LoginForm = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const { status } = await authenticate(formData.entries());
+
     if (status === 200) {
       toast.success("Login Successfull", { position: "top-right" });
       router.push("/dashboard");
@@ -23,7 +24,7 @@ const LoginForm = () => {
       <h1>Login</h1>
       <input type="text" placeholder="username" name="username" />
       <input type="password" placeholder="password" name="password" />
-      <button>Login</button>
+      <button type="submit">Login</button>
     </form>
   );
 };

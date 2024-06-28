@@ -6,7 +6,7 @@ import styles from "./card.module.css";
 
 const PopupComponent = ({ merchantData }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // You can adjust this number as needed
+  const itemsPerPage = 4;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -34,6 +34,10 @@ const PopupComponent = ({ merchantData }) => {
       position:absolute;
       margin-top: 0.5rem;
     }
+    .inactive{
+      display:none !important; 
+      }
+
     .pagination li {
       margin: 0 2px;
     }
@@ -48,6 +52,7 @@ const PopupComponent = ({ merchantData }) => {
     .pagination button.active {
       background-color: #007bff;
       color: #fff;
+      
     }
   `;
 
@@ -82,7 +87,7 @@ const PopupComponent = ({ merchantData }) => {
             ))}
           </tbody>
         </table>
-        <ul className="pagination">
+        <ul className={`${pageNumbers.length > 1 ? "pagination" : "inactive"}`}>
           {pageNumbers.map((number) => (
             <li key={number}>
               <button

@@ -6,14 +6,18 @@ import styles from "../ui/dashboard/dashboard.module.css";
 import {
   getAllMerchantsList,
   getGoLiveMerchantsByDateRange,
+  getAllUserData
 } from "@/backend/query";
 import {
   filterMerchantByGolive,
   filterMerchantByPending,
   filterAllTheMerchant,
 } from "@/backend/backendservice";
+import { auth } from "@/app/auth";
 
 const DashbaordPage = async (context) => {
+  const { user } = await auth();
+  const { userData } = await getAllUserData();
   const { merchantList } = await getAllMerchantsList();
   const { start, end, mode } = context.searchParams;
   const { merchants, status } = await getGoLiveMerchantsByDateRange(
@@ -65,7 +69,7 @@ const DashbaordPage = async (context) => {
             }
           />
         </div>
-        <CustomerEngineerData merchantData={alltheMerchantList} />
+        <CustomerEngineerData merchantData={merchantList} user={user}  userData={userData} searchParams={context.searchParams}/>
         <Chart />
       </div>
       <div className={styles.side}>

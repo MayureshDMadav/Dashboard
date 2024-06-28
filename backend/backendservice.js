@@ -15,7 +15,7 @@ export const convertExcelDateTimeToISO = (excelDateTime) => {
 
 //GO live Data
 export const filterMerchantByGolive = (merchantData) => {
-  const filteredData = merchantData.filter((data) => data.livedate !== "NA");
+  const filteredData = merchantData?.filter((data) => data.livedate !== "NA");
   const smbData = filteredData.filter((data) => data.category === "SMB");
   const entData = filteredData.filter((data) => data.category === "ENT");
   const emergingData = filteredData.filter(
@@ -44,4 +44,15 @@ export const filterAllTheMerchant = (merchantData) => {
     (data) => data.category === "Emerging"
   );
   return { smbData, entData, emergingData };
+};
+
+//Join To Arrays N provide results
+export const sortArray = (arr1, arr2) => {
+  const joinedArray = arr1.concat(arr2);
+  const soretedArray = joinedArray.sort((a, b) => {
+    const dateA = new Date(a.kickoff);
+    const dateB = new Date(b.kickoff);
+    return  dateA - dateB;
+  });
+  return soretedArray;
 };

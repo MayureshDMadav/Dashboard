@@ -68,3 +68,54 @@
 .cancelled{
   background-color: #f7737375;
 }
+
+.button{
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  text-transform: lowercase;
+  background-color: transparent;
+  border: 1x grey;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover{
+  color: black;
+  background-color: azure;
+  border: 1x inset white;
+}
+
+
+.paragraph{
+  font-size: 14px;
+  width: 100%;
+  overflow: hidden;
+  max-width: 250px;
+  padding: 0;
+  background-color: var(--bgSoft);
+  border: none;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.paginationButton {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+
+.pageNumber {
+  margin: 0 10px;
+  font-weight: bold;
+}

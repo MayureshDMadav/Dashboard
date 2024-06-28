@@ -184,3 +184,31 @@
     font-size: 13px;
     padding: 10px;
   }
+
+  .selectEngineer{
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    padding: 0.2rem;
+    flex-direction: row;
+  }
+
+  .selectEngineer select{
+    padding: 5px;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+  }
+
+  .selectEngineer h5{
+    margin: auto;
+  }
+
+
+  .option{
+    background-color: var(--bgSoft);
+    color: white;
+    padding: 0;
+    border: none;
+  }

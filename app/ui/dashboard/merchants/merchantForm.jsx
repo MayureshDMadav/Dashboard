@@ -48,6 +48,8 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
     }
   }, [formData]);
 
+  console.log(formData)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEntries = Object.fromEntries(new FormData(e.target).entries());

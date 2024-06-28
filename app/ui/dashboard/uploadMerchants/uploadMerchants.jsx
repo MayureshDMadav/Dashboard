@@ -11,13 +11,14 @@ import {
   convertExcelDateTimeToISO,
 } from "@/backend/backendservice";
 
-const UploadMerchants = () => {
+const UploadMerchants = ({ userData, currentUser }) => {
   const [typeError, setTypeError] = useState(false);
   const [excelFile, setExcelFile] = useState(null);
   const [excelData, setExcelData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [entriesPerPage] = useState(5);
+  const [userId, setUserId] = useState(null);
   const [count, setCount] = useState(0);
 
   const handleFileUpload = (event, mode) => {
@@ -47,6 +48,10 @@ const UploadMerchants = () => {
     }
   };
 
+  const selectValueChange = (e) => {
+    setUserId(e.target.value);
+  };
+
   const pushDataToDataBase = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -69,11 +74,14 @@ const UploadMerchants = () => {
             data.targetgolive
           ).then((data) => data))
         : "";
-      
-      data.bookedarr = data.bookedarr.toString()
-      data.expectedarr = data.expectedarr.toString()
-      data.gmv = data.gmv.toString() 
-      const dataFromAPi = await createNewMerchant(data);
+
+      data.bookedarr = data.bookedarr.toString();
+      data.expectedarr = data.expectedarr.toString();
+      data.gmv = data.gmv.toString();
+      const userid = userId
+        ? Number.parseInt(userId)
+        : Number.parseInt(currentUser.id);
+      const dataFromAPi = await createNewMerchant(data, userid);
       if (dataFromAPi.status === 201) {
         excelData.shift();
         setCount(excelData.length - 1);
@@ -116,6 +124,22 @@ const UploadMerchants = () => {
   return (
     <>
       <div className={style.container}>
+        {currentUser.isAdmin && (
+          <span className={style.selectEngineer}>
+          <h5> Select an Engineer :</h5>
+          <select name="id" onChange={selectValueChange}>
+            <option key={currentUser.id} className={style.option} value={currentUser.id}>
+              Upload for Your self
+            </option>
+            {userData.length > 0 &&
+              userData.map((data) => (
+                <option key={data.id} className={style.option} value={data.id}>
+                  {data.username}
+                </option>
+              ))}
+          </select>
+          </span>
+        )}
         <div className={style.fileUpload}>
           {excelData.length > 0 ? (
             <button

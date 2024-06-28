@@ -65,13 +65,25 @@ const menuItems = [
         path: "/dashboard/settings",
         icon: <MdOutlineSettings />,
       },
-    
     ],
   },
 ];
 
 const SideBar = async () => {
   const session = await auth();
+
+  //Handling Menu On the basis Of Users
+  const filteredMenuItems = menuItems
+    .map((category) => ({
+      ...category,
+      list: category.list.filter((item) =>
+        !session.user.isAdmin
+          ? item.title !== "Users" && item.title !== "Reports"
+          : item
+      ),
+    }))
+    .filter((category) => category.list.length > 0);
+
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -83,14 +95,16 @@ const SideBar = async () => {
           height="50"
         />
         <div className={styles.userDetail}>
-          <span className={styles.username}>{session?.user?.username ? session?.user?.username :"Unknow"}</span>
+          <span className={styles.username}>
+            {session?.user?.username ? session?.user?.username : "Unknow"}
+          </span>
           <span className={styles.userTitle}>
             {session?.user?.isAdmin ? "Admin" : "User"}
           </span>
         </div>
       </div>
       <ul className={styles.list}>
-        {menuItems.map((cat) => (
+        {filteredMenuItems.map((cat) => (
           <li key={cat.title}>
             <span className={styles.cat}>{cat.title}</span>
             {cat.list.map((item) => (

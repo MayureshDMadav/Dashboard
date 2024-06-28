@@ -184,7 +184,7 @@ export const createNewMerchant = async (data,userId) => {
 export const getAllMerchantsList = async () => {
   try {
     const merchantList = await prisma.merchant.findMany({
-      include: { user: true }, // Include user data
+      include: { user: true },
     });
     return { status: 200, merchantList };
   } catch (e) {

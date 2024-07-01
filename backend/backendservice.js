@@ -15,7 +15,7 @@ export const convertExcelDateTimeToISO = (excelDateTime) => {
 
 //GO live Data
 export const filterMerchantByGolive = (merchantData) => {
-  const filteredData = merchantData?.filter((data) => data.livedate !== "NA" || "");
+  const filteredData = merchantData?.filter((data) => data.livedate !== "NA");
   const smbData = filteredData.filter((data) => data.category === "SMB");
   const entData = filteredData.filter((data) => data.category === "ENT");
   const emergingData = filteredData.filter(

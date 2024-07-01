@@ -1,6 +1,6 @@
 import styles from "./report.module.css";
 
-const Smbent = ({ merchantData }) => {
+const WiprogressMerchant = ({ merchantData }) => {
   let count = 0;
   if (merchantData) {
     merchantData.forEach((data) => {
@@ -58,4 +58,4 @@ const Smbent = ({ merchantData }) => {
   );
 };
 
-export default Smbent;
+export default WiprogressMerchant;

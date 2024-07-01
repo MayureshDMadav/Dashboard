@@ -4,14 +4,20 @@ import styles from "./report.module.css";
 import { MdSearch } from "react-icons/md";
 import { usePathname, useRouter } from "next/navigation";
 import Smbent from "./smbent";
+import WiprogressMerchant from "./wipmerchant";
 
-const Report = ({ merchantData }) => {
+const Report = ({ merchantDataByGolive, pendingMerchants }) => {
   const [data, getData] = useState(null);
+  const [pendingData, setPendingData] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    getData(merchantData);
-  }, [merchantData]);
+    getData(merchantDataByGolive);
+  }, [merchantDataByGolive]);
+
+  useEffect(() => {
+    setPendingData(pendingMerchants);
+  }, [pendingMerchants]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,22 +56,33 @@ const Report = ({ merchantData }) => {
           className={styles.input}
           required
         />
-        <input type="hidden" name="mode" value="livedate" />
+        <input type="hidden" name="mode" value="kickoff" />
         <button className={styles.button}>
           <MdSearch className={styles.mdSearch} />
           Generate Report
         </button>
       </form>
-      
-      {!data && <p style={{marginTop:'2rem'}}>No Data To Display || Select Particular Date to view</p>}
-      {data !== null  && (
+
+      {!data && (
+        <p style={{ marginTop: "2rem" }}>
+          No Data To Display || Select Particular Date to view
+        </p>
+      )}
+      {data !== null && (
         <div className={styles.header}>
-        <h5 >Live Merchant Till Date</h5>
-        <div className={styles.results}>
-          {<Smbent merchantData={data.smbData} />}
-          {<Smbent merchantData={data.emergingData} />}
-          {<Smbent merchantData={data.entData} />}
-        </div>
+          <h5>Live Merchant Till Date</h5>
+          <div className={styles.results}>
+            {<Smbent merchantData={data.smbData} />}
+            {<Smbent merchantData={data.emergingData} />}
+            {<Smbent merchantData={data.entData} />}
+          </div>
+          <br/>
+          <h5>WIP Merchant Till Date</h5>
+          <div className={styles.results}>
+            {<WiprogressMerchant merchantData={pendingData.smbData} />}
+            {<WiprogressMerchant merchantData={pendingData.emergingData} />}
+            {<WiprogressMerchant merchantData={pendingData.entData} />}
+          </div>
         </div>
       )}
     </div>

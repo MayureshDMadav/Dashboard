@@ -15,8 +15,7 @@ const Layout = ({ children }) => {
         <Navbar />
         <Suspense fallback={<Loading message={"Loading Data"} />}>
           {children}
-        </Suspense>
-        
+        </Suspense>        
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import styles from "../ui/dashboard/dashboard.module.css";
 import {
   getAllMerchantsList,
   getGoLiveMerchantsByDateRange,
-  getAllUserData
+  getAllUserData,
 } from "@/backend/query";
 import {
   filterMerchantByGolive,
@@ -16,39 +16,42 @@ import {
 import { auth } from "@/app/auth";
 
 const DashbaordPage = async (context) => {
-  // const { user } = await auth();
-  // const { userData } = await getAllUserData();
-  // const { merchantList } = await getAllMerchantsList();
-  // const { start, end, mode } = context.searchParams;
-  // const { merchants, status } = await getGoLiveMerchantsByDateRange(
-  //   start,
-  //   end,
-  //   mode
-  // );
-  // let merchantData = {};
-  // if (status === 200 && mode == "livedate") {
-  //   merchantData = filterMerchantByGolive(merchants);
-  // }
+  const { user } = await auth();
+  const { userData } = await getAllUserData();
+  const { merchantList } = await getAllMerchantsList(user);
+  const { start, end, mode } = context.searchParams;
+  const { merchants, status } = await getGoLiveMerchantsByDateRange(
+    start,
+    end,
+    mode,
+    user
+  );
+  let merchantData = {};
+  if (status === 200 && mode == "livedate") {
+    merchantData = filterMerchantByGolive(merchants);
+  }
 
-  // if (status === 200 && mode == "targetgolive") {
-  //   merchantData = filterMerchantByPending(merchants);
-  // }
+  if (status === 200 && mode == "targetgolive") {
+    merchantData = filterMerchantByPending(merchants);
+  }
 
-  // if (status === 200 && mode == "kickoff") {
-  //   merchantData = filterMerchantByPending(merchants);
-  // }
+  if (status === 200 && mode == "kickoff") {
+    merchantData = filterMerchantByPending(merchants);
+  }
 
-  // const alltheMerchantList = filterAllTheMerchant(merchantList);
+  const alltheMerchantList = filterAllTheMerchant(merchantList);
 
   return (
     <div className={styles.wrapper}>
-      {/* <div className={styles.main}>
+      <div className={styles.main}>
         <div className={styles.cards}>
           <Card
             title={"Emerging"}
             value={merchantData.emergingData ? merchantData.emergingData : 0}
             noOfMerchant={
-              alltheMerchantList && alltheMerchantList.emergingData.length
+              alltheMerchantList.emergingData
+                ? alltheMerchantList?.emergingData.length
+                : 0
             }
             mode={mode}
           />
@@ -57,24 +60,33 @@ const DashbaordPage = async (context) => {
             value={merchantData.smbData ? merchantData.smbData : 0}
             mode={mode}
             noOfMerchant={
-              alltheMerchantList && alltheMerchantList.smbData.length
+              alltheMerchantList.smbData
+                ? alltheMerchantList?.smbData.length
+                : 0
             }
           />
           <Card
             title={"ENT"}
-            value={merchantData.entData ? merchantData.entData : 0}
+            value={merchantData.entData ? merchantData?.entData : 0}
             mode={mode}
             noOfMerchant={
-              alltheMerchantList && alltheMerchantList.entData.length
+              alltheMerchantList.entData
+                ? alltheMerchantList?.entData.length
+                : 0
             }
           />
         </div>
-        <CustomerEngineerData merchantData={merchantList} user={user}  userData={userData} searchParams={context.searchParams}/>
-        <Chart />
+        <CustomerEngineerData
+          merchantData={merchantList}
+          user={user}
+          userData={userData}
+          searchParams={context.searchParams}
+        />
+        <Chart merchantData={merchants.length > 0 ? merchants : merchantList} />
       </div>
       <div className={styles.side}>
         <Rightbar />
-      </div> */}
+      </div>
     </div>
   );
 };

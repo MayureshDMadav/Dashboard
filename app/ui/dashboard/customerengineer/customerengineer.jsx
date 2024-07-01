@@ -6,9 +6,14 @@ import CustomPopup from "./popup";
 import Link from "next/link";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 
-const CustomerEngineerData = async ({ merchantData, user, userData, searchParams }) => {
+const CustomerEngineerData = async ({
+  merchantData,
+  user,
+  userData,
+  searchParams,
+}) => {
   const page = Number(searchParams?.page) || 1;
-  const itemsPerPage = 5;
+  const itemsPerPage = 4;
 
   let dataCollectedFromResults = null;
   let merchatFilteredData = filterMerchantByPending(merchantData);
@@ -16,11 +21,14 @@ const CustomerEngineerData = async ({ merchantData, user, userData, searchParams
   let entData = merchatFilteredData.entData;
   dataCollectedFromResults = sortArray(smbData, entData);
 
-  const totalItems = dataCollectedFromResults.length;
+  const totalItems = dataCollectedFromResults?.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dataCollectedFromResults.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = dataCollectedFromResults?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <div className={styles.container}>
@@ -31,7 +39,9 @@ const CustomerEngineerData = async ({ merchantData, user, userData, searchParams
             <option value="cename">Select a CE Name</option>
             {userData &&
               userData.map((data) => (
-                <option key={data.username} value={data.username}>{data.username}</option>
+                <option key={data.username} value={data.username}>
+                  {data.username}
+                </option>
               ))}
             {!userData && <option value="cename">No Data To Display</option>}
           </select>
@@ -41,6 +51,7 @@ const CustomerEngineerData = async ({ merchantData, user, userData, searchParams
         <thead>
           <tr>
             <td>CE Name</td>
+            <td>Merchant Name</td>
             <td>Status</td>
             <td>Category</td>
             <td>Platform</td>
@@ -64,6 +75,7 @@ const CustomerEngineerData = async ({ merchantData, user, userData, searchParams
                     {data.cename}
                   </div>
                 </td>
+                <td>{data.merchantname}</td>
                 <td>
                   <span className={`${styles.status} ${styles.pending}`}>
                     Pending
@@ -82,13 +94,15 @@ const CustomerEngineerData = async ({ merchantData, user, userData, searchParams
       <div className={styles.pagination}>
         {page > 1 && (
           <Link href={`?page=${page - 1}`} className={styles.paginationButton}>
-           <MdSkipPrevious/>
+            <MdSkipPrevious />
           </Link>
         )}
-        <span className={styles.pageNumber}>{page} of {totalPages}</span>
+        <span className={styles.pageNumber}>
+          {page} of {totalPages}
+        </span>
         {page < totalPages && (
           <Link href={`?page=${page + 1}`} className={styles.paginationButton}>
-            <MdSkipNext/>
+            <MdSkipNext />
           </Link>
         )}
       </div>

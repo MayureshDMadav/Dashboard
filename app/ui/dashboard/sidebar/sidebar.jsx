@@ -78,8 +78,8 @@ const SideBar = async () => {
       ...category,
       list: category.list.filter((item) =>
         !session.user.isAdmin
-          ? item.title !== "Users" && item.title !== "Reports"
-          : item
+          ? item.title !== "Users" && item.title !== "Reports" && item.title !== "Revenue" && item.title !== "Settings"
+           : item
       ),
     }))
     .filter((category) => category.list.length > 0);

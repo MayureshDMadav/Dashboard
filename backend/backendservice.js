@@ -15,7 +15,7 @@ export const convertExcelDateTimeToISO = (excelDateTime) => {
 
 //GO live Data
 export const filterMerchantByGolive = (merchantData) => {
-  const filteredData = merchantData?.filter((data) => data.livedate !== "NA");
+  const filteredData = merchantData?.filter((data) => data.livedate !== "NA" || "");
   const smbData = filteredData.filter((data) => data.category === "SMB");
   const entData = filteredData.filter((data) => data.category === "ENT");
   const emergingData = filteredData.filter(
@@ -27,10 +27,10 @@ export const filterMerchantByGolive = (merchantData) => {
 
 // This funciton is used for pending and targeted status
 export const filterMerchantByPending = (merchantData) => {
-  const filteredData = merchantData.filter((data) => data.livedate === "NA");
-  const smbData = filteredData.filter((data) => data.category === "SMB");
-  const entData = filteredData.filter((data) => data.category === "ENT");
-  const emergingData = filteredData.filter(
+  const filteredData = merchantData?.filter((data) => data.livedate === "NA");
+  const smbData = filteredData?.filter((data) => data.category === "SMB");
+  const entData = filteredData?.filter((data) => data.category === "ENT");
+  const emergingData = filteredData?.filter(
     (data) => data.category === "Emerging"
   );
   return { smbData, entData, emergingData };
@@ -38,9 +38,9 @@ export const filterMerchantByPending = (merchantData) => {
 
 //To filter data on the basis of category
 export const filterAllTheMerchant = (merchantData) => {
-  const smbData = merchantData.filter((data) => data.category === "SMB");
-  const entData = merchantData.filter((data) => data.category === "ENT");
-  const emergingData = merchantData.filter(
+  const smbData = merchantData?.filter((data) => data.category === "SMB");
+  const entData = merchantData?.filter((data) => data.category === "ENT");
+  const emergingData = merchantData?.filter(
     (data) => data.category === "Emerging"
   );
   return { smbData, entData, emergingData };
@@ -48,8 +48,8 @@ export const filterAllTheMerchant = (merchantData) => {
 
 //Join To Arrays N provide results
 export const sortArray = (arr1, arr2) => {
-  const joinedArray = arr1.concat(arr2);
-  const soretedArray = joinedArray.sort((a, b) => {
+  const joinedArray = arr1?.concat(arr2);
+  const soretedArray = joinedArray?.sort((a, b) => {
     const dateA = new Date(a.kickoff);
     const dateB = new Date(b.kickoff);
     return  dateA - dateB;

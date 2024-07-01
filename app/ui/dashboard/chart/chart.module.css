@@ -10,3 +10,35 @@
   color: var(--textSoft);
   margin-bottom: 20px;
 }
+
+.noData {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #888;
+}
+.customTooltip {
+  background-color: var(--bgSoft);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 400px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.customTooltip p {
+  margin: 5px 0;
+}
+
+.customTooltip strong {
+  display: block;
+  margin-top: 10px;
+}

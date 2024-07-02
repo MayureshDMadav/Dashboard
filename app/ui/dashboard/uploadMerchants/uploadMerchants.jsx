@@ -57,7 +57,6 @@ const UploadMerchants = ({ userData, currentUser }) => {
     setLoading(true);
     excelData.forEach(async (data) => {
       data.checkouttype = data.checkouttype.toLowerCase().trim();
-      data.golivecommit = data.golivecommit.toLowerCase().trim();
       data.platform = data.platform.toLowerCase().trim();
       data.kickoff !== "NA"
         ? (data.kickoff = await convertExcelDateTimeToISO(data.kickoff).then(

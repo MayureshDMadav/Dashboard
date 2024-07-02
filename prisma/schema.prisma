@@ -33,23 +33,44 @@ model Merchant {
   merchantwebsite String
   bookedarr       String
   expectedarr     String
-  gmv             String
+  gmv             String   @default("NA")
   ms              String
   salesrep        String
+  abpercentage    String   @default("NA")
   email           String
   platform        String
   category        String
-  kickoff         String
-  targetgolive    String
+  kickoff         String   @default("NA")
+  targetgolive    String   @default("NA")
   checkouttype    String
   mintcomment     String
-  golivecommit    String
+  mqm             Boolean  @default(false)
   merchantstate   String
-  opscomment      String
+  opscomment      String   @default("NA")
   age             Int      @default(0)
-  livedate        String
+  livedate        String   @default("NA")
   txn             Int      @default(0)
   createdAt       DateTime @default(now())
   userId          Int
   user            User     @relation(fields: [userId], references: [id])
+}
+
+model Merchantstate {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Checkouttype {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Platform {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
 }

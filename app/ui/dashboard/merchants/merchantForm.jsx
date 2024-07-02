@@ -11,7 +11,14 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { parse, format } from "date-fns";
 
-const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId }) => {
+const MerchantForm = ({
+  styles,
+  merchantData,
+  mode,
+  isAdmin,
+  userName,
+  userId,
+}) => {
   const [setUser, getUserData] = useState({});
   const [formData, setFormData] = useState(merchantData ? merchantData : {});
   const router = useRouter();
@@ -48,11 +55,12 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
     }
   }, [formData]);
 
-  console.log(formData)
+  console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEntries = Object.fromEntries(new FormData(e.target).entries());
+    formEntries.mqm = formEntries.mqm === 'true' ? true : false; 
     formEntries.age = formEntries.age ? Number.parseInt(formEntries.age) : 0;
     formEntries.txn = formEntries.txn ? Number.parseInt(formEntries.txn) : 0;
 
@@ -100,11 +108,9 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
     }
   }, [merchantData]);
 
- 
-
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {isAdmin  && (
+      {isAdmin && (
         <span>
           <label>CE Name</label>
           <select name="cename" id="cename">
@@ -122,9 +128,7 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
           </select>
         </span>
       )}
-      {!isAdmin && (
-        <input type="hidden" name="cename" value={userName} />
-      ) }
+      {!isAdmin && <input type="hidden" name="cename" value={userName} />}
       <label>Merchant Name</label>
       <input
         type="text"
@@ -164,6 +168,13 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
         name="expectedarr"
         placeholder={formData.expectedarr || "enter expected arr"}
       />
+      <label>AB Experiment</label>
+      <input
+        type="text"
+        name="abpercentage"
+        placeholder={formData.abpercentage || "enter expected arr"}
+      />
+
       <label>GMV</label>
       <input
         type="text"
@@ -204,12 +215,11 @@ const MerchantForm = ({ styles, merchantData, mode, isAdmin ,userName ,userId })
         <option value="ENT">ENT</option>
         <option value="Emerging">Emerging</option>
       </select>
-      <label>Go Live Commit</label>
-      <select name="golivecommit" id="golivecommit">
-        <option value="general">Go live commit</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
+      <label>is Merchant Qualified?</label>
+      <select name="mqm" id="mqm">
+        <option value="general">Default</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
       </select>
       <label>Merchant Status</label>
       <select name="merchantstate" id="merchantstate">

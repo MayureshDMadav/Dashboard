@@ -12,6 +12,7 @@ import {
   MdHelpCenter,
   MdLogout,
   MdUpload,
+  MdDashboardCustomize,
 } from "react-icons/md";
 import { auth } from "@/app/auth";
 import { useSignOut } from "@/app/authentication";
@@ -61,9 +62,9 @@ const menuItems = [
         icon: <MdUpload />,
       },
       {
-        title: "Settings",
-        path: "/dashboard/settings",
-        icon: <MdOutlineSettings />,
+        title: "Customize",
+        path: "/dashboard/customize",
+        icon: <MdDashboardCustomize />,
       },
     ],
   },

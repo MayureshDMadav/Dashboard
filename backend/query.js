@@ -271,8 +271,7 @@ export const getGoLiveMerchantsByDateRange = async (
   fieldName,
   user
 ) => {
-
-  if(!startDate && !endDate) return {merchants:[] , status:200}
+  if (!startDate && !endDate) return { merchants: [], status: 200 };
 
   if (user && user.isAdmin) {
     try {
@@ -309,3 +308,47 @@ export const getGoLiveMerchantsByDateRange = async (
     }
   }
 };
+
+// ======================================== Merchant End ======================================= //
+
+// ======================================= Additional Start ==================================== //
+
+export const additionalApiRequest = async (formData, mode) => {
+  try {
+    await prisma[mode].create({
+      data: formData
+    });
+    revalidatePath("/dashboard/customize")
+    return { status: 200, description: `${mode} added successfully` };
+  } catch (e) {
+    return { status: 500, description: "Something Went Wrong" };
+  }
+};
+
+
+export const fetchAdditionalDetailRequest = async(mode) => {
+  try{
+    const response = await prisma[mode].findMany();
+    return { status: 200, description: `${mode} Fetched successfully`,response};
+  }catch(e){
+    return { status: 500, description: "Something Went Wrong" };
+  }
+
+}
+
+
+export const deleteAdditionalDetails = async(mode,id) => {
+  try{
+    await prisma[mode].delete({
+      where:{
+        id:Number.parseInt(id),
+      }
+    });
+    return { status: 200, description: `${mode} deleted successfully`};
+  }catch(e){
+    return { status: 500, description: "Something Went Wrong" };
+  }
+
+}
+
+// ======================================= Additional End ==================================== //

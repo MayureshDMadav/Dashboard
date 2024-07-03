@@ -1,88 +1,86 @@
-.container {
-    padding: 20px;
-    background-color: transparent;
-  }
-  
-  .element {
-    margin: 20px 0;
-    padding: 20px;
-    background-color: transparent;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .element h4 {
-    margin-bottom: 10px;
-    color: white;
-    padding: 1rem;
-    letter-spacing: 0.1em;
-    font-weight: 500;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.gridItem {
+  min-width: 0;
+}
+
+.element {
+  margin-top: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.form button {
+  padding: 7px;
+  display: flex;
+  cursor: pointer;
+  border-radius: 9px;
+  gap: 6px;
+  background: green;
+  color: white;
+  font-size: medium;
+}
+
+.form input{
+  border-radius: 5px;
+}
+
+.icon {
+  padding: 0.1rem;
+}
 
 
-  .table input{
-    padding: 0.3rem;
-    border-radius: 5px;
-  }
+.container details {
+  margin: 1rem;
+  padding: 10px;
+  border: 0.1px outset var(--bgSoft);
+  border-radius: 8px;
+  background-color: var(--bgSoft);
+  
+}
 
+.container summary {
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  margin: -10px;
+  padding: 10px;
+  border-radius: 8px;
+}
 
-  .form{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 1rem;
-  }
+.container details > div {
+  padding: 10px 0;
+}
 
-  .form button{
-    padding: 7px;
-    display: flex;
-    cursor: pointer;
-    border-radius: 9px;
-    gap: 6px;
-    background: green;
-    color: white;
-    font-size: medium;
-  }
-  
-  .icon{
-    padding: 0.1rem;
-  }
+.container details[open] summary {
+  transition: all 0.2s ease-in-out;
+}
 
-  .table tbody tr td {
-    padding: 10px;
-    border: none;
-    text-align: left;
-  }
-  
-  .container details {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: transparent;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .container summary {
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    margin: -10px;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  
-  
-  .container details > div {
-    padding: 10px 0;
-  }
+.deleteForm {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
 
-  .container details[open] summary{
-    transition: all 0.2s ease-in-out;
-  }
-  
+.listStyle h4 {
+  margin-right: -1rem;
+}
+
+.listStyle li {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+  margin: 5px;
+}

@@ -9,7 +9,6 @@ const singleMerchantPage = async (context) => {
   const { params } = context;
   const mercahntid = Number.parseInt(params?.id[0]);
   const merchantData = await getMerchantById(mercahntid);
-  console.log(user)
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>

@@ -79,7 +79,7 @@ const SideBar = async () => {
       ...category,
       list: category.list.filter((item) =>
         !session.user.isAdmin
-          ? item.title !== "Users" && item.title !== "Reports" && item.title !== "Revenue" && item.title !== "Settings"
+          ? item.title !== "Users" && item.title !== "Reports" && item.title !== "Revenue" && item.title !== "Settings" && item.title !== "Customize"
            : item
       ),
     }))

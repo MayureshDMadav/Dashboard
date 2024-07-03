@@ -30,7 +30,6 @@ export const { signIn, signOut, auth } = NextAuth({
           const user = await login(credentials);
           return user;
         } catch (e) {
-          console.log(e);
           return null;
         }
       },

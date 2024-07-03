@@ -5,6 +5,7 @@ import {
   createNewMerchant,
   updateMerchantByID,
   getUserByUserName,
+  fetchAdditionalDetailRequest,
 } from "@/backend/query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -21,7 +22,21 @@ const MerchantForm = ({
 }) => {
   const [setUser, getUserData] = useState({});
   const [formData, setFormData] = useState(merchantData ? merchantData : {});
+  const [data, setData] = useState({
+    category: null,
+    platform: null,
+    checkouttype: null,
+    merchantstate: null,
+  });
   const router = useRouter();
+  const getData = async (mode) => {
+    try {
+      const fetchedData = await fetchAdditionalDetailRequest(mode);
+      setData((prevData) => ({ ...prevData, [mode]: fetchedData.response }));
+    } catch (error) {
+      console.error(`Error fetching ${mode} data:`, error);
+    }
+  };
   useEffect(() => {
     const allUserData = async () => {
       const { status, userData } = await getAllUserData();
@@ -37,7 +52,6 @@ const MerchantForm = ({
       const data = formData ? formData : "";
       Object.keys(data).forEach((key) => {
         const element = document.getElementsByName(key)[0];
-
         if (element) {
           if (element.type === "datetime-local") {
             if (data[key] !== "NA" && data[key] !== "") {
@@ -55,12 +69,10 @@ const MerchantForm = ({
     }
   }, [formData]);
 
-  console.log(formData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEntries = Object.fromEntries(new FormData(e.target).entries());
-    formEntries.mqm = formEntries.mqm === 'true' ? true : false; 
+    formEntries.mqm = formEntries.mqm === "true" ? true : false;
     formEntries.age = formEntries.age ? Number.parseInt(formEntries.age) : 0;
     formEntries.txn = formEntries.txn ? Number.parseInt(formEntries.txn) : 0;
 
@@ -102,11 +114,37 @@ const MerchantForm = ({
     }
   };
 
+  const renderDataList = (mode) => {
+    if (!data[mode]) return "Loading...";
+
+    return Array.isArray(data[mode]) ? (
+      <select name={mode} id={mode}>
+        <option value="general">Choose an option</option>
+        {data[mode].map((item, index) => (
+          <option key={index} value={item.name}>
+            {item.name}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <select name={mode} id={mode}>
+        <option value="dataNotFound">No Data have Been Uploaded yet</option>
+      </select>
+    );
+  };
+
   useEffect(() => {
     if (merchantData && merchantData.length > 0) {
       setFormData(merchantData);
     }
   }, [merchantData]);
+
+  useEffect(() => {
+    getData("category");
+    getData("platform");
+    getData("checkouttype");
+    getData("merchantstate");
+  }, []);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -201,20 +239,9 @@ const MerchantForm = ({
         placeholder={formData.salesrep || "enter sales representative"}
       />
       <label>Checkout Type</label>
-      <select name="checkouttype" id="checkouttype">
-        <option value="general">Choose a checkout type</option>
-        <option value="shopify">shopify 1.0</option>
-        <option value="direct">direct</option>
-        <option value="plusapp">shopify app plus</option>
-        <option value="nonplus">shopify non plus</option>
-      </select>
+      {renderDataList("checkouttype")}
       <label>Category</label>
-      <select name="category" id="category">
-        <option value="general">Choose a category</option>
-        <option value="SMB">SMB</option>
-        <option value="ENT">ENT</option>
-        <option value="Emerging">Emerging</option>
-      </select>
+      {renderDataList("category")}
       <label>is Merchant Qualified?</label>
       <select name="mqm" id="mqm">
         <option value="general">Default</option>
@@ -222,19 +249,11 @@ const MerchantForm = ({
         <option value="false">No</option>
       </select>
       <label>Merchant Status</label>
-      <select name="merchantstate" id="merchantstate">
-        <option value="general">Select Merchant State</option>
-        <option value="enach-pending">Enach Pending</option>
-        <option value="qcinprogres">QC in progress</option>
-        <option value="live">Live</option>
-      </select>
+
+      {renderDataList("merchantstate")}
+
       <label>Platform</label>
-      <select name="platform" id="platform">
-        <option value="general">Select Platform</option>
-        <option value="shopify">Shopify</option>
-        <option value="woocommerce">Woocommerce</option>
-        <option value="magento">Magento</option>
-      </select>
+      {renderDataList("platform")}
       <input
         type="hidden"
         value={1}

@@ -23,7 +23,6 @@ const Chart = ({ merchantData }) => {
     let sum = 0;
     let expectedArr = [];
     data.forEach((data) => {
-      console.log(data);
       expectedArr.push(Number.parseFloat(data.expectedarr));
       sum += Number.parseFloat(data.expectedarr);
     });

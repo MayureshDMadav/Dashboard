@@ -58,6 +58,8 @@ const UploadMerchants = ({ userData, currentUser }) => {
     excelData.forEach(async (data) => {
       data.checkouttype = data.checkouttype.toLowerCase().trim();
       data.platform = data.platform.toLowerCase().trim();
+      data.mqm = data.mqm.toLowerCase().trim() === "yes" ? true : false;
+
       data.kickoff !== "NA"
         ? (data.kickoff = await convertExcelDateTimeToISO(data.kickoff).then(
             (data) => data
@@ -125,18 +127,26 @@ const UploadMerchants = ({ userData, currentUser }) => {
       <div className={style.container}>
         {currentUser.isAdmin && (
           <span className={style.selectEngineer}>
-          <h5> Select an Engineer :</h5>
-          <select name="id" onChange={selectValueChange}>
-            <option key={currentUser.id} className={style.option} value={currentUser.id}>
-              Upload for Your self
-            </option>
-            {userData.length > 0 &&
-              userData.map((data) => (
-                <option key={data.id} className={style.option} value={data.id}>
-                  {data.username}
-                </option>
-              ))}
-          </select>
+            <h5> Select an Engineer :</h5>
+            <select name="id" onChange={selectValueChange}>
+              <option
+                key={currentUser.id}
+                className={style.option}
+                value={currentUser.id}
+              >
+                Upload for Your self
+              </option>
+              {userData.length > 0 &&
+                userData.map((data) => (
+                  <option
+                    key={data.id}
+                    className={style.option}
+                    value={data.id}
+                  >
+                    {data.username}
+                  </option>
+                ))}
+            </select>
           </span>
         )}
         <div className={style.fileUpload}>

@@ -15,10 +15,10 @@ export const convertExcelDateTimeToISO = (excelDateTime) => {
 
 //GO live Data
 export const filterMerchantByGolive = (merchantData) => {
-  const filteredData = merchantData?.filter((data) => data.livedate !== "NA");
-  const smbData = filteredData.filter((data) => data.category === "SMB");
-  const entData = filteredData.filter((data) => data.category === "ENT");
-  const emergingData = filteredData.filter(
+  const filteredData = merchantData?.filter((data) => data.livedate !== "NA" && data.livedate);
+  const smbData = filteredData?.filter((data) => data.category === "SMB");
+  const entData = filteredData?.filter((data) => data.category === "ENT");
+  const emergingData = filteredData?.filter(
     (data) => data.category === "Emerging"
   );
 
@@ -47,12 +47,50 @@ export const filterAllTheMerchant = (merchantData) => {
 };
 
 //Join To Arrays N provide results
-export const sortArray = (arr1, arr2) => {
-  const joinedArray = arr1?.concat(arr2);
+export const sortArray = (arr1, arr2, arr3) => {
+  const joinedArray = arr1?.concat(arr2).concat(arr3);
   const soretedArray = joinedArray?.sort((a, b) => {
     const dateA = new Date(a.kickoff);
     const dateB = new Date(b.kickoff);
-    return  dateA - dateB;
+    return dateB - dateA;
   });
   return soretedArray;
+};
+
+export const sortSingleArray = (arr) => {
+  if (arr.length > 0) {
+    const soretedArray = arr?.sort((a, b) => {
+      const dateA = new Date(a.kickoff);
+      const dateB = new Date(b.kickoff);
+      return dateB - dateA;
+    });
+    return soretedArray;
+  }
+  return null;
+};
+
+//to handle Data on the basis of array and mode passed used in table
+export const uniqueDataHandlerArry = (data, mode) => {
+  const platformStatsMap = new Map();
+
+  data.forEach((merchant) => {
+    const platform = merchant[mode].toLowerCase();
+    const expectedArr = parseFloat(merchant.expectedarr) || 0;
+    if (!platformStatsMap.has(platform)) {
+      platformStatsMap.set(platform, { count: 0, totalExpectedArr: 0 });
+    }
+    const stats = platformStatsMap.get(platform);
+    stats.count += 1;
+    stats.totalExpectedArr += expectedArr;
+  });
+
+  const platformStats = Array.from(
+    platformStatsMap,
+    ([platform, { count, totalExpectedArr }]) => ({
+      platform,
+      merchantCount: count,
+      expectedarr: totalExpectedArr.toFixed(3),
+    })
+  );
+  return platformStats;
 };

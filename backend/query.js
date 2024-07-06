@@ -284,6 +284,7 @@ export const getGoLiveMerchantsByDateRange = async (
         },
         include: { user: true },
       });
+      revalidatePath("/dashboard/reports/customize")
       return { merchants, status: 200 };
     } catch (error) {
       console.log(error);
@@ -301,6 +302,7 @@ export const getGoLiveMerchantsByDateRange = async (
         },
         include: { user: true },
       });
+      revalidatePath("/dashboard/reports/customize")
       return { merchants, status: 200 };
     } catch (error) {
       console.log(error);

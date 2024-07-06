@@ -32,7 +32,7 @@ const CustomerEngineerData = async ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      {/* <div className={styles.header}>
         <h2 className={styles.title}>Priority List</h2>
         {user.isAdmin && (
           <select>
@@ -60,9 +60,9 @@ const CustomerEngineerData = async ({
           </tr>
         </thead>
         <tbody>
-          {currentItems &&
+          {currentItems.length > 0 &&
             currentItems.map((data) => (
-              <tr key={data.id}>
+              <tr key={data?.id}>
                 <td>
                   <div className={styles.user}>
                     <Image
@@ -72,20 +72,20 @@ const CustomerEngineerData = async ({
                       height={40}
                       className={styles.userImage}
                     />
-                    {data.cename}
+                    {data?.cename}
                   </div>
                 </td>
-                <td>{data.merchantname}</td>
+                <td>{data?.merchantname}</td>
                 <td>
                   <span className={`${styles.status} ${styles.pending}`}>
                     Pending
                   </span>
                 </td>
-                <td>{data.category}</td>
-                <td>{data.platform}</td>
-                <td>{formatDistance(new Date(data.kickoff), new Date())}</td>
+                <td>{data?.category}</td>
+                <td>{data?.platform}</td>
+                <td>{data?.kickoff ? formatDistance(new Date(data?.kickoff) , new Date()):""}</td>
                 <td>
-                  <CustomPopup styles={styles} reason={data.mintcomment} />
+                  <CustomPopup styles={styles} reason={data?.mintcomment} />
                 </td>
               </tr>
             ))}
@@ -105,7 +105,7 @@ const CustomerEngineerData = async ({
             <MdSkipNext />
           </Link>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

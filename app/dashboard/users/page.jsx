@@ -66,7 +66,7 @@ const UsersPage = async ({ searchParams }) => {
             ))}
         </tbody>
       </table>
-      <Pagination count={count} />
+      <Pagination count={count}  ITEM_PER_PAGE={5}/>
     </div>
   );
 };

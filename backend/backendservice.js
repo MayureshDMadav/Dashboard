@@ -74,7 +74,7 @@ export const uniqueDataHandlerArry = (data, mode) => {
   const platformStatsMap = new Map();
 
   data.forEach((merchant) => {
-    const platform = merchant[mode].toLowerCase();
+    const platform = merchant[mode].trim().toLowerCase();
     const expectedArr = parseFloat(merchant.expectedarr) || 0;
     if (!platformStatsMap.has(platform)) {
       platformStatsMap.set(platform, { count: 0, totalExpectedArr: 0 });

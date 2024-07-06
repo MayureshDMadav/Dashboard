@@ -2,6 +2,27 @@
   text-align: center;
 }
 
+.details{
+  cursor: pointer;
+}  
+
+
+.details > summary {
+  list-style: none;
+}
+
+.details > summary::before {
+  content: '+';
+  font-size: 1rem;
+  transition: transform 0.2s;
+}
+
+.details[open] > summary::before {
+  content: '|';
+  font-size: 8px;
+  transform: rotate(90deg);
+}
+
 .header {
   width: 100%;
   color: var(--bgSoft);
@@ -12,8 +33,6 @@
   text-transform: capitalize;
   font-weight: 600;
   gap: 2rem;
-  align-items: center;
-  justify-content: center;
   letter-spacing: 0.2em;
   margin-bottom: 1.5rem;
 }
@@ -99,4 +118,12 @@
 .pagination .activePage {
   background-color: #007bff;
   color: white;
+}
+
+
+.innerContent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }

@@ -94,3 +94,15 @@ export const uniqueDataHandlerArry = (data, mode) => {
   );
   return platformStats;
 };
+
+// To Parse Unique Element and get the result array
+export const findUniqueElementInArray = (arr,nameOfElement) =>{
+  if(arr.length > 0){
+     let uniqueArray = new Set();
+     arr.forEach((data)=>{
+       uniqueArray.add(data[nameOfElement])
+     })
+     return Array.from(uniqueArray)
+  }
+  return null;
+}

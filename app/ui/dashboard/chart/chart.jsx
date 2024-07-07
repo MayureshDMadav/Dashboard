@@ -1,106 +1,116 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import styles from "./chart.module.css";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-} from "recharts";
+} from "chart.js";
+import styles from './chart.module.css'
 
-const Chart = ({ merchantData }) => {
-  const [data, setData] = useState([]);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
+const MerchantStatusChart = ({ merchantData }) => {
+  const [chartData, setChartData] = useState(null);
+  const { smbData, entData, emergingData } = merchantData;
+  
   useEffect(() => {
-    setData(merchantData);
+    if (smbData || entData || emergingData) {
+      const concatedData = [].concat(smbData || []).concat(entData || []).concat(emergingData || []);
+      
+      const ceData = concatedData.reduce((acc, item) => {
+        if (!acc[item.cename]) {
+          acc[item.cename] = {
+            bookedArr: 0,
+            expectedArr: 0,
+            merchantCount: 0,
+          };
+        }
+        acc[item.cename].bookedArr += parseFloat(item.bookedarr) || 0;
+        acc[item.cename].expectedArr += parseFloat(item.expectedarr) || 0;
+        acc[item.cename].merchantCount += 1;
+        return acc;
+      }, {});
+
+      const labels = Object.keys(ceData);
+      const bookedArrData = labels.map(ce => ceData[ce].bookedArr);
+      const expectedArrData = labels.map(ce => ceData[ce].expectedArr);
+      const merchantCountData = labels.map(ce => ceData[ce].merchantCount);
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: 'Booked ARR',
+            data: bookedArrData,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          },
+          {
+            label: 'Expected ARR',
+            data: expectedArrData,
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+          {
+            label: 'Merchant Count',
+            data: merchantCountData,
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          },
+        ],
+      });
+    }
   }, [merchantData]);
 
-  if (data) {
-    let sum = 0;
-    let expectedArr = [];
-    data.forEach((data) => {
-      expectedArr.push(Number.parseFloat(data.expectedarr));
-      sum += Number.parseFloat(data.expectedarr);
-    });
-  }
-
-  const dataMenu = [
-    {
-      name: "Sun",
-      kickoff: 4000,
-      Golive: 2400,
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'CE Name Data Summary',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += context.parsed.y.toFixed(2);
+            }
+            return label;
+          },
+        },
+      },
     },
-    {
-      name: "Mon",
-      kickoff: 3000,
-      Golive: 1398,
+    scales: {
+      x: {
+        stacked: false,
+      },
+      y: {
+        stacked: false,
+      },
     },
-    {
-      name: "Tue",
-      kickoff: 2000,
-      Golive: 3800,
-    },
-    {
-      name: "Wed",
-      kickoff: 2780,
-      Golive: 3908,
-    },
-    {
-      name: "Thu",
-      kickoff: 1890,
-      Golive: 4800,
-    },
-    {
-      name: "Fri",
-      kickoff: 2390,
-      click: 3800,
-    },
-    {
-      name: "Sat",
-      kickoff: 3490,
-      Golive: 4300,
-    },
-  ];
+  };
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Weekly Recap</h2>
-      <ResponsiveContainer width="100%" height="90%">
-        <LineChart
-          width={500}
-          height={300}
-          data={dataMenu}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip contentStyle={{ background: "#151c2c", border: "none" }} />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="kickoff"
-            stroke="#8884d8"
-            strokeDasharray="5 5"
-          />
-          <Line
-            type="monotone"
-            dataKey="Golive"
-            stroke="#82ca9d"
-            strokeDasharray="3 4 5 2"
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      {chartData && <Bar data={chartData} options={options} />}
     </div>
   );
 };
 
-export default Chart;
+export default MerchantStatusChart;

@@ -38,4 +38,15 @@
     flex: 1;
   }
 
+.charts{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  flex-grow: unset;
+  width: 100%;
+}
  
+.childCharts{
+  width: 100%;
+}

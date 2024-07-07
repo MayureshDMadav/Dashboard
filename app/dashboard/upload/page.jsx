@@ -9,8 +9,6 @@ const Upload = async () => {
   if (status === 200) {
     return <UploadMerchants userData = {userData}  currentUser = {user} />;
   }
-
-  return <UploadMerchants  userData = {null} currentUser = {user} />;
 };
 
 export default Upload;

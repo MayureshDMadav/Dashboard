@@ -81,9 +81,8 @@ const UploadMerchants = ({ userData, currentUser }) => {
         data.bookedarr = data.bookedarr.toString();
         data.expectedarr = data.expectedarr.toString();
         data.gmv = data.gmv.toString();
-        const userid = userId
-          ? Number.parseInt(userId)
-          : Number.parseInt(currentUser.id);
+        const userid = Number.parseInt(userId);
+        console.log(userid, "=====> While Upload");
         return await createNewMerchant(data, userid);
       });
 
@@ -146,7 +145,7 @@ const UploadMerchants = ({ userData, currentUser }) => {
                 className={style.option}
                 value={currentUser.id}
               >
-                Upload for Your self
+                Upload Data for CE
               </option>
               {userData.length > 0 &&
                 userData.map((data) => (

@@ -1,5 +1,4 @@
 import Card from "../ui/dashboard/card/card";
-import Chart from "../ui/dashboard/chart/chart";
 import Rightbar from "../ui/dashboard/rightbar/rightbar";
 import CustomerEngineerData from "../ui/dashboard/customerengineer/customerengineer";
 import styles from "../ui/dashboard/dashboard.module.css";
@@ -14,10 +13,14 @@ import {
   filterAllTheMerchant,
 } from "@/backend/backendservice";
 import { auth } from "@/app/auth";
+import MerchantStatusChart from "../ui/dashboard/chart/chart";
+import {
+  MerchantCountChart,
+  MerchantPieChart,
+} from "../ui/dashboard/chart/piechart";
 
 const DashbaordPage = async (context) => {
   const { user } = await auth();
-  const { userData } = await getAllUserData();
   const { merchantList } = await getAllMerchantsList(user);
   const { start, end, mode } = context.searchParams;
   const { merchants, status } = await getGoLiveMerchantsByDateRange(
@@ -26,6 +29,14 @@ const DashbaordPage = async (context) => {
     mode,
     user
   );
+
+  const dateRangeAllData = await getGoLiveMerchantsByDateRange(
+    start,
+    end,
+    "kickoff",
+    user
+  );
+
   let merchantData = {};
   if (status === 200 && mode == "livedate") {
     merchantData = filterMerchantByGolive(merchants);
@@ -76,13 +87,34 @@ const DashbaordPage = async (context) => {
             }
           />
         </div>
-        <CustomerEngineerData
-          merchantData={merchantList}
-          user={user}
-          userData={userData}
-          searchParams={context.searchParams}
+
+        <div className={styles.charts}>
+          <div className={styles.childCharts}>
+            <MerchantCountChart
+              merchantData={
+                dateRangeAllData.merchants.length > 0
+                  ? dateRangeAllData.merchants
+                  : alltheMerchantList
+              }
+            />
+          </div>
+          <div className={styles.childCharts}>
+            <MerchantPieChart
+              merchantData={
+                dateRangeAllData.merchants.length > 0
+                  ? dateRangeAllData.merchants
+                  : alltheMerchantList
+              }
+            />
+          </div>
+        </div>
+        <MerchantStatusChart
+          merchantData={
+            dateRangeAllData.merchants.length > 0
+              ? dateRangeAllData.merchants
+              : alltheMerchantList
+          }
         />
-        <Chart merchantData={merchants.length > 0 ? merchants : merchantList} />
       </div>
       <div className={styles.side}>
         <Rightbar />

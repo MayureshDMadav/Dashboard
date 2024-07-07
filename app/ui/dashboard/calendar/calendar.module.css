@@ -1,0 +1,44 @@
+/* calendar.module.css */
+
+.calendarinput {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.2rem;
+  }
+  
+  .custominput {
+    width: 150px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .calendarselect {
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 0.1px dotted grey;
+    border-radius: 5px;
+    color: white;
+    background-color: transparent;
+  }
+  
+  .calendarselect option {
+    background-color: var(--bgSoft);
+    color: white;
+  }
+  
+  
+  .custominput{
+    background: transparent;
+    color: wheat;
+    border: 0.1px dotted grey;
+  }
+
+.calendar-icon {
+    fill: white; 
+    background-color: white;
+    width: 20px; 
+    height: 20px;
+  }

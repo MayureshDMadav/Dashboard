@@ -7,3 +7,21 @@
     flex-direction: column;
   }
 
+ 
+  .chartContainer {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 2rem;
+    justify-content: center;
+    align-items: center; 
+    margin: 5px;
+  }
+  
+  .chart {
+    flex: 1; 
+    border: 0.2em outset var(--bgSoft);    
+    min-width: 20rem;
+    border-radius: 5px;
+    margin-bottom: 2rem; 
+  }
+  

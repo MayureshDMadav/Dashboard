@@ -52,52 +52,64 @@ const UploadMerchants = ({ userData, currentUser }) => {
     setUserId(e.target.value);
   };
 
-  const pushDataToDataBase = (e) => {
+  const pushDataToDataBase = async (e) => {
     e.preventDefault();
     setLoading(true);
-    excelData.forEach(async (data) => {
-      data.checkouttype = data.checkouttype.toLowerCase().trim();
-      data.platform = data.platform.toLowerCase().trim();
-      data.mqm = data.mqm.toLowerCase().trim() === "yes" ? true : false;
 
-      data.kickoff !== "NA"
-        ? (data.kickoff = await convertExcelDateTimeToISO(data.kickoff).then(
-            (data) => data
-          ))
-        : "";
-      data.livedate !== "NA"
-        ? (data.livedate = await convertExcelDateTimeToISO(data.livedate).then(
-            (data) => data
-          ))
-        : "";
-      data.targetgolive !== "NA"
-        ? (data.targetgolive = await convertExcelDateTimeToISO(
-            data.targetgolive
-          ).then((data) => data))
-        : "";
+    try {
+      const processedData = excelData.map(async (data) => {
+        data.checkouttype = data.checkouttype.toLowerCase().trim();
+        data.platform = data.platform.toLowerCase().trim();
+        data.mqm = data.mqm.toLowerCase().trim() === "yes" ? true : false;
 
-      data.bookedarr = data.bookedarr.toString();
-      data.expectedarr = data.expectedarr.toString();
-      data.gmv = data.gmv.toString();
-      const userid = userId
-        ? Number.parseInt(userId)
-        : Number.parseInt(currentUser.id);
-      const dataFromAPi = await createNewMerchant(data, userid);
-      if (dataFromAPi.status === 201) {
-        excelData.shift();
-        setCount(excelData.length - 1);
-      }
+        data.kickoff !== "NA"
+          ? (data.kickoff = await convertExcelDateTimeToISO(data.kickoff).then(
+              (data) => data
+            ))
+          : "";
+        data.livedate !== "NA"
+          ? (data.livedate = await convertExcelDateTimeToISO(
+              data.livedate
+            ).then((data) => data))
+          : "";
+        data.targetgolive !== "NA"
+          ? (data.targetgolive = await convertExcelDateTimeToISO(
+              data.targetgolive
+            ).then((data) => data))
+          : "";
 
-      if (excelData.length === 0) {
-        toast.success("Data Succesfully Uploaded", {
-          duration: 4000,
-          position: "top-right",
-        });
-        setLoading(false);
-        setExcelData([]);
-        setExcelFile(null);
-      }
-    });
+        data.bookedarr = data.bookedarr.toString();
+        data.expectedarr = data.expectedarr.toString();
+        data.gmv = data.gmv.toString();
+        const userid = userId
+          ? Number.parseInt(userId)
+          : Number.parseInt(currentUser.id);
+        return await createNewMerchant(data, userid);
+      });
+
+      const results = await Promise.all(processedData);
+
+      const successfulUploads = results.filter(
+        (result) => result.status === 201
+      ).length;
+
+      setCount(successfulUploads);
+      setExcelData([]);
+      setExcelFile(null);
+
+      toast.success(`${successfulUploads} items successfully uploaded`, {
+        duration: 4000,
+        position: "top-right",
+      });
+    } catch (error) {
+      console.error("Error uploading data:", error);
+      toast.error("An error occurred while uploading data", {
+        duration: 4000,
+        position: "top-right",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -189,9 +201,7 @@ const UploadMerchants = ({ userData, currentUser }) => {
         </button>
       </div>
       <div className={style.view}>
-        {loading && (
-          <Loading message={`Date Uploading complete for ${count}`} />
-        )}
+        {loading && <Loading message={`Data Uploading in progress...`} />}
         {!loading && excelData.length > 0 ? (
           <>
             <button onClick={pushDataToDataBase} className={style.submitButton}>
@@ -243,7 +253,7 @@ const UploadMerchants = ({ userData, currentUser }) => {
         ) : (
           <p>
             {excelFile == null
-              ? "Awaiting File to Uplaod"
+              ? "Awaiting File to Upload"
               : excelData.length == 0
               ? "Please click on Upload and verify your data"
               : ""}

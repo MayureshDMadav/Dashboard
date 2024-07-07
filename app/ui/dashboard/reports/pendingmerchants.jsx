@@ -60,7 +60,7 @@ const PendingMerchants = ({ merchantData, mode }) => {
     setExpArr(totalValue);
   }, [merchants]);
 
-  console.log(merchantState);
+
 
   const indexOfLastMerchant = currentPage * itemsPerPage;
   const indexOfFirstMerchant = indexOfLastMerchant - itemsPerPage;

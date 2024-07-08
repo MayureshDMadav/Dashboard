@@ -1,15 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./calendar.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const CalendarInput = () => {
+const CalendarInput = ({mode}) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [customStartDate, setCustomStartDate] = useState("");
   const [customEndDate, setCustomEndDate] = useState("");
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
+  const [currentMode , setMode] = useState(null)
+
+  useEffect(()=>{
+    if(mode){
+      setMode(mode)
+    }
+  },[mode])
+
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
@@ -57,7 +65,7 @@ const CalendarInput = () => {
     if (startDate && endDate) {
       params.set("start", startDate);
       params.set("endDate", endDate);
-      params.set("mode", "kickoff");
+      params.set("mode", `${!currentMode ? "kickoff" :currentMode }`);
       replace(`${pathname}?${params}`);
     }
   };
@@ -85,7 +93,7 @@ const CalendarInput = () => {
 
   const getCurrentMonthRange = () => {
     const endDate = new Date();
-    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1); // First day of the current month
+    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1); 
     return [
       startDate.toISOString().split("T")[0],
       endDate.toISOString().split("T")[0],

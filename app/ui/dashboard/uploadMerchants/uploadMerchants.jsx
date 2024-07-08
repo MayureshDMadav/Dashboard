@@ -81,8 +81,10 @@ const UploadMerchants = ({ userData, currentUser }) => {
         data.bookedarr = data.bookedarr.toString();
         data.expectedarr = data.expectedarr.toString();
         data.gmv = data.gmv.toString();
-        const userid = Number.parseInt(userId);
-        console.log(userid, "=====> While Upload");
+        const userid = userId
+          ? Number.parseInt(userId)
+          : Number.parseInt(currentUser.id);
+
         return await createNewMerchant(data, userid);
       });
 

@@ -3,17 +3,20 @@ import Link from "next/link";
 import styles from "@/app/ui/dashboard/users/users.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
-import { userPaginationFunc, deletEntryForUsers } from "@/backend/query";
+import { userPaginationFunc, deletEntryForUsers, getAllUserData } from "@/backend/query";
+import { auth } from "@/app/auth";
 
 const UsersPage = async ({ searchParams }) => {
+  const {user} = await auth()
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, userData } = await userPaginationFunc(q, page);
+  const userList = await getAllUserData();
 
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a user..." />
+      <Search isAdmin = {user?.isAdmin}  userData = {userList.userData} />
         <Link href="/dashboard/users/add">
           <button className={styles.addButton}>Add New</button>
         </Link>

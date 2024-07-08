@@ -7,6 +7,19 @@ import { findUniqueElementInArray } from "@/backend/backendservice";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+let backgroundColors = [
+  "#1A365D", // Dark blue
+  "#2C5282", // Navy blue
+  "#2F4858", // Dark slate grey
+  "#1F2937", // Charcoal
+  "#374151", // Dark grey
+  "#065F46", // Dark green
+  "#064E3B", // Forest green
+  "#1E3A8A", // Midnight blue
+  "#3730A3", // Indigo
+  "#312E81", // Dark indigo
+];
+
 export const MerchantPieChart = ({ merchantData }) => {
   const [chartData, setChartData] = useState(null);
 
@@ -51,19 +64,6 @@ export const MerchantPieChart = ({ merchantData }) => {
         const bookedArrData = labels.map((ce) => ceData[ce].bookedArr);
         const expectedArrData = labels.map((ce) => ceData[ce].expectedArr);
 
-        const backgroundColors = [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-          "#9966FF",
-          "#FF9F40",
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-        ];
-
         setChartData({
           labels,
           datasets: [
@@ -72,6 +72,8 @@ export const MerchantPieChart = ({ merchantData }) => {
               data: bookedArrData,
               backgroundColor: backgroundColors.slice(0, labels.length),
               hoverBackgroundColor: backgroundColors.slice(0, labels.length),
+              borderWidth: 1,
+              borderColor: "transparent",
             },
             {
               label: "Expected ARR",
@@ -82,6 +84,8 @@ export const MerchantPieChart = ({ merchantData }) => {
               hoverBackgroundColor: backgroundColors
                 .slice(0, labels.length)
                 .reverse(),
+              borderWidth: 1,
+              borderColor: "transparent",
             },
           ],
         });
@@ -96,7 +100,9 @@ export const MerchantPieChart = ({ merchantData }) => {
     plugins: {
       legend: {
         position: "bottom",
-        color: "white",
+        labels: {
+          color: "white",
+        },
       },
       title: {
         display: true,
@@ -176,19 +182,6 @@ export const MerchantCountChart = ({ merchantData }) => {
     }
   }, [merchantData]);
 
-  const backgroundColors = [
-    "#FF6384",
-    "#36A2EB",
-    "#FFCE56",
-    "#4BC0C0",
-    "#9966FF",
-    "#FF9F40",
-    "#FF6384",
-    "#36A2EB",
-    "#FFCE56",
-    "#4BC0C0",
-  ];
-
   const data = {
     labels: cename,
     datasets: [
@@ -196,7 +189,8 @@ export const MerchantCountChart = ({ merchantData }) => {
         label: "Merchant Count",
         data: Object.values(count),
         backgroundColor: backgroundColors,
-        borderColor: "white",
+        borderWidth: 1,
+        borderColor: "transparent",
       },
     ],
   };
@@ -206,6 +200,9 @@ export const MerchantCountChart = ({ merchantData }) => {
     plugins: {
       legend: {
         position: "bottom",
+        labels: {
+          color: "white",
+        },
       },
       title: {
         display: true,

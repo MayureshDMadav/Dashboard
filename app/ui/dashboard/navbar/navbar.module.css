@@ -3,6 +3,7 @@
     background-color: var(--bgSoft);
     display: flex;
     width: 100%;
+    padding: 0.5rem;
     align-items: center;
     justify-content: space-between;
   }
@@ -22,57 +23,10 @@
     gap: 15px;
   }
   
-  .form {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-    border:2px solid #2e374a;
-    background-color: var(--bgSoft);
-    border-radius: 5px;
-    padding: 5px;
-  }
   
-  .input {
-    background-color: #2e374a;
-    border: transparent;
-    color: var(--text);
-    padding: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    border-radius: 5px;
-  }
-
-
-  .input::-webkit-calendar-picker-indicator{
-    background-color: white;
-    padding: 4px;
-    border-radius: 5px;
-  }
-
-  .label{
-    font-size: 12px;
-    background-color: var(--bgSoft);
-    font-weight: 600;
-    text-decoration: dotted;
-  }
-
-
-  .button{
-    margin-top: 3px;  
-    cursor: pointer;
-    border: none;
-    background-color: transparent;
-  }
-
-  .mdSearch{
-    color: white;
-    font-size: 1rem;
-  }
-
   .select{
     border-radius: 5px;
-    padding: 6px;
+    padding: 0.2rem;
     border: none;
     background-color:#2e374a;
     color:white;
@@ -85,7 +39,7 @@
   }
 
   .selectContainer select {
-    padding: 8px;
+    padding: 5px;
     font-size: 0.9rem;
     border: 0.1px dotted grey;
     border-radius: 5px;

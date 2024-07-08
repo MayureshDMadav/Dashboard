@@ -208,15 +208,17 @@ export const getAllMerchantsList = async (user) => {
 // Handle Merchant List pagination and search part
 export const paginationForMerchantList = async (
   userName,
+  type,
   page,
   itemsPerPage
 ) => {
   const skip = (page - 1) * itemsPerPage;
+  const fieldName = type && type === 'select-one' ? "cename" : type === 'text' ? "merchantname" : "cename";
   try {
     const count = await prisma.merchant.count();
     const merchantData = await prisma.merchant.findMany({
       where: {
-        cename: {
+        [fieldName]: {
           contains: userName,
           mode: "insensitive",
         },
@@ -284,6 +286,7 @@ export const getGoLiveMerchantsByDateRange = async (
         },
         include: { user: true },
       });
+
       revalidatePath("/dashboard/reports/customize")
       return { merchants, status: 200 };
     } catch (error) {

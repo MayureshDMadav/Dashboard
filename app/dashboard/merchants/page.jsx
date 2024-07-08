@@ -6,6 +6,7 @@ import styles from "@/app/ui/dashboard/merchants/merchants.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import {
   deletEntryForMerchant,
+  getAllUserData,
   paginationForMerchantList,
 } from "@/backend/query";
 import { formatDistance } from "date-fns";
@@ -14,19 +15,23 @@ import { auth } from "@/app/auth";
 const MerchantDataList = async ({ searchParams }) => {
   const { user } = await auth();
   const ITEM_PER_PAGE = 10;
-  const q = user.isAdmin ? searchParams?.q : user.username;
+  const {userData} = await getAllUserData();
+
+  const q = searchParams ? searchParams?.q : "";
+  const type = searchParams ? searchParams?.mode : ""
   const page = searchParams?.page || 1;
   const { count, merchantData } = await paginationForMerchantList(
     q,
+    type,
     page,
     ITEM_PER_PAGE
   );
 
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        {user.isAdmin && <Search placeholder="Search for a user..." />}
-        {!user.isAdmin && (<span>Hello {user.username} please find below list of your Merchants</span>)}
+       <Search  isAdmin = {user?.isAdmin}  userData = {userData} />
         <Link href="/dashboard/merchants/add">
           <button className={styles.addButton}>Add New</button>
         </Link>

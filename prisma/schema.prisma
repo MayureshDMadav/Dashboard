@@ -14,16 +14,17 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
-  password  String
-  email     String
-  createdAt DateTime   @default(now())
-  isAdmin   Boolean    @default(false)
-  isActive  Boolean    @default(true)
-  phone     String
-  address   String
-  merchant  Merchant[]
+  id          Int          @id @default(autoincrement())
+  username    String       @unique
+  password    String
+  email       String
+  createdAt   DateTime     @default(now())
+  isAdmin     Boolean      @default(false)
+  isActive    Boolean      @default(true)
+  phone       String
+  address     String
+  merchant    Merchant[]
+  targetForCe TargetForCE?
 }
 
 model Merchant {
@@ -73,4 +74,15 @@ model Platform {
 model Category {
   id   Int    @id @default(autoincrement())
   name String @unique
+}
+
+model TargetForCE {
+  id            Int    @id @default(autoincrement())
+  startDate     String @default("NA")
+  endDate       String @default("NA")
+  merchantTotal Int    @default(0)
+  bookedArr     String @default("NA")
+  expectedArr   String @default("NA")
+  userId        Int    @unique
+  user          User   @relation(fields: [userId], references: [id])
 }

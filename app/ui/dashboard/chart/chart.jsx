@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import styles from './chart.module.css'
+import styles from "./chart.module.css";
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +24,7 @@ ChartJS.register(
 const MerchantStatusChart = ({ merchantData }) => {
   const [chartData, setChartData] = useState(null);
   const { smbData, entData, emergingData } = merchantData;
-  
+
   useEffect(() => {
     if (merchantData) {
       let concatedData = [];
@@ -46,7 +46,7 @@ const MerchantStatusChart = ({ merchantData }) => {
       ) {
         concatedData = merchantData;
       }
-      
+
       const ceData = concatedData.reduce((acc, item) => {
         if (!acc[item.cename]) {
           acc[item.cename] = {
@@ -62,27 +62,27 @@ const MerchantStatusChart = ({ merchantData }) => {
       }, {});
 
       const labels = Object.keys(ceData);
-      const bookedArrData = labels.map(ce => ceData[ce].bookedArr);
-      const expectedArrData = labels.map(ce => ceData[ce].expectedArr);
-      const merchantCountData = labels.map(ce => ceData[ce].merchantCount);
+      const bookedArrData = labels.map((ce) => ceData[ce].bookedArr);
+      const expectedArrData = labels.map((ce) => ceData[ce].expectedArr);
+      const merchantCountData = labels.map((ce) => ceData[ce].merchantCount);
 
       setChartData({
         labels,
         datasets: [
           {
-            label: 'Booked ARR',
+            label: "Booked ARR",
             data: bookedArrData,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
-            label: 'Expected ARR',
+            label: "Expected ARR",
             data: expectedArrData,
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            backgroundColor: "rgba(53, 162, 235, 0.5)",
           },
           {
-            label: 'Merchant Count',
+            label: "Merchant Count",
             data: merchantCountData,
-            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            backgroundColor: "rgba(75, 192, 192, 0.5)",
           },
         ],
       });
@@ -93,18 +93,22 @@ const MerchantStatusChart = ({ merchantData }) => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "bottom",
+        labels: {
+          color: "white",
+        },
       },
       title: {
         display: true,
-        text: 'CE Name Data Summary',
+        text: "CE Name Data Summary",
+        color: "white",
       },
       tooltip: {
         callbacks: {
           label: (context) => {
-            let label = context.dataset.label || '';
+            let label = context.dataset.label || "";
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             if (context.parsed.y !== null) {
               label += context.parsed.y.toFixed(2);
@@ -117,9 +121,15 @@ const MerchantStatusChart = ({ merchantData }) => {
     scales: {
       x: {
         stacked: false,
+        ticks: {
+          color: "white",
+        },
       },
       y: {
         stacked: false,
+        ticks: {
+          color: "white",
+        },
       },
     },
   };

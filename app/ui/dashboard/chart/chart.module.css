@@ -3,6 +3,8 @@
   background-color: var(--bgSoft);
   padding: 20px;
   border-radius: 10px;
+  justify-content: center;
+  display: flex;
 }
 
 .title{

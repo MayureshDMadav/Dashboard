@@ -1,16 +1,24 @@
-.container {
+.selectContainer {
     display: flex;
     align-items: center;
     gap: 10px;
     background-color: #2e374a;
-    padding: 10px;
     border-radius: 10px;
     width: max-content;
   }
   
-  .input {
-    background-color: transparent;
+
+  .selectChild{
+    padding: 0.7rem;
+    color: wheat;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    border-radius: 3px;
     border: none;
-    color: var(--text);
-    outline: none;
+    background-color: transparent;
+  }
+
+  .selectChild option{
+    background-color: var(--bgSoft);
+    color: wheat;
   }

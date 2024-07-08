@@ -26,8 +26,26 @@ const MerchantStatusChart = ({ merchantData }) => {
   const { smbData, entData, emergingData } = merchantData;
   
   useEffect(() => {
-    if (smbData || entData || emergingData) {
-      const concatedData = [].concat(smbData || []).concat(entData || []).concat(emergingData || []);
+    if (merchantData) {
+      let concatedData = [];
+      if (
+        merchantData.smbData ||
+        merchantData.entData ||
+        merchantData.emergingData
+      ) {
+        concatedData = []
+          .concat(merchantData.smbData || [])
+          .concat(merchantData.entData || [])
+          .concat(merchantData.emergingData || []);
+      }
+
+      if (
+        merchantData.smbData == undefined ||
+        merchantData.entData == undefined ||
+        merchantData.emergingData == undefined
+      ) {
+        concatedData = merchantData;
+      }
       
       const ceData = concatedData.reduce((acc, item) => {
         if (!acc[item.cename]) {

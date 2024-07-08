@@ -119,7 +119,7 @@ const MerchantForm = ({
 
     return Array.isArray(data[mode]) ? (
       <select name={mode} id={mode}>
-        <option value="general">Choose an option</option>
+        <option value="">Choose an option</option>
         {data[mode].map((item, index) => (
           <option key={index} value={item.name}>
             {item.name}

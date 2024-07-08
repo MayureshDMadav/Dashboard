@@ -3,17 +3,17 @@ import { usePathname, useSearchParams } from "next/navigation";
 import styles from "./navbar.module.css";
 import { MdSearch } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import CalendarInput from "../calendar/calendar";
+import { useState } from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [mode,setMode] = useState(null)
   const actualPath = pathname.split("/").pop();
   const router = useRouter()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target)
-    const formEntries = Object.fromEntries(formData.entries());
-    router.push(`/dashboard?start=${encodeURIComponent(formEntries.startDate)}&end=${encodeURIComponent(formEntries.endDate)}&mode=${encodeURIComponent(formEntries.mode)}`)
+    setMode(e.target.value)
   };
 
   return (
@@ -21,38 +21,17 @@ const Navbar = () => {
       <div className={styles.title}>{decodeURI(pathname.split("/").pop())}</div>
       <div className={styles.menu}>
         {actualPath === "dashboard" && (
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <select name="mode" className={styles.select}  required>
-              <option value="">Select a State</option>
-              <option value="kickoff">Merchant In Queue</option>
-              <option value="targetgolive">Targeted Merchant</option>
-              <option value="livedate">Live Merchant</option>
-            </select>
-            <label htmlFor="startDate" className={styles.label}>
-              Start Date:
-            </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              className={styles.input}
-              required
-            />
-            <br />
-            <label htmlFor="endDate" className={styles.label}>
-              End Date:
-            </label>
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              className={styles.input}
-              required
-            />
-            <button className={styles.button}>
-              <MdSearch className={styles.mdSearch} />
-            </button>
-          </form>
+          <div className={styles.selectContainer}>
+            <div className={styles.selectChild}>
+              <select onChange={handleSubmit}>
+                <option value="">Select a State</option>
+                <option value="kickoff">By Kickoff</option>
+                <option value="livedate">By LiveDate</option>
+                <option value="targetgolive">By Targeted Date</option>
+              </select>
+            </div>
+            <div className={styles.selectChild}><CalendarInput mode={mode} /></div>
+          </div>
         )}
       </div>
       {/*   <MdSearch />

@@ -1,16 +1,14 @@
-"use client";
-
+"use client"
 import {
   getAllUserData,
   createNewMerchant,
   updateMerchantByID,
-  getUserByUserName,
   fetchAdditionalDetailRequest,
 } from "@/backend/query";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { parse, format } from "date-fns";
+import { format } from "date-fns";
 
 const MerchantForm = ({
   styles,

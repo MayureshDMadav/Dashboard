@@ -5,14 +5,12 @@ import {
   MdDashboard,
   MdSupervisedUserCircle,
   MdShoppingBag,
-  MdWork,
   MdAnalytics,
-  MdPeople,
-  MdOutlineSettings,
-  MdHelpCenter,
   MdLogout,
   MdUpload,
   MdDashboardCustomize,
+  MdReport,
+  MdOutlineAppRegistration,
 } from "react-icons/md";
 import { auth } from "@/app/auth";
 import { useSignOut } from "@/app/authentication";
@@ -39,18 +37,28 @@ const menuItems = [
     ],
   },
   {
-    title: "Analytics",
+    title: "Reports",
     list: [
       {
-        title: "Reports",
+        title: "Customized",
         path: "/dashboard/reports",
         icon: <MdAnalytics />,
+      },
+      {
+        title: "Target Based",
+        path: "/dashboard/targetbased",
+        icon: <MdReport />,
       },
     ],
   },
   {
     title: "User",
     list: [
+      {
+        title: "Set User Target",
+        path: "/dashboard/usertarget",
+        icon: <MdOutlineAppRegistration />,
+      },
       {
         title: "Upload",
         path: "/dashboard/upload",
@@ -74,7 +82,7 @@ const SideBar = async () => {
       ...category,
       list: category.list.filter((item) =>
         !session.user.isAdmin
-          ? item.title !== "Users" && item.title !== "Reports" && item.title !== "Revenue" && item.title !== "Settings" && item.title !== "Customize"
+          ? item.title !== "Users" &&  item.title !== "Set User Target" && item.title !== "Customized" && item.title !== "Target Based"  && item.title !== "Settings" && item.title !== "Customize"
            : item
       ),
     }))

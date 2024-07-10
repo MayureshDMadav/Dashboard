@@ -1,8 +1,6 @@
 "use client";
 import { encryptData, createUserData, updateUserByID } from "@/backend/query";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const UserForm = ({ styles, userData, mode }) => {
@@ -11,7 +9,6 @@ const UserForm = ({ styles, userData, mode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    
       const formTemplates = new FormData(e.target);
       const formData = Object.fromEntries(formTemplates.entries());
       const hashedPassword = await encryptData(formData.password);
@@ -28,7 +25,7 @@ const UserForm = ({ styles, userData, mode }) => {
             position: "top-right",
             style: { color: "red" },
           });
-        } 
+        }
       } else {
         const id = userData.id;
         Object.keys(formData).forEach(

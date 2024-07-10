@@ -31,7 +31,7 @@ const Search = ({ userData, isAdmin }) => {
     <div className={styles.container}>
       <div className={styles.selectContainer}>
         <select className={styles.selectChild} onChange={handleFilter}>
-          <option>select to filter</option>
+          <option>Select Filter</option>
           {isAdmin && <option value="cename">search by CE</option>}
           {path === "/dashboard/merchants" && (
             <option value="mename">select by Merchant</option>

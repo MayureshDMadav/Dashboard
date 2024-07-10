@@ -9,8 +9,7 @@ import { revalidatePath } from "next/cache";
 // For Password Encryption
 export const encryptData = async (data) => {
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(data, salt);
-  return hashedPassword;
+  return bcrypt.hash(data, salt);
 };
 
 // For Finding single User
@@ -56,25 +55,33 @@ export const getAllUserData = async () => {
 };
 
 // Function for Pagination
-export const userPaginationFunc = async (userName, page) => {
-  const itemsPerPage = 5;
+export const userPaginationFunc = async (userName, page, itemsPerPage = 5) => {
   const skip = (page - 1) * itemsPerPage;
   try {
-    const count = await prisma.user.count();
-    const userData = await prisma.user.findMany({
-      where: {
-        username: {
-          contains: userName,
-          mode: "insensitive",
+    const [count, userData] = await prisma.$transaction([
+      prisma.user.count({
+        where: {
+          username: {
+            contains: userName,
+            mode: "insensitive",
+          },
         },
-      },
-      include: { merchant: true },
-      take: itemsPerPage,
-      skip: skip,
-    });
+      }),
+      prisma.user.findMany({
+        where: {
+          username: {
+            contains: userName,
+            mode: "insensitive",
+          },
+        },
+        include: { merchant: true },
+        take: itemsPerPage,
+        skip: skip,
+      }),
+    ]);
     return { userData, status: 200, count };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return { error: 500, description: "something went wrong" };
   }
 };
@@ -213,27 +220,40 @@ export const paginationForMerchantList = async (
   itemsPerPage
 ) => {
   const skip = (page - 1) * itemsPerPage;
-  const fieldName = type && type === 'select-one' ? "cename" : type === 'text' ? "merchantname" : "cename";
+  const fieldName =
+    type === "select-one"
+      ? "cename"
+      : type === "text"
+      ? "merchantname"
+      : "cename";
   try {
-    const count = await prisma.merchant.count();
-    const merchantData = await prisma.merchant.findMany({
-      where: {
-        [fieldName]: {
-          contains: userName,
-          mode: "insensitive",
+    const [count, merchantData] = await prisma.$transaction([
+      prisma.merchant.count({
+        where: {
+          [fieldName]: {
+            contains: userName,
+            mode: "insensitive",
+          },
         },
-      },
-      include: { user: true },
-      take: itemsPerPage,
-      skip: skip,
-    });
+      }),
+      prisma.merchant.findMany({
+        where: {
+          [fieldName]: {
+            contains: userName,
+            mode: "insensitive",
+          },
+        },
+        include: { user: true },
+        take: itemsPerPage,
+        skip: skip,
+      }),
+    ]);
     return { merchantData, status: 200, count };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return { error: 500, description: "something went wrong" };
   }
 };
-
 // Update Data By Merchant Id
 export const updateMerchantByID = async (id, formData) => {
   try {
@@ -287,7 +307,7 @@ export const getGoLiveMerchantsByDateRange = async (
         include: { user: true },
       });
 
-      revalidatePath("/dashboard/reports/customize")
+      revalidatePath("/dashboard/reports/customize");
       return { merchants, status: 200 };
     } catch (error) {
       console.log(error);
@@ -305,7 +325,7 @@ export const getGoLiveMerchantsByDateRange = async (
         },
         include: { user: true },
       });
-      revalidatePath("/dashboard/reports/customize")
+      revalidatePath("/dashboard/reports/customize");
       return { merchants, status: 200 };
     } catch (error) {
       console.log(error);
@@ -321,39 +341,49 @@ export const getGoLiveMerchantsByDateRange = async (
 export const additionalApiRequest = async (formData, mode) => {
   try {
     await prisma[mode].create({
-      data: formData
+      data: formData,
     });
-    revalidatePath("/dashboard/customize")
+    revalidatePath("/dashboard/customize");
     return { status: 200, description: `${mode} added successfully` };
   } catch (e) {
     return { status: 500, description: "Something Went Wrong" };
   }
 };
 
-
-export const fetchAdditionalDetailRequest = async(mode) => {
-  try{
+export const fetchAdditionalDetailRequest = async (mode) => {
+  try {
     const response = await prisma[mode].findMany();
-    return { status: 200, description: `${mode} Fetched successfully`,response};
-  }catch(e){
+    return {
+      status: 200,
+      description: `${mode} Fetched successfully`,
+      response,
+    };
+  } catch (e) {
     return { status: 500, description: "Something Went Wrong" };
   }
+};
 
-}
-
-
-export const deleteAdditionalDetails = async(mode,id) => {
-  try{
+export const deleteAdditionalDetails = async (mode, id) => {
+  try {
     await prisma[mode].delete({
-      where:{
-        id:Number.parseInt(id),
-      }
+      where: { id: Number(id) },
     });
-    return { status: 200, description: `${mode} deleted successfully`};
-  }catch(e){
+    return { status: 200, description: `${mode} deleted successfully` };
+  } catch (e) {
+    console.error(e);
     return { status: 500, description: "Something Went Wrong" };
   }
+};
 
-}
+export const createTargetForCe = async (formData) => {
+  try {
+    await prisma.targetforce.create({
+      data: formData,
+    });
+    return { status: 200, description: "Target Added Successfully" };
+  } catch (e) {
+    return { status: 500, description: "Something went wrong" };
+  }
+};
 
 // ======================================= Additional End ==================================== //

@@ -27,8 +27,7 @@
   width: 100%;
   color: var(--bgSoft);
   background-color: var(--textSoft);
-  padding: 1rem;
-  border-radius: 5px;
+  padding: 0.5rem;
   display: flex;
   text-transform: capitalize;
   font-weight: 600;
@@ -38,14 +37,21 @@
 }
 
 .mqmContainer{
-  position: relative;
-  justify-self: start;
+  display: flex;
 }
 
 .mqmContainer select{
   border: none;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 2px;
+  background-color: transparent;
+  color: var(--bgSoft);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mqmContainer option{
+  background-color: var(--textSoft);
 }
 
 .table {
@@ -57,11 +63,9 @@
 
 .table table {
   width: 100%;
-  border-collapse: collapse;
   margin-bottom: auto;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.1); 
 }
 
 .table th,
@@ -69,7 +73,6 @@
   padding: 12px;
   font-size: 12px;
   text-align: left;
-  border: 1px solid #ddd;
 }
 
 .table th {

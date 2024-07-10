@@ -80,7 +80,7 @@ const PendingMerchants = ({ merchantData, mode }) => {
               <h4> {mode} </h4>
               <span className={styles.mqmContainer}>
                 <select onChange={handleChange}>
-                  <option value="all">Mint Qualified Merchant</option>
+                  <option value="all">MQM</option>
                   <option value={true}>yes</option>
                   <option value={false}>no</option>
                 </select>

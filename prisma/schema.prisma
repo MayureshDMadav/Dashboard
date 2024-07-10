@@ -24,7 +24,7 @@ model User {
   phone       String
   address     String
   merchant    Merchant[]
-  targetForCe TargetForCE?
+  targetForCe Targetforce?
 }
 
 model Merchant {
@@ -76,13 +76,14 @@ model Category {
   name String @unique
 }
 
-model TargetForCE {
-  id            Int    @id @default(autoincrement())
-  startDate     String @default("NA")
-  endDate       String @default("NA")
-  merchantTotal Int    @default(0)
-  bookedArr     String @default("NA")
-  expectedArr   String @default("NA")
-  userId        Int    @unique
-  user          User   @relation(fields: [userId], references: [id])
+model Targetforce {
+  id            Int      @id @default(autoincrement())
+  startDate     String   @default("NA")
+  endDate       String   @default("NA")
+  merchantTotal Int      @default(0)
+  weeklyTarget  String[] @default([])
+  bookedArr     String   @default("NA")
+  expectedArr   String   @default("NA")
+  userId        Int      @unique
+  user          User     @relation(fields: [userId], references: [id])
 }

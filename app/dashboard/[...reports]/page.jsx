@@ -11,7 +11,6 @@ const Reports = async ({searchParams}) => {
   let premiumData;  
   
   if(start && endDate && mode ){
-    console.log("params found")
     const {merchants,status} = await getGoLiveMerchantsByDateRange(start,endDate,mode,user);
     if(status){
       const response =   await filterAllTheMerchant(merchants);
@@ -21,7 +20,6 @@ const Reports = async ({searchParams}) => {
   }
 
   if(Object.values(searchParams).length === 0){
-    console.log("params not found")
     const {merchantList,status} = await getAllMerchantsList(user);
     if(status){
       const response = await filterAllTheMerchant(merchantList);
@@ -32,8 +30,6 @@ const Reports = async ({searchParams}) => {
 
 
 
-//  const {smbData, entData, emergingData} = await ;
-  // const preiumData = smbData?.concat(entData);  
   
   return (
     <div className={styles.container}>

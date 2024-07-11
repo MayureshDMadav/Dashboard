@@ -307,7 +307,7 @@ export const getGoLiveMerchantsByDateRange = async (
         include: { user: true },
       });
 
-      revalidatePath("/dashboard/reports/customize");
+      revalidatePath("/dashboard/reports");
       return { merchants, status: 200 };
     } catch (error) {
       console.log(error);

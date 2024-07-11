@@ -57,3 +57,40 @@
   .logout:hover{
     background-color: #2e374a;
   }
+
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .item:hover{
+    background-color: #2e374a;
+  }
+  
+
+  .subList {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .subList  a{
+    padding: 15px;
+    margin-left:1rem ;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .title {
+    flex: 1;
+  }

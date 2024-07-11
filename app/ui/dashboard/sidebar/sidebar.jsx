@@ -11,6 +11,8 @@ import {
   MdDashboardCustomize,
   MdReport,
   MdOutlineAppRegistration,
+  MdOtherHouses,
+  MdOutbound,
 } from "react-icons/md";
 import { auth } from "@/app/auth";
 import { useSignOut } from "@/app/authentication";
@@ -37,17 +39,24 @@ const menuItems = [
     ],
   },
   {
-    title: "Reports",
+    title: "Analytics",
     list: [
       {
         title: "Customized",
-        path: "/dashboard/reports",
         icon: <MdAnalytics />,
-      },
-      {
-        title: "Target Based",
-        path: "/dashboard/targetbased",
-        icon: <MdReport />,
+        path:"/dashboard/reports",
+        subCategories: [
+          {
+            title: "Shopify",
+            icon:<MdShoppingBag/>,
+            path: "/dashboard/reports/shopify",
+          },
+          {
+            title: "Others",
+            icon:<MdOutbound/>,
+            path: "/dashboard/reports/others",
+          },
+        ],
       },
     ],
   },
@@ -76,15 +85,23 @@ const menuItems = [
 const SideBar = async () => {
   const session = await auth();
 
-  //Handling Menu On the basis Of Users
+  // Handling Menu On the basis Of Users
   const filteredMenuItems = menuItems
     .map((category) => ({
       ...category,
-      list: category.list.filter((item) =>
-        !session.user.isAdmin
-          ? item.title !== "Users" &&  item.title !== "Set User Target" && item.title !== "Customized" && item.title !== "Target Based"  && item.title !== "Settings" && item.title !== "Customize"
-           : item
-      ),
+      list: category.list.filter((item) => {
+        if (!session.user.isAdmin) {
+          return (
+            item.title !== "Users" &&
+            item.title !== "Set User Target" &&
+            item.title !== "Customized" &&
+            item.title !== "Target Based" &&
+            item.title !== "Settings" &&
+            item.title !== "Customize"
+          );
+        }
+        return true;
+      }),
     }))
     .filter((category) => category.list.length > 0);
 
@@ -100,7 +117,7 @@ const SideBar = async () => {
         />
         <div className={styles.userDetail}>
           <span className={styles.username}>
-            {session?.user?.username ? session?.user?.username : "Unknow"}
+            {session?.user?.username ? session?.user?.username : "Unknown"}
           </span>
           <span className={styles.userTitle}>
             {session?.user?.isAdmin ? "Admin" : "User"}
@@ -112,7 +129,20 @@ const SideBar = async () => {
           <li key={cat.title}>
             <span className={styles.cat}>{cat.title}</span>
             {cat.list.map((item) => (
-              <MenuLink item={item} key={item.title} />
+              <div key={item.title}>
+                {item.subCategories ? (
+                  <div>
+                    <MenuLink item={item} />
+                    <ul className={styles.subList}>
+                      {item.subCategories.map((subItem) => (
+                        <MenuLink item={subItem} key={subItem.title} />
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <MenuLink item={item} />
+                )}
+              </div>
             ))}
           </li>
         ))}

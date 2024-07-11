@@ -11,3 +11,20 @@
   .active {
     background-color: #2e374a;
   }
+  .subItem {
+    padding-left: 30px;
+    font-size: 12px;
+  }
+
+  .subItem .title {
+    font-size: 12px;
+  }
+  
+  /* Icon styles */
+  .container svg {
+    font-size: 18px;
+  }
+  
+  .subItem svg {
+    font-size: 14px;
+  }

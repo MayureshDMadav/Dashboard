@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./livemerchant.module.css";
 import { uniqueDataHandlerArry } from "@/backend/backendservice";
 
-const LiveMerchant = ({ merchantData, mode }) => {
+const LiveMerchant = ({merchantData, mode, type }) => {
   const [merchants, setMerchants] = useState(
     merchantData.length > 0 ? merchantData : []
   );
@@ -47,12 +47,43 @@ const LiveMerchant = ({ merchantData, mode }) => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue == "category") {
+      let filteredMerchants = merchantData;
+      setMerchants(filteredMerchants);
+    }
+    if (selectedValue == "SMB") {
+      let filteredMerchants = merchantData.filter(
+        (data) => data.category === "SMB"
+      );
+      setMerchants(filteredMerchants);
+    }
+    if (selectedValue == "ENT") {
+      let filteredMerchants = merchantData.filter(
+        (data) => data.category === "ENT"
+      );
+      setMerchants(filteredMerchants);
+    }
+    setCurrentPage(1);
+  };
   return (
     <div className={styles.contianer}>
       <details className={styles.details}>
         <summary className={styles.header}>
           {mode && (
-              <h4>{mode}</h4>
+            <div className={styles.innerContent}>
+              <h4> {mode} </h4>
+              {type === "smbent" && (
+                <span className={styles.category}>
+                  <select onChange={handleChange}>
+                    <option value="category">Cateogry</option>
+                    <option value="SMB">SMB</option>
+                    <option value="ENT">ENT</option>
+                  </select>
+                </span>
+              )}
+            </div>
           )}
         </summary>
         {merchants.length > 0 ? (

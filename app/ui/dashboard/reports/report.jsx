@@ -5,18 +5,20 @@ import {
 } from "@/backend/backendservice";
 import PendingMerchants from "./pendingmerchants";
 import styles from "./report.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LiveMerchant from "./livemerchant";
-import ExpectedArrChart from "./charts/expectedArr";
-import MQMDetailedChart from "./charts/mqmchart";
 import CalendarInput from "../calendar/calendar";
+import { ReportComponentProvider } from "@/app/component/contextProvider";
+import Popup from "reactjs-popup";
+import { PreviewPopup } from "./preview/preview";
 
 const Report = ({ smbEntMerchant, emergingMerchant }) => {
+  const reportRef = useRef(null);
   const [smbEnt, setSmbEnt] = useState([]);
   const [emerging, setEmerging] = useState([]);
   const [smbEntPending, setSmbEntPending] = useState([]);
   const [emergingPending, setEmergingPending] = useState([]);
-  let merjeData = smbEntMerchant?.concat(emergingMerchant);
+
   //For Go Live Merchant Filtering
   async function merchantByGolive(data, mode) {
     try {
@@ -67,33 +69,38 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
 
   return (
     <div className={styles.container}>
-      <CalendarInput/>
-      <div className={styles.chartContainer}>
-        <div className={styles.chart}>
-          <ExpectedArrChart data={merjeData} />
-        </div>
-        <div className={styles.chart}>
-          <MQMDetailedChart data={merjeData} />
-        </div>
-      </div>
+      <CalendarInput />
+      <Popup
+        trigger={<button className={styles.button}> View</button>}
+        position="center center"
+        style={{ width: "auto" }}
+      >
 
-      <LiveMerchant
-        merchantData={smbEnt}
-        mode={"Live Merchants in SMB / ENT"}
-      />
-      <PendingMerchants
-        merchantData={smbEntPending}
-        mode={"WIP Merchants in SMB / ENT"}
-      />
-      <LiveMerchant
-        merchantData={emerging}
-        mode={"Live Merchants in EMERGING"}
-      />
-      <PendingMerchants
-        merchantData={emergingPending}
-        mode={"WIP Merchants in EMERGING"}
-      />
-    </div>
+      </Popup>
+           <div className={styles.chartContainer}>
+            <div className={styles.chart}></div>
+            <div className={styles.chart}></div>
+          </div>
+
+          <LiveMerchant
+            merchantData={smbEnt}
+            mode={"Live Merchants in SMB / ENT"}
+            type="smbent"
+          />
+          <PendingMerchants
+            merchantData={smbEntPending}
+            mode={"WIP Merchants in SMB / ENT"}
+            type="smbent"
+          />
+          <LiveMerchant
+            merchantData={emerging}
+            mode={"Live Merchants in EMERGING"}
+          />
+          <PendingMerchants
+            merchantData={emergingPending}
+            mode={"WIP Merchants in EMERGING"}
+          />
+        </div>
   );
 };
 

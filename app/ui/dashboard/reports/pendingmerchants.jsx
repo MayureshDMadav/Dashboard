@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import styles from "./pendingmerchants.module.css";
 import { uniqueDataHandlerArry } from "@/backend/backendservice";
 
-const PendingMerchants = ({ merchantData, mode }) => {
+const PendingMerchants = ({ merchantData, mode, type }) => {
   const [merchants, setMerchants] = useState(merchantData);
   const [expArr, setExpArr] = useState(null);
+  const [filters, setFilters] = useState({ mqm: "all", category: "all" });
   const [platformData, setPlatformData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [merchantState, setMerchantState] = useState([]);
@@ -12,19 +13,54 @@ const PendingMerchants = ({ merchantData, mode }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
+  useEffect(() => {
+    if (merchantData && merchantData.length > 0) {
+      applyFilters(filters);
+    }
+  }, [merchantData]);
+
   const handleChange = (e) => {
     const selectedValue = e.target.value;
-    if (selectedValue == "all") {
-      setMerchants(merchantData);
+    setFilters((prevFilters) => ({ ...prevFilters, mqm: selectedValue }));
+    applyFilters({ ...filters, mqm: selectedValue });
+  };
+
+  const handleCategoryChange = (e) => {
+    const selectedValue = e.target.value;
+    setFilters((prevFilters) => ({ ...prevFilters, category: selectedValue }));
+    applyFilters({ ...filters, category: selectedValue });
+  };
+
+  const applyFilters = (currentFilters) => {
+    let filteredMerchants = merchantData;
+
+    if (currentFilters.mqm === "true") {
+      filteredMerchants = filteredMerchants.filter(
+        (data) =>
+          data.mqm === true && (data.livedate === "NA" || data.livedate === "")
+      );
+    } else if (currentFilters.mqm === "false") {
+      filteredMerchants = filteredMerchants.filter(
+        (data) =>
+          data.mqm === false && (data.livedate === "NA" || data.livedate === "")
+      );
+    } else {
+      filteredMerchants = filteredMerchants.filter(
+        (data) => data.livedate === "NA" || data.livedate === ""
+      );
     }
-    if (selectedValue == "true") {
-      let filteredMerchants = merchantData.filter((data) => data.mqm === true);
-      setMerchants(filteredMerchants);
+
+    if (currentFilters.category === "SMB") {
+      filteredMerchants = filteredMerchants.filter(
+        (data) => data.category === "SMB"
+      );
+    } else if (currentFilters.category === "ENT") {
+      filteredMerchants = filteredMerchants.filter(
+        (data) => data.category === "ENT"
+      );
     }
-    if (selectedValue == "false") {
-      let filteredMerchants = merchantData.filter((data) => data.mqm === false);
-      setMerchants(filteredMerchants);
-    }
+
+    setMerchants(filteredMerchants);
     setCurrentPage(1);
   };
 
@@ -60,8 +96,6 @@ const PendingMerchants = ({ merchantData, mode }) => {
     setExpArr(totalValue);
   }, [merchants]);
 
-
-
   const indexOfLastMerchant = currentPage * itemsPerPage;
   const indexOfFirstMerchant = indexOfLastMerchant - itemsPerPage;
   const currentMerchants = merchants.slice(
@@ -76,7 +110,7 @@ const PendingMerchants = ({ merchantData, mode }) => {
       <details className={styles.details}>
         <summary className={styles.header}>
           {mode && (
-            <div className={styles.innerContent} >
+            <div className={styles.innerContent}>
               <h4> {mode} </h4>
               <span className={styles.mqmContainer}>
                 <select onChange={handleChange}>
@@ -85,6 +119,15 @@ const PendingMerchants = ({ merchantData, mode }) => {
                   <option value={false}>no</option>
                 </select>
               </span>
+              {type === "smbent" && (
+                <span className={styles.mqmContainer}>
+                  <select onChange={handleCategoryChange}>
+                    <option value="all">category</option>
+                    <option value="SMB">SMB</option>
+                    <option value="ENT">ENT</option>
+                  </select>
+                </span>
+              )}
             </div>
           )}
         </summary>

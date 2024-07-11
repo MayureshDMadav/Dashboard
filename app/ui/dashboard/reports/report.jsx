@@ -3,17 +3,16 @@ import {
   filterMerchantByGolive,
   filterMerchantByPending,
 } from "@/backend/backendservice";
-import PendingMerchants from "./pendingmerchants";
+import PendingMerchants from "./subcomponents/pendingmerchants";
 import styles from "./report.module.css";
 import { useEffect, useRef, useState } from "react";
-import LiveMerchant from "./livemerchant";
+import LiveMerchant from "./subcomponents/livemerchant";
 import CalendarInput from "../calendar/calendar";
-import { ReportComponentProvider } from "@/app/component/contextProvider";
 import Popup from "reactjs-popup";
-import { PreviewPopup } from "./preview/preview";
+import { ReportContext } from "@/app/component/contextProvider";
+import { MainSubComponent } from "./subcomponents/mainsubcomponent";
 
 const Report = ({ smbEntMerchant, emergingMerchant }) => {
-  const reportRef = useRef(null);
   const [smbEnt, setSmbEnt] = useState([]);
   const [emerging, setEmerging] = useState([]);
   const [smbEntPending, setSmbEntPending] = useState([]);
@@ -67,40 +66,40 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
     } catch (e) {}
   }, [emergingMerchant]);
 
+  const contextValues = {
+    smbEnt,
+    smbEntPending,
+    emerging,
+    emergingPending,
+    styles,
+  };
+
   return (
-    <div className={styles.container}>
-      <CalendarInput />
-      <Popup
-        trigger={<button className={styles.button}> View</button>}
-        position="center center"
-        style={{ width: "auto" }}
-      >
-
-      </Popup>
-           <div className={styles.chartContainer}>
-            <div className={styles.chart}></div>
-            <div className={styles.chart}></div>
+    <ReportContext.Provider value={contextValues}>
+      <div className={styles.container}>
+        <div className={styles.childElement}>
+          <div className={styles.popElem}>
+            <CalendarInput />
           </div>
-
-          <LiveMerchant
-            merchantData={smbEnt}
-            mode={"Live Merchants in SMB / ENT"}
-            type="smbent"
-          />
-          <PendingMerchants
-            merchantData={smbEntPending}
-            mode={"WIP Merchants in SMB / ENT"}
-            type="smbent"
-          />
-          <LiveMerchant
-            merchantData={emerging}
-            mode={"Live Merchants in EMERGING"}
-          />
-          <PendingMerchants
-            merchantData={emergingPending}
-            mode={"WIP Merchants in EMERGING"}
-          />
+          <div className={styles.popElem}>
+            <Popup
+              trigger={<button className={styles.popupButton}>Preview</button>}
+              position="center"
+              style={{ width: "100%" }}
+            >
+              <div className={styles.popup}>
+                <MainSubComponent
+                  openDetail={"open"}
+                  enablePagination={false}
+                />
+              </div>
+            </Popup>
+          </div>
         </div>
+
+        <MainSubComponent openDetail={""} enablePagination={true} />
+      </div>
+    </ReportContext.Provider>
   );
 };
 

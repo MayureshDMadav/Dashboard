@@ -1,73 +1,19 @@
 import { useEffect, useState } from "react";
-import styles from "./pendingmerchants.module.css";
 import { uniqueDataHandlerArry } from "@/backend/backendservice";
 
-const PendingMerchants = ({ merchantData, mode, type }) => {
-  const [merchants, setMerchants] = useState(merchantData);
+const LiveMerchant = ({ merchantData, mode, type, styles, details, enablePagination }) => {
+  const [merchants, setMerchants] = useState(
+    merchantData.length > 0 ? merchantData : []
+  );
   const [expArr, setExpArr] = useState(null);
-  const [filters, setFilters] = useState({ mqm: "all", category: "all" });
   const [platformData, setPlatformData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
-  const [merchantState, setMerchantState] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
   useEffect(() => {
-    if (merchantData && merchantData.length > 0) {
-      applyFilters(filters);
-    }
-  }, [merchantData]);
-
-  const handleChange = (e) => {
-    const selectedValue = e.target.value;
-    setFilters((prevFilters) => ({ ...prevFilters, mqm: selectedValue }));
-    applyFilters({ ...filters, mqm: selectedValue });
-  };
-
-  const handleCategoryChange = (e) => {
-    const selectedValue = e.target.value;
-    setFilters((prevFilters) => ({ ...prevFilters, category: selectedValue }));
-    applyFilters({ ...filters, category: selectedValue });
-  };
-
-  const applyFilters = (currentFilters) => {
-    let filteredMerchants = merchantData;
-
-    if (currentFilters.mqm === "true") {
-      filteredMerchants = filteredMerchants.filter(
-        (data) =>
-          data.mqm === true && (data.livedate === "NA" || data.livedate === "")
-      );
-    } else if (currentFilters.mqm === "false") {
-      filteredMerchants = filteredMerchants.filter(
-        (data) =>
-          data.mqm === false && (data.livedate === "NA" || data.livedate === "")
-      );
-    } else {
-      filteredMerchants = filteredMerchants.filter(
-        (data) => data.livedate === "NA" || data.livedate === ""
-      );
-    }
-
-    if (currentFilters.category === "SMB") {
-      filteredMerchants = filteredMerchants.filter(
-        (data) => data.category === "SMB"
-      );
-    } else if (currentFilters.category === "ENT") {
-      filteredMerchants = filteredMerchants.filter(
-        (data) => data.category === "ENT"
-      );
-    }
-
-    setMerchants(filteredMerchants);
-    setCurrentPage(1);
-  };
-
-  useEffect(() => {
-    if (merchantData && merchantData.length > 0) {
-      setMerchants(merchantData);
-    }
+    setMerchants(merchantData.length > 0 ? merchantData : []);
   }, [merchantData]);
 
   useEffect(() => {
@@ -83,13 +29,8 @@ const PendingMerchants = ({ merchantData, mode, type }) => {
       try {
         const platformData = await uniqueDataHandlerArry(merchants, "platform");
         const categoryData = await uniqueDataHandlerArry(merchants, "category");
-        const merchantState = await uniqueDataHandlerArry(
-          merchants,
-          "merchantstate"
-        );
         setPlatformData(platformData);
         setCategoryData(categoryData);
-        setMerchantState(merchantState);
       } catch (e) {}
     }
     fetchDataFromApi();
@@ -98,42 +39,54 @@ const PendingMerchants = ({ merchantData, mode, type }) => {
 
   const indexOfLastMerchant = currentPage * itemsPerPage;
   const indexOfFirstMerchant = indexOfLastMerchant - itemsPerPage;
-  const currentMerchants = merchants.slice(
-    indexOfFirstMerchant,
-    indexOfLastMerchant
-  );
+  const currentMerchants = enablePagination 
+    ? merchants.slice(indexOfFirstMerchant, indexOfLastMerchant)
+    : merchants;
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue == "category") {
+      let filteredMerchants = merchantData;
+      setMerchants(filteredMerchants);
+    }
+    if (selectedValue == "SMB") {
+      let filteredMerchants = merchantData.filter(
+        (data) => data.category === "SMB"
+      );
+      setMerchants(filteredMerchants);
+    }
+    if (selectedValue == "ENT") {
+      let filteredMerchants = merchantData.filter(
+        (data) => data.category === "ENT"
+      );
+      setMerchants(filteredMerchants);
+    }
+    setCurrentPage(1);
+  };
+
   return (
     <div className={styles.contianer}>
-      <details className={styles.details}>
-        <summary className={styles.header}>
-          {mode && (
-            <div className={styles.innerContent}>
-              <h4> {mode} </h4>
-              <span className={styles.mqmContainer}>
-                <select onChange={handleChange}>
-                  <option value="all">MQM</option>
-                  <option value={true}>yes</option>
-                  <option value={false}>no</option>
-                </select>
-              </span>
-              {type === "smbent" && (
-                <span className={styles.mqmContainer}>
-                  <select onChange={handleCategoryChange}>
-                    <option value="all">category</option>
-                    <option value="SMB">SMB</option>
-                    <option value="ENT">ENT</option>
-                  </select>
-                </span>
-              )}
-            </div>
-          )}
-        </summary>
-
-        {merchants.length > 0 ? (
-          <div className={styles.tableContent}>
+      {merchants.length > 0 && (
+        <details className={styles.details} open={details}>
+          <summary className={styles.header}>
+            {mode && (
+              <div className={styles.innerContent}>
+                <h4> {mode} </h4>
+                {type === "smbent" && (
+                  <span className={styles.category}>
+                    <select onChange={handleChange}>
+                      <option value="category">Cateogry</option>
+                      <option value="SMB">SMB</option>
+                      <option value="ENT">ENT</option>
+                    </select>
+                  </span>
+                )}
+              </div>
+            )}
+          </summary>
+          {merchants.length > 0 ? (
             <div className={styles.table}>
               <table>
                 <thead>
@@ -161,6 +114,7 @@ const PendingMerchants = ({ merchantData, mode, type }) => {
                     <td>{expArr}</td>
                   </tr>
                 </tbody>
+                {enablePagination && (
                 <div className={styles.pagination}>
                   {Array.from(
                     { length: Math.ceil(merchants.length / itemsPerPage) },
@@ -177,7 +131,10 @@ const PendingMerchants = ({ merchantData, mode, type }) => {
                     )
                   )}
                 </div>
+              )}
+
               </table>
+
               <table>
                 <thead>
                   <tr>
@@ -229,39 +186,13 @@ const PendingMerchants = ({ merchantData, mode, type }) => {
                 </tbody>
               </table>
             </div>
-            <div className={styles.table}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Merchants State</th>
-                    <th>#Merchant</th>
-                    <th>Expected Arr</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {merchantState.length > 0 &&
-                    merchantState.map((data, index) => (
-                      <tr key={index}>
-                        <td>{data.platform}</td>
-                        <td>{data.merchantCount}</td>
-                        <td>{data.expectedarr}</td>
-                      </tr>
-                    ))}
-                  <tr className={styles.grandTotal}>
-                    <td>Grand Total</td>
-                    <td>{merchants.length}</td>
-                    <td>{expArr}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ) : (
-          "No Data To Display"
-        )}
-      </details>
+          ) : (
+            "No Data To Display"
+          )}
+        </details>
+      )}
     </div>
   );
 };
 
-export default PendingMerchants;
+export default LiveMerchant;

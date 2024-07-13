@@ -12,9 +12,12 @@ const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePag
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
+
   useEffect(() => {
     if (merchantData && merchantData.length > 0) {
       applyFilters(filters);
+    }else{
+      applyFilters([])
     }
   }, [merchantData]);
 
@@ -36,17 +39,15 @@ const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePag
     if (currentFilters.mqm === "true") {
       filteredMerchants = filteredMerchants.filter(
         (data) =>
-          data.mqm === true && (data.livedate === "NA" || data.livedate === "")
+          data.mqm === true
       );
     } else if (currentFilters.mqm === "false") {
       filteredMerchants = filteredMerchants.filter(
         (data) =>
-          data.mqm === false && (data.livedate === "NA" || data.livedate === "")
+          data.mqm === false
       );
     } else {
-      filteredMerchants = filteredMerchants.filter(
-        (data) => data.livedate === "NA" || data.livedate === ""
-      );
+      filteredMerchants = filteredMerchants
     }
 
     if (currentFilters.category === "SMB") {

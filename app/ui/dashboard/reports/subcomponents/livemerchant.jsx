@@ -3,7 +3,7 @@ import { uniqueDataHandlerArry } from "@/backend/backendservice";
 
 const LiveMerchant = ({ merchantData, mode, type, styles, details, enablePagination }) => {
   const [merchants, setMerchants] = useState(
-    merchantData.length > 0 ? merchantData : []
+    merchantData?.length > 0 ? merchantData : []
   );
   const [expArr, setExpArr] = useState(null);
   const [platformData, setPlatformData] = useState([]);
@@ -13,7 +13,7 @@ const LiveMerchant = ({ merchantData, mode, type, styles, details, enablePaginat
   const [itemsPerPage] = useState(5);
 
   useEffect(() => {
-    setMerchants(merchantData.length > 0 ? merchantData : []);
+    setMerchants(merchantData?.length > 0 ? merchantData : []);
   }, [merchantData]);
 
   useEffect(() => {

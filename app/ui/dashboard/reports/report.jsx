@@ -51,6 +51,9 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
       if (smbEntMerchant.length > 0) {
         merchantByGolive(smbEntMerchant, "smb");
         merchantByPending(smbEntMerchant, "smb");
+      }else{
+        setSmbEnt([])
+        setSmbEntPending([])
       }
     } catch (e) {}
   }, [smbEntMerchant]);
@@ -60,6 +63,9 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
       if (emergingMerchant.length > 0) {
         merchantByGolive(emergingMerchant, "longtail");
         merchantByPending(emergingMerchant, "longtail");
+      }else{
+        setEmerging([])
+        setEmergingPending([])
       }
     } catch (e) {}
   }, [emergingMerchant]);
@@ -71,6 +77,8 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
     emergingPending,
     styles,
   };
+
+
 
   return (
     <ReportContext.Provider value={contextValues}>

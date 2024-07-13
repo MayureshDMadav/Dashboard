@@ -1,12 +1,9 @@
 import Report from "@/app/ui/dashboard/reports/report";
 import {
   filterAllTheMerchant,
-  filterMerchantByGolive,
-  filterMerchantByPending,
 } from "@/backend/backendservice";
 import {
   getAllMerchantsList,
-  getGoLiveMerchantsByDateRange,
   getMerchantDataByDateRangeOnMultipleField,
 } from "@/backend/query";
 import styles from "@/app/ui/dashboard/reports/report.module.css";
@@ -19,6 +16,7 @@ const Reports = async ({ searchParams }) => {
   let premiumData;
 
   if (start && endDate && mode) {
+    console.log("first functino called")
     const { merchants, status } =
       await getMerchantDataByDateRangeOnMultipleField(
         start,
@@ -35,6 +33,7 @@ const Reports = async ({ searchParams }) => {
   }
 
   if (Object?.values(searchParams).length === 0) {
+    console.log("second functino called")
     const { merchantList, status } = await getAllMerchantsList(user);
     if (status) {
       const response = await filterAllTheMerchant(merchantList);
@@ -43,11 +42,12 @@ const Reports = async ({ searchParams }) => {
     }
   }
 
+
   return (
     <div className={styles.container}>
       <Report
         smbEntMerchant={premiumData}
-        emergingMerchant={merchantData?.emergingData}
+        emergingMerchant={merchantData ? merchantData?.emergingData : [] }
       />
     </div>
   );

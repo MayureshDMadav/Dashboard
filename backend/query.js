@@ -371,8 +371,6 @@ export const getMerchantDataByDateRangeOnMultipleField = async (
         merchants = merchants
           .concat(pendingMerchant || [])
           .concat(liveMerchant || []);
-
-        revalidatePath("/dashboard/reports");
       } else {
         merchants = await prismaClient.merchant.findMany({
           where: {
@@ -384,14 +382,11 @@ export const getMerchantDataByDateRangeOnMultipleField = async (
           },
           include: { user: true },
         });
-
-        revalidatePath("/dashboard/reports/customize");
       }
     });
-
+    revalidatePath("/dashboard/reports")
     return { merchants, status: 200 };
   } catch (error) {
-    console.log(error);
     return { status: 500, description: "something went wrong" };
   }
 };

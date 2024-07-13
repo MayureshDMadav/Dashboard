@@ -3,21 +3,20 @@ import React, { useEffect, useState } from "react";
 import styles from "./calendar.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const CalendarInput = ({mode}) => {
+const CalendarInput = ({ mode }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [customStartDate, setCustomStartDate] = useState("");
   const [customEndDate, setCustomEndDate] = useState("");
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
-  const [currentMode , setMode] = useState(null)
+  const [currentMode, setMode] = useState(null);
 
-  useEffect(()=>{
-    if(mode){
-      setMode(mode)
+  useEffect(() => {
+    if (mode) {
+      setMode(mode);
     }
-  },[mode])
-
+  }, [mode]);
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
@@ -65,7 +64,10 @@ const CalendarInput = ({mode}) => {
     if (startDate && endDate) {
       params.set("start", startDate);
       params.set("endDate", endDate);
-      params.set("mode", `${!currentMode ? `["kickoff","livedate"]` :currentMode }`);
+      params.set(
+        "mode",
+        `${!currentMode ? `["kickoff","livedate"]` : currentMode}`
+      );
       replace(`${pathname}?${decodeURIComponent(params)}`);
     }
   };
@@ -81,10 +83,10 @@ const CalendarInput = ({mode}) => {
   };
 
   const getLastMonthRange = () => {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1);
-    startDate.setDate(1);
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+
     return [
       startDate.toISOString().split("T")[0],
       endDate.toISOString().split("T")[0],
@@ -93,7 +95,7 @@ const CalendarInput = ({mode}) => {
 
   const getCurrentMonthRange = () => {
     const endDate = new Date();
-    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1); 
+    const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
     return [
       startDate.toISOString().split("T")[0],
       endDate.toISOString().split("T")[0],
@@ -101,19 +103,24 @@ const CalendarInput = ({mode}) => {
   };
 
   const getLastWeekRange = () => {
-    const endDate = new Date(); // Today
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 7); // One week ago
+    const now = new Date();
+    const today = now.getDay();
+    const lastSaturday = new Date(now.setDate(now.getDate() - today - 1));
+    const lastSunday = new Date(now.setDate(now.getDate() - 6));
+    
     return [
-      startDate.toISOString().split("T")[0],
-      endDate.toISOString().split("T")[0],
+      lastSunday.toISOString().split("T")[0],
+      lastSaturday.toISOString().split("T")[0],
     ];
   };
 
   const getCurrentWeekRange = () => {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - startDate.getDay() - 6);
+    const now = new Date();
+    const endDate = new Date(now);
+    const startDate = new Date(now);
+    startDate.setDate(startDate.getDate() - startDate.getDay());
+    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
+
     return [
       startDate.toISOString().split("T")[0],
       endDate.toISOString().split("T")[0],

@@ -65,8 +65,8 @@ const CalendarInput = ({mode}) => {
     if (startDate && endDate) {
       params.set("start", startDate);
       params.set("endDate", endDate);
-      params.set("mode", `${!currentMode ? "kickoff" :currentMode }`);
-      replace(`${pathname}?${params}`);
+      params.set("mode", `${!currentMode ? `["kickoff","livedate"]` :currentMode }`);
+      replace(`${pathname}?${decodeURIComponent(params)}`);
     }
   };
 

@@ -23,7 +23,6 @@ ChartJS.register(
 
 const MerchantStatusChart = ({ merchantData }) => {
   const [chartData, setChartData] = useState(null);
-  const { smbData, entData, emergingData } = merchantData;
 
   useEffect(() => {
     if (merchantData) {

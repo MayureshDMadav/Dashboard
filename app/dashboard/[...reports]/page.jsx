@@ -7,6 +7,7 @@ import {
 import {
   getAllMerchantsList,
   getGoLiveMerchantsByDateRange,
+  getMerchantDataByDateRangeOnMultipleField,
 } from "@/backend/query";
 import styles from "@/app/ui/dashboard/reports/report.module.css";
 import { auth } from "@/app/auth";
@@ -18,13 +19,15 @@ const Reports = async ({ searchParams }) => {
   let premiumData;
 
   if (start && endDate && mode) {
-    const { merchants, status } = await getGoLiveMerchantsByDateRange(
-      start,
-      endDate,
-      mode,
-      user
-    );
-    if (status) {
+    const { merchants, status } =
+      await getMerchantDataByDateRangeOnMultipleField(
+        start,
+        endDate,
+        JSON.parse(mode),
+        user
+      );
+
+    if (status === 200) {
       const response = await filterAllTheMerchant(merchants);
       merchantData = response;
       premiumData = response?.smbData.concat(response?.entData);

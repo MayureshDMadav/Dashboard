@@ -334,6 +334,68 @@ export const getGoLiveMerchantsByDateRange = async (
   }
 };
 
+// Get Data By Multiple fields
+export const getMerchantDataByDateRangeOnMultipleField = async (
+  startDate,
+  endDate,
+  fieldNames,
+  user
+) => {
+  if (!startDate && !endDate) return { merchants: [], status: 200 };
+
+  try {
+    let merchants = [];
+
+    await prisma.$transaction(async (prismaClient) => {
+      if (user && user.isAdmin) {
+        const pendingMerchant = await prismaClient.merchant.findMany({
+          where: {
+            AND: [
+              { [fieldNames[0]]: { gte: startDate } },
+              { [fieldNames[0]]: { lte: endDate } },
+            ],
+          },
+          include: { user: true },
+        });
+
+        const liveMerchant = await prismaClient.merchant.findMany({
+          where: {
+            AND: [
+              { [fieldNames[1]]: { gte: startDate } },
+              { [fieldNames[1]]: { lte: endDate } },
+            ],
+          },
+          include: { user: true },
+        });
+
+        merchants = merchants
+          .concat(pendingMerchant || [])
+          .concat(liveMerchant || []);
+
+        revalidatePath("/dashboard/reports");
+      } else {
+        merchants = await prismaClient.merchant.findMany({
+          where: {
+            userId: Number.parseInt(user.id),
+            AND: [
+              { [fieldNames[0]]: { gte: startDate } },
+              { [fieldNames[0]]: { lte: endDate } },
+            ],
+          },
+          include: { user: true },
+        });
+
+        revalidatePath("/dashboard/reports/customize");
+      }
+    });
+
+    return { merchants, status: 200 };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, description: "something went wrong" };
+  }
+};
+
 // ======================================== Merchant End ======================================= //
 
 // ======================================= Additional Start ==================================== //

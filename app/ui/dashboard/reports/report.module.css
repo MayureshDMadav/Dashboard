@@ -1,248 +1,250 @@
 .container {
-    border-radius: 10px;
-    background-color: var(--bgSoft);
-    display: flex;
-    width: 100%;
-    margin-top: 1rem;
-    flex-direction: column;
-  }
+  border-radius: 10px;
+  background-color: var(--bgSoft);
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  flex-direction: column;
+}
 
- 
-  .chartContainer {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 2rem;
-    justify-content: center;
-    align-items: center; 
-    margin: 5px;
-  }
-  
-  .chart {
-    flex: 1; 
-    border: 0.2em outset var(--bgSoft);    
-    min-width: 20rem;
-    border-radius: 5px;
-    margin-bottom: 2rem; 
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  .details{
-    cursor: pointer;
-  }  
+.chartContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
 
+.chart {
+  flex: 1;
+  border: 0.2em outset var(--bgSoft);
+  min-width: 20rem;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+}
 
-  .details > summary {
-    list-style: none;
-  }
-  
-  .details > summary::before {
-    content: '+';
-    font-size: 1rem;
-    transition: transform 0.2s;
-  }
-  
-  .details[open] > summary::before {
-    content: '|';
-    font-size: 8px;
-    transform: rotate(90deg);
-  }
+.container {
+  text-align: center;
+}
 
-  .header {
-    width: 100%;
-    color: var(--bgSoft);
-    background-color: var(--textSoft);
-    padding: 0.5rem;
-    display: flex;
-    text-transform: capitalize;
-    font-weight: 600;
-    gap: 2rem;
-    letter-spacing: 0.2em;
-    margin-bottom: 1.5rem;
-  }
+.details {
+  cursor: pointer;
+}
 
-  .mqmContainer{
-    position: relative;
-    justify-self: start;
-  }
+.details > summary {
+  list-style: none;
+}
 
-  .mqmContainer select{
-    border: none;
-    padding: 5px;
-  }
-  
-  .table {
-    display: flex;
-    justify-content: space-between;
-    margin: 1rem;
-    gap: 2rem;
-  }
-  
-  .table table {
-    width: 100%;
-    margin-bottom: auto;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .table th,
-  .table td {
-    padding: 12px;
-    font-size: 12px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: var(--textSoft); 
-    font-weight: bold;
-    color: var(--bgSoft);
-    text-transform: uppercase;
-  }
-  
-  .table tr:nth-child(even) {
-    color: var(--bgSoft);
-    background-color: var(--textSoft); 
-  }
-  
-  .table tr:hover {
-    background-color: #f0f0f0;
-    color: var(--bgSoft); 
-  }
-  
-  .grandTotal{
-    font-size: 18px !important;
-    background-color: darkgreen !important;
-    font-weight: 600 !important;
-    color: white !important;
-    letter-spacing: 0.1em;
-  }
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-  
-  .pagination button {
-    margin: 0 5px;
-    padding: 2px 5px;
-    border: none;
-    background-color: #f8f8f8;
-    cursor: pointer;
-  }
-  
-  .pagination button:hover {
-    background-color: #e8e8e8;
-  }
-  
-  .pagination .activePage {
-    background-color: #007bff;
-    color: white;
-  }
+.details > summary::before {
+  content: "+";
+  font-size: 1rem;
+  transition: transform 0.2s;
+}
 
+.details[open] > summary::before {
+  content: "|";
+  font-size: 8px;
+  transform: rotate(90deg);
+}
 
-  .innerContent{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-  }
+.header {
+  width: 100%;
+  color: var(--bgSoft);
+  background-color: var(--textSoft);
+  padding: 0.5rem;
+  display: flex;
+  text-transform: capitalize;
+  font-weight: 600;
+  gap: 2rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+}
 
-  .category{
-    display: flex;
-  }
-  
-  .category select{
-    border: none;
-    padding: 2px;
-    background-color: transparent;
-    color: var(--bgSoft);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  
-  .category option{
-    background-color: var(--textSoft);
-  }
+.mqmContainer {
+  position: relative;
+  justify-self: start;
+}
 
-  .mqmContainer{
-    display: flex;
-  }
-  
-  .mqmContainer select{
-    border: none;
-    padding: 2px;
-    background-color: transparent;
-    color: var(--bgSoft);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  
-  .mqmContainer option{
-    background-color: var(--textSoft);
-  }
+.mqmContainer select {
+  border: none;
+  padding: 5px;
+}
 
+.table {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+  gap: 2rem;
+}
 
-  .popup {
-    position: fixed;
-    top: 5vh; /* Position 5% from the top of the viewport */
-    left: 50%;
-    transform: translateX(-50%); /* Center horizontally only */
-    width: 90%; /* 90% of viewport width */
-    max-width: 1200px; /* Maximum width, adjust as needed */
-    max-height: 90vh; /* 90% of viewport height */
-    overflow-y: auto; /* Enable vertical scrolling */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 9999999;
-    background-color: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+.table table {
+  width: 100%;
+  margin-bottom: auto;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--textSoft);
+  font-weight: bold;
+  color: var(--bgSoft);
+  text-transform: uppercase;
+}
+
+.table tr:nth-child(even) {
+  color: var(--bgSoft);
+  background-color: var(--textSoft);
+}
+
+.table tr:hover {
+  background-color: #f0f0f0;
+  color: var(--bgSoft);
+}
+
+.grandTotal {
+  font-size: 18px !important;
+  background-color: darkgreen !important;
+  font-weight: 600 !important;
+  color: white !important;
+  letter-spacing: 0.1em;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 2px 5px;
+  border: none;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #e8e8e8;
+}
+
+.pagination .activePage {
+  background-color: #007bff;
+  color: white;
+}
+
+.innerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.category {
+  display: flex;
+}
+
+.category select {
+  border: none;
+  padding: 2px;
+  background-color: transparent;
+  color: var(--bgSoft);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.category option {
+  background-color: var(--textSoft);
+}
+
+.mqmContainer {
+  display: flex;
+}
+
+.mqmContainer select {
+  border: none;
+  padding: 2px;
+  background-color: transparent;
+  color: var(--bgSoft);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mqmContainer option {
+  background-color: var(--textSoft);
+}
+
+.popup {
+  position: fixed;
+  top: 5vh; /* Position 5% from the top of the viewport */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally only */
+  width: 90%; /* 90% of viewport width */
+  max-width: 1200px; /* Maximum width, adjust as needed */
+  max-height: 90vh; /* 90% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999999;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.popup .chart {
+  background: grey;
+  border: none;
 }
 
 .popup table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border: 1px solid #ddd;
-    color: #333;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border: 1px solid #ddd;
+  color: #333;
 }
 
-.popup th, .popup td {
-    padding: 5px; /* Increased padding for better readability */
-    text-align: left;
-    border: 1px solid #ddd;
+.popup th,
+.popup td {
+  padding: 5px; /* Increased padding for better readability */
+  text-align: left;
+  border: 1px solid #ddd;
 }
 
-.popup select{
+.popup select {
   display: none;
 }
 
-.popup details[open] > summary::before{
- content: "";
+.popup details[open] > summary::before {
+  content: "";
 }
 .popup th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 
 .popup h2 {
-    margin-top: 0;
-    margin-bottom: 15px; /* Add some space below the heading */
+  margin-top: 0;
+  margin-bottom: 15px; /* Add some space below the heading */
 }
 
-.childElement{
+.childElement {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.popupButton{
+.popupButton {
   padding: 8px;
   background-color: var(--bgSoft);
   color: white;
@@ -252,4 +254,19 @@
   border: 1px inset wheat;
   border-radius: 5px;
   margin-right: 1rem;
+}
+
+.chartSelect {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin-left: 1.2rem;
+}
+
+.chartSelect select {
+  padding: 5px;
+  border: 1px inset white;
+  border-radius: 4px;
+  background-color: var(--bgSoft);
+  color: white;
 }

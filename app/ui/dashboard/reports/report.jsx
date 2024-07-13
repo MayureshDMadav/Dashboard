@@ -3,10 +3,8 @@ import {
   filterMerchantByGolive,
   filterMerchantByPending,
 } from "@/backend/backendservice";
-import PendingMerchants from "./subcomponents/pendingmerchants";
 import styles from "./report.module.css";
 import { useEffect, useRef, useState } from "react";
-import LiveMerchant from "./subcomponents/livemerchant";
 import CalendarInput from "../calendar/calendar";
 import Popup from "reactjs-popup";
 import { ReportContext } from "@/app/component/contextProvider";

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import { ReportContext } from "@/app/component/contextProvider";
 import LiveMerchant from "./livemerchant";
 import PendingMerchants from "./pendingmerchants";
@@ -6,25 +6,33 @@ import { MerchantStatusPieChart, MqmPieChart } from "../charts/piechart";
 import { MerchantStatusLineChart, MqmLineChart } from "../charts/linechart";
 import { MerchantStatusBarChart, MqmBarChart } from "../charts/barchart";
 
+const ChartComponents = {
+  pie: { Mqm: MqmPieChart, MerchantStatus: MerchantStatusPieChart },
+  line: { Mqm: MqmLineChart, MerchantStatus: MerchantStatusLineChart },
+  bar: { Mqm: MqmBarChart, MerchantStatus: MerchantStatusBarChart },
+};
+
 export const MainSubComponent = ({ openDetail, enablePagination }) => {
   const [chart, setChart] = useState("pie");
-  const { smbEnt, smbEntPending, emerging, emergingPending, styles } =
-    useContext(ReportContext);
+  const { smbEnt, smbEntPending, emerging, emergingPending, styles } = useContext(ReportContext);
 
-  const pendingMerchant = [
+  const pendingMerchant = useMemo(() => [
     ...(emergingPending || []),
     ...(smbEntPending || []),
-  ];
-  const liveNPendingMerchant = [
+  ], [emergingPending, smbEntPending]);
+
+  const liveNPendingMerchant = useMemo(() => [
     ...(smbEnt || []),
     ...(smbEntPending || []),
     ...(emerging || []),
     ...(emergingPending || []),
-  ];
+  ], [smbEnt, smbEntPending, emerging, emergingPending]);
 
-  const handleChartChange = (e) => {
+  const handleChartChange = useCallback((e) => {
     setChart(e.target.value);
-  };
+  }, []);
+
+  const { Mqm: MqmChart, MerchantStatus: MerchantStatusChart } = ChartComponents[chart] || {};
 
   return (
     <>
@@ -37,54 +45,28 @@ export const MainSubComponent = ({ openDetail, enablePagination }) => {
       </div>
       <div className={styles.chartContainer}>
         <div className={styles.chart}>
-          {chart === "pie" ? (
-            <MqmPieChart data={pendingMerchant} />
-          ) : chart === "line" ? (
-            <MqmLineChart data={pendingMerchant} />
-          ) : chart === 'bar'? (
-            <MqmBarChart data={pendingMerchant} />
-          ): ""}
+          {MqmChart && <MqmChart data={pendingMerchant} />}
         </div>
         <div className={styles.chart}>
-          {chart === "pie" ? (
-            <MerchantStatusPieChart data={liveNPendingMerchant} />
-          ) : chart === "line" ? (
-            <MerchantStatusLineChart data={liveNPendingMerchant} />
-          ) : chart === "bar" ? (
-            <MerchantStatusBarChart data={liveNPendingMerchant} />
-          ) : ""}
+          {MerchantStatusChart && <MerchantStatusChart data={liveNPendingMerchant} />}
         </div>
       </div>
-      <LiveMerchant
-        merchantData={smbEnt}
-        mode="Live Merchants in SMB / ENT"
-        type="smbent"
-        styles={styles}
-        details={openDetail}
-        enablePagination={enablePagination}
-      />
-      <PendingMerchants
-        merchantData={smbEntPending}
-        mode="WIP Merchants in SMB / ENT"
-        type="smbent"
-        styles={styles}
-        details={openDetail}
-        enablePagination={enablePagination}
-      />
-      <LiveMerchant
-        merchantData={emerging}
-        mode="Live Merchants in EMERGING"
-        styles={styles}
-        details={openDetail}
-        enablePagination={enablePagination}
-      />
-      <PendingMerchants
-        merchantData={emergingPending}
-        mode="WIP Merchants in EMERGING"
-        styles={styles}
-        details={openDetail}
-        enablePagination={enablePagination}
-      />
+      {[
+        { data: smbEnt, mode: "Live Merchants in SMB / ENT", type: "smbent", Component: LiveMerchant },
+        { data: smbEntPending, mode: "WIP Merchants in SMB / ENT", type: "smbent", Component: PendingMerchants },
+        { data: emerging, mode: "Live Merchants in EMERGING", Component: LiveMerchant },
+        { data: emergingPending, mode: "WIP Merchants in EMERGING", Component: PendingMerchants },
+      ].map(({ data, mode, type, Component }, index) => (
+        <Component
+          key={index}
+          merchantData={data}
+          mode={mode}
+          type={type}
+          styles={styles}
+          details={openDetail}
+          enablePagination={enablePagination}
+        />
+      ))}
     </>
   );
 };

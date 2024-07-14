@@ -16,7 +16,6 @@ const Reports = async ({ searchParams }) => {
   let premiumData;
 
   if (start && endDate && mode) {
-    console.log("first functino called")
     const { merchants, status } =
       await getMerchantDataByDateRangeOnMultipleField(
         start,
@@ -33,7 +32,6 @@ const Reports = async ({ searchParams }) => {
   }
 
   if (Object?.values(searchParams).length === 0) {
-    console.log("second functino called")
     const { merchantList, status } = await getAllMerchantsList(user);
     if (status) {
       const response = await filterAllTheMerchant(merchantList);

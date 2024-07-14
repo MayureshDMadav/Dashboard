@@ -217,7 +217,8 @@ export const paginationForMerchantList = async (
   userName,
   type,
   page,
-  itemsPerPage
+  itemsPerPage,
+  user
 ) => {
   const skip = (page - 1) * itemsPerPage;
   const fieldName =
@@ -226,32 +227,65 @@ export const paginationForMerchantList = async (
       : type === "text"
       ? "merchantname"
       : "cename";
-  try {
-    const [count, merchantData] = await prisma.$transaction([
-      prisma.merchant.count({
-        where: {
-          [fieldName]: {
-            contains: userName,
-            mode: "insensitive",
+
+  if (user && user.isAdmin) {
+    try {
+      const [count, merchantData] = await prisma.$transaction([
+        prisma.merchant.count({
+          where: {
+            [fieldName]: {
+              contains: userName,
+              mode: "insensitive",
+            },
           },
-        },
-      }),
-      prisma.merchant.findMany({
-        where: {
-          [fieldName]: {
-            contains: userName,
-            mode: "insensitive",
+        }),
+        prisma.merchant.findMany({
+          where: {
+            [fieldName]: {
+              contains: userName,
+              mode: "insensitive",
+            },
           },
-        },
-        include: { user: true },
-        take: itemsPerPage,
-        skip: skip,
-      }),
-    ]);
-    return { merchantData, status: 200, count };
-  } catch (e) {
-    console.error(e);
-    return { error: 500, description: "something went wrong" };
+          include: { user: true },
+          take: itemsPerPage,
+          skip: skip,
+        }),
+      ]);
+      return { merchantData, status: 200, count };
+    } catch (e) {
+      console.error(e);
+      return { error: 500, description: "something went wrong" };
+    }
+  }
+
+  if (!user.isAdmin) {
+    try {
+      const [count, merchantData] = await prisma.$transaction([
+        prisma.merchant.count({
+          where: {
+            [fieldName]: {
+              contains: user.username,
+              mode: "insensitive",
+            },
+          },
+        }),
+        prisma.merchant.findMany({
+          where: {
+            [fieldName]: {
+              contains: user.username,
+              mode: "insensitive",
+            },
+          },
+          include: { user: true },
+          take: itemsPerPage,
+          skip: skip,
+        }),
+      ]);
+      return { merchantData, status: 200, count };
+    } catch (e) {
+      console.error(e);
+      return { error: 500, description: "something went wrong" };
+    }
   }
 };
 // Update Data By Merchant Id
@@ -280,6 +314,100 @@ export const getMerchantById = async (merchantId) => {
     });
 
     return merchant;
+  } catch (e) {
+    console.log(e);
+    return { error: 500, description: "something went wrong" };
+  }
+};
+
+//Get Data By Platform and Date Range
+export const getMerchantByPlatformAndDateRange = async (
+  startDate,
+  endDate,
+  fieldNames,
+  platform
+) => {
+  try {
+    let merchants = [];
+    if (platform == "shopify") {
+      if (!startDate && !endDate) {
+        merchants = await prisma.merchant.findMany({
+          where: {
+            platform: platform,
+          },
+          include: { user: true },
+        });
+      }
+
+      if (startDate && endDate) {
+        await prisma.$transaction(async (prismaClient) => {
+          const pendingMerchant = await prismaClient.merchant.findMany({
+            where: {
+              platform: platform,
+              AND: [
+                { [fieldNames[0]]: { gte: startDate } },
+                { [fieldNames[0]]: { lte: endDate } },
+              ],
+            },
+          });
+
+          const liveMerchant = await prismaClient.merchant.findMany({
+            where: {
+              platform: platform,
+              AND: [
+                { [fieldNames[1]]: { gte: startDate } },
+                { [fieldNames[1]]: { lte: endDate } },
+              ],
+            },
+          });
+
+          merchants = merchants
+            .concat(pendingMerchant || [])
+            .concat(liveMerchant || []);
+        });
+      }
+    }
+
+    if (platform == "nonshopify") {
+      if (!startDate && !endDate) {
+        merchants = await prisma.merchant.findMany({
+          where: {
+            platform: { not: "shopify" },
+          },
+          include: { user: true },
+        });
+      }
+
+      if (startDate && endDate) {
+        await prisma.$transaction(async (prismaClient) => {
+          const pendingMerchant = await prismaClient.merchant.findMany({
+            where: {
+              platform: { not: "shopify" },
+              AND: [
+                { [fieldNames[0]]: { gte: startDate } },
+                { [fieldNames[0]]: { lte: endDate } },
+              ],
+            },
+          });
+
+          const liveMerchant = await prismaClient.merchant.findMany({
+            where: {
+              platform: { not: "shopify" },
+              AND: [
+                { [fieldNames[1]]: { gte: startDate } },
+                { [fieldNames[1]]: { lte: endDate } },
+              ],
+            },
+          });
+
+          merchants = merchants
+            .concat(pendingMerchant || [])
+            .concat(liveMerchant || []);
+        });
+      }
+    }
+
+    return { merchants, status: 200 };
   } catch (e) {
     console.log(e);
     return { error: 500, description: "something went wrong" };
@@ -384,7 +512,7 @@ export const getMerchantDataByDateRangeOnMultipleField = async (
         });
       }
     });
-    revalidatePath("/dashboard/reports")
+    revalidatePath("/dashboard/reports");
     return { merchants, status: 200 };
   } catch (error) {
     return { status: 500, description: "something went wrong" };

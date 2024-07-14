@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { uniqueDataHandlerArry } from "@/backend/backendservice";
 
-const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePagination }) => {
+const PendingMerchants = ({
+  merchantData,
+  mode,
+  type,
+  styles,
+  details,
+  enablePagination,
+}) => {
   const [merchants, setMerchants] = useState(merchantData);
   const [expArr, setExpArr] = useState(null);
   const [filters, setFilters] = useState({ mqm: "all", category: "all" });
@@ -12,12 +19,11 @@ const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePag
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
-
   useEffect(() => {
     if (merchantData && merchantData.length > 0) {
       applyFilters(filters);
-    }else{
-      applyFilters([])
+    } else {
+      applyFilters([]);
     }
   }, [merchantData]);
 
@@ -37,17 +43,13 @@ const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePag
     let filteredMerchants = merchantData;
 
     if (currentFilters.mqm === "true") {
-      filteredMerchants = filteredMerchants.filter(
-        (data) =>
-          data.mqm === true
-      );
+      filteredMerchants = filteredMerchants.filter((data) => data.mqm === true);
     } else if (currentFilters.mqm === "false") {
       filteredMerchants = filteredMerchants.filter(
-        (data) =>
-          data.mqm === false
+        (data) => data.mqm === false
       );
     } else {
-      filteredMerchants = filteredMerchants
+      filteredMerchants = filteredMerchants;
     }
 
     if (currentFilters.category === "SMB") {
@@ -164,25 +166,25 @@ const PendingMerchants = ({ merchantData, mode, type, styles, details, enablePag
                     </tr>
                   </tbody>
                   {enablePagination && (
-                  <div className={styles.pagination}>
-                    {Array.from(
-                      { length: Math.ceil(merchants.length / itemsPerPage) },
-                      (_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => paginate(i + 1)}
-                          className={
-                            currentPage === i + 1 ? styles.activePage : ""
-                          }
-                        >
-                          {i + 1}
-                        </button>
-                      )
-                    )}
-                  </div>
-                )}
+                    <div className={styles.pagination}>
+                      {Array.from(
+                        { length: Math.ceil(merchants.length / itemsPerPage) },
+                        (_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => paginate(i + 1)}
+                            className={
+                              currentPage === i + 1 ? styles.activePage : ""
+                            }
+                          >
+                            {i + 1}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  )}
                 </table>
-               
+
                 <table>
                   <thead>
                     <tr>

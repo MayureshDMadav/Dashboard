@@ -1,0 +1,140 @@
+.container{
+display: flex;
+flex-direction: column;
+background: var(--bgSoft);
+margin-top: 1rem;
+border-radius: 5px;
+}
+
+.childElement{
+ display: flex;
+ flex-direction: column;   
+}
+
+.header{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+}
+
+.headElement{
+  margin: 1rem;  
+}
+
+.chartContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+  }
+  
+  .chart {
+    flex: 1;
+    border: 0.2em outset var(--bgSoft);
+    min-width: 20rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+  }
+  
+  .chartSelect {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-left: 1.2rem;
+  }
+  
+  .chartSelect select {
+    padding: 5px;
+    border: 1px inset white;
+    border-radius: 4px;
+    background-color: var(--bgSoft);
+    color: white;
+  }
+  
+  .headLine h3{
+    text-align: center;
+    margin: 5px;
+    background-color: lightslategray;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 0.7rem;
+    border-radius: 5px;
+  }
+
+  .tableContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1;
+    margin: 1rem;
+    justify-content: space-evenly;
+  }
+
+
+  .tableContainer table {
+    width: 100%;
+    margin-bottom: auto;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .tableContainer th,
+  .tableContainer td {
+    padding: 12px;
+    font-size: 12px;
+    text-align: left;
+  }
+  
+  .tableContainer th {
+    background-color: var(--textSoft);
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: var(--bgSoft);
+    text-transform: uppercase;
+  }
+  
+  .tableContainer tr:nth-child(even) {
+    color: var(--bgSoft);
+    background-color: var(--textSoft);
+  }
+  
+  .tableContainer tr:hover {
+    background-color: #f0f0f0;
+    color: var(--bgSoft);
+  }
+  
+ .total td{
+    background-color: green !important;
+    color:white !important;
+    font-weight: bold;
+    font-size: 12px;
+ } 
+
+ .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1px;
+}
+
+.pagination button {
+  padding: 2px;
+  border-radius: 3px;
+  font-size: 12px;
+  background-color: powderblue;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 1rem;
+}

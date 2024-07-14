@@ -1,10 +1,7 @@
 "use client";
-import {
-  filterMerchantByGolive,
-  filterMerchantByPending,
-} from "@/backend/backendservice";
+import { filterMerchantByGolive, filterMerchantByPending } from "@/backend/backendservice";
 import styles from "./report.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import CalendarInput from "../calendar/calendar";
 import Popup from "reactjs-popup";
 import { ReportContext } from "@/app/component/contextProvider";
@@ -16,69 +13,41 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
   const [smbEntPending, setSmbEntPending] = useState([]);
   const [emergingPending, setEmergingPending] = useState([]);
 
-  //For Go Live Merchant Filtering
-  async function merchantByGolive(data, mode) {
+  const filterMerchants = useCallback(async (data, mode, filterFunc, setStateFunc) => {
+    if (!data.length) {
+      setStateFunc([]);
+      return;
+    }
     try {
-      if (mode == "smb") {
-        const { smbData, entData } = await filterMerchantByGolive(data);
-        const smBData = smbData.concat(entData);
-        setSmbEnt(smBData);
+      const result = await filterFunc(data);
+      if (mode === "smb") {
+        const combinedData = [...(result.smbData || []), ...(result.entData || [])];
+        setStateFunc(combinedData);
+      } else if (mode === "longtail") {
+        setStateFunc(result.emergingData || []);
       }
-      if (mode == "longtail") {
-        const { emergingData } = await filterMerchantByGolive(data);
-        setEmerging(emergingData);
-      }
-    } catch (e) {}
-  }
-
-  //For Pending Merchant Filter
-  async function merchantByPending(data, mode) {
-    try {
-      if (mode == "smb") {
-        const { smbData, entData } = await filterMerchantByPending(data);
-        const smBData = smbData.concat(entData);
-        setSmbEntPending(smBData);
-      }
-      if (mode == "longtail") {
-        const { emergingData } = await filterMerchantByPending(data);
-        setEmergingPending(emergingData);
-      }
-    } catch (e) {}
-  }
+    } catch (e) {
+      console.error("Error filtering merchants:", e);
+    }
+  }, []);
 
   useEffect(() => {
-    try {
-      if (smbEntMerchant.length > 0) {
-        merchantByGolive(smbEntMerchant, "smb");
-        merchantByPending(smbEntMerchant, "smb");
-      }else{
-        setSmbEnt([])
-        setSmbEntPending([])
-      }
-    } catch (e) {}
-  }, [smbEntMerchant]);
+    filterMerchants(smbEntMerchant, "smb", filterMerchantByGolive, setSmbEnt);
+    filterMerchants(smbEntMerchant, "smb", filterMerchantByPending, setSmbEntPending);
+  }, [smbEntMerchant, filterMerchants]);
 
   useEffect(() => {
-    try {
-      if (emergingMerchant.length > 0) {
-        merchantByGolive(emergingMerchant, "longtail");
-        merchantByPending(emergingMerchant, "longtail");
-      }else{
-        setEmerging([])
-        setEmergingPending([])
-      }
-    } catch (e) {}
-  }, [emergingMerchant]);
+    filterMerchants(emergingMerchant, "longtail", filterMerchantByGolive, setEmerging);
+    filterMerchants(emergingMerchant, "longtail", filterMerchantByPending, setEmergingPending);
+  }, [emergingMerchant, filterMerchants]);
 
-  const contextValues = {
+  const contextValues = useMemo(() => ({
     smbEnt,
     smbEntPending,
     emerging,
     emergingPending,
     styles,
-  };
-
-
+  }), [smbEnt, smbEntPending, emerging, emergingPending]);
 
   return (
     <ReportContext.Provider value={contextValues}>
@@ -91,19 +60,19 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
             <Popup
               trigger={<button className={styles.popupButton}>Preview</button>}
               position="center"
-              style={{ width: "100%" }}
+              modal
+              contentStyle={{ width: "100%" }}
             >
-              <div className={styles.popup}>
-                <MainSubComponent
-                  openDetail={"open"}
-                  enablePagination={false}
-                />
-              </div>
+              {close => (
+                <div className={styles.popup}>
+                  <MainSubComponent openDetail="open" enablePagination={false} />
+                  <button onClick={close}>Close</button>
+                </div>
+              )}
             </Popup>
           </div>
         </div>
-
-        <MainSubComponent openDetail={""} enablePagination={true} />
+        <MainSubComponent openDetail="" enablePagination={true} />
       </div>
     </ReportContext.Provider>
   );

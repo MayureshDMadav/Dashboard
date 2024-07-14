@@ -49,12 +49,12 @@ const menuItems = [
           {
             title: "Shopify",
             icon:<MdShoppingBag/>,
-            path: "/dashboard/reports/shopify",
+            path: "/dashboard/analytics/shopify",
           },
           {
             title: "Others",
             icon:<MdOutbound/>,
-            path: "/dashboard/reports/others",
+            path: "/dashboard/othersanalytics/others",
           },
         ],
       },

@@ -17,14 +17,15 @@ const MerchantDataList = async ({ searchParams }) => {
   const ITEM_PER_PAGE = 10;
   const {userData} = await getAllUserData();
 
-  const q = searchParams ? searchParams?.q : "";
+  const q = searchParams ? searchParams?.q : user.username;
   const type = searchParams ? searchParams?.mode : ""
   const page = searchParams?.page || 1;
   const { count, merchantData } = await paginationForMerchantList(
     q,
     type,
     page,
-    ITEM_PER_PAGE
+    ITEM_PER_PAGE,
+    user
   );
 
 

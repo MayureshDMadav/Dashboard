@@ -1,5 +1,8 @@
 "use client";
-import { filterMerchantByGolive, filterMerchantByPending } from "@/backend/backendservice";
+import {
+  filterMerchantByGolive,
+  filterMerchantByPending,
+} from "@/backend/backendservice";
 import styles from "./report.module.css";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import CalendarInput from "../calendar/calendar";
@@ -13,41 +16,65 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
   const [smbEntPending, setSmbEntPending] = useState([]);
   const [emergingPending, setEmergingPending] = useState([]);
 
-  const filterMerchants = useCallback(async (data, mode, filterFunc, setStateFunc) => {
-    if (!data.length) {
-      setStateFunc([]);
-      return;
-    }
-    try {
-      const result = await filterFunc(data);
-      if (mode === "smb") {
-        const combinedData = [...(result.smbData || []), ...(result.entData || [])];
-        setStateFunc(combinedData);
-      } else if (mode === "longtail") {
-        setStateFunc(result.emergingData || []);
+  const filterMerchants = useCallback(
+    async (data, mode, filterFunc, setStateFunc) => {
+      if (!data.length) {
+        setStateFunc([]);
+        return;
       }
-    } catch (e) {
-      console.error("Error filtering merchants:", e);
-    }
-  }, []);
+      try {
+        const result = await filterFunc(data);
+        if (mode === "smb") {
+          const combinedData = [
+            ...(result.smbData || []),
+            ...(result.entData || []),
+          ];
+          setStateFunc(combinedData);
+        } else if (mode === "longtail") {
+          setStateFunc(result.emergingData || []);
+        }
+      } catch (e) {
+        console.error("Error filtering merchants:", e);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     filterMerchants(smbEntMerchant, "smb", filterMerchantByGolive, setSmbEnt);
-    filterMerchants(smbEntMerchant, "smb", filterMerchantByPending, setSmbEntPending);
+    filterMerchants(
+      smbEntMerchant,
+      "smb",
+      filterMerchantByPending,
+      setSmbEntPending
+    );
   }, [smbEntMerchant, filterMerchants]);
 
   useEffect(() => {
-    filterMerchants(emergingMerchant, "longtail", filterMerchantByGolive, setEmerging);
-    filterMerchants(emergingMerchant, "longtail", filterMerchantByPending, setEmergingPending);
+    filterMerchants(
+      emergingMerchant,
+      "longtail",
+      filterMerchantByGolive,
+      setEmerging
+    );
+    filterMerchants(
+      emergingMerchant,
+      "longtail",
+      filterMerchantByPending,
+      setEmergingPending
+    );
   }, [emergingMerchant, filterMerchants]);
 
-  const contextValues = useMemo(() => ({
-    smbEnt,
-    smbEntPending,
-    emerging,
-    emergingPending,
-    styles,
-  }), [smbEnt, smbEntPending, emerging, emergingPending]);
+  const contextValues = useMemo(
+    () => ({
+      smbEnt,
+      smbEntPending,
+      emerging,
+      emergingPending,
+      styles,
+    }),
+    [smbEnt, smbEntPending, emerging, emergingPending]
+  );
 
   return (
     <ReportContext.Provider value={contextValues}>
@@ -63,10 +90,16 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
               modal
               contentStyle={{ width: "100%" }}
             >
-              {close => (
+              {(close) => (
                 <div className={styles.popup}>
-                  <MainSubComponent openDetail="open" enablePagination={false} />
-                  <button onClick={close}>Close</button>
+                  <div className={styles.button}>
+                    <button>Send Email</button>
+                    <button onClick={close}>Close</button>
+                  </div>
+                  <MainSubComponent
+                    openDetail="open"
+                    enablePagination={false}
+                  />
                 </div>
               )}
             </Popup>

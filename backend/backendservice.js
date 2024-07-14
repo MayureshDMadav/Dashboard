@@ -15,7 +15,9 @@ export const convertExcelDateTimeToISO = (excelDateTime) => {
 
 //GO live Data
 export const filterMerchantByGolive = (merchantData) => {
-  const filteredData = merchantData?.filter((data) => data.livedate !== "NA" && data.livedate);
+  const filteredData = merchantData?.filter(
+    (data) => data.livedate !== "NA" && data.livedate
+  );
   const smbData = filteredData?.filter((data) => data.category === "SMB");
   const entData = filteredData?.filter((data) => data.category === "ENT");
   const emergingData = filteredData?.filter(
@@ -96,13 +98,13 @@ export const uniqueDataHandlerArry = (data, mode) => {
 };
 
 // To Parse Unique Element and get the result array
-export const findUniqueElementInArray = (arr,nameOfElement) =>{
-  if(arr.length > 0){
-     let uniqueArray = new Set();
-     arr.forEach((data)=>{
-       uniqueArray.add(data[nameOfElement])
-     })
-     return Array.from(uniqueArray)
+export const findUniqueElementInArray = (arr, nameOfElement) => {
+  if (arr.length > 0) {
+    let uniqueArray = new Set();
+    arr.forEach((data) => {
+      uniqueArray.add(data[nameOfElement]);
+    });
+    return Array.from(uniqueArray);
   }
   return null;
-}
+};

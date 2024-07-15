@@ -76,8 +76,8 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
     [smbEnt, smbEntPending, emerging, emergingPending]
   );
 
-  const reportComponent = (
-    <MainSubComponent openDetail="open" enablePagination={false} />
+  const reportComponent = (openDetail,enablePagination) =>(
+    <MainSubComponent openDetail={openDetail} enablePagination={enablePagination} />
   );
 
   return (
@@ -88,10 +88,10 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
             <CalendarInput />
           </div>
           <div className={styles.popElem}>
-            <PopupTemplate templateData={reportComponent} />
+            <PopupTemplate templateData={reportComponent("open",false)} />
           </div>
         </div>
-        <MainSubComponent openDetail="" enablePagination={true} />
+        {reportComponent("",true)}
       </div>
     </ReportContext.Provider>
   );

@@ -66,7 +66,7 @@ export const MqmPieChart = ({ data }) => {
   };
 
   return (
-    <div style={{ height: '300px', width: '300px', margin: "auto" }}>
+    <div style={{ height: '300px', width: '300px', margin: "auto" }} id='chartReport'>
       <Pie data={chartData} options={options} />
     </div>
   );
@@ -101,7 +101,7 @@ export const MerchantStatusPieChart = ({ data }) => {
   };
 
   return (
-    <div style={{ height: '300px', width: '300px', margin: "auto" }}>
+    <div style={{ height: '300px', width: '300px', margin: "auto" }} id='chartReport'>
       <Pie data={chartData} options={options} />
     </div>
   );

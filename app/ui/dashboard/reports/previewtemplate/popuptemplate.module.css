@@ -1,0 +1,83 @@
+.popup {
+    position: fixed;
+    top: 5vh; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 9999999;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup .chartReport{
+    background: grey;
+    border: none;
+  }
+  
+  .popup table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #ddd;
+    color: #333;
+  }
+  
+  .popup th,
+  .popup td {
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .popup select {
+    display: none;
+  }
+  
+  .popup details[open] > summary::before {
+    content: "";
+  }
+  .popup th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+    margin-bottom: 15px; 
+  }
+  
+  .popup .button{
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+  
+  .popup .button button{
+    padding: 6px;
+    border: none;
+    background: lightgreen;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+
+  .popupButton {
+    padding: 8px;
+    background-color: var(--bgSoft);
+    color: white;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    font-size: 14px;
+    border: 1px inset wheat;
+    border-radius: 5px;
+    margin-right: 1rem;
+  }
+  

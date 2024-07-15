@@ -10,6 +10,7 @@ import {
   findUniqueElementInArray,
   uniqueDataHandlerArry,
 } from "@/backend/backendservice";
+import PopupTemplate from "../previewtemplate/popuptemplate";
 
 const ChartComponents = {
   pie: { Mqm: MqmPieChart, MerchantStatus: MerchantStatusPieChart },
@@ -72,7 +73,7 @@ const useCalculations = (segmentData) => {
   }, [segmentData]);
 };
 
-const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
+const MainAnalyticsdataViewer = ({ merchants, platform }) => {
   const [chart, setChart] = useState("pie");
   const { merchantData, segmentData } = useMerchantData(merchants);
   const { mqmCounts, sumOfArray } = useCalculations(segmentData);
@@ -146,7 +147,7 @@ const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
     </div>
   );
 
-  const renderMerchantTable = (title, data) => {
+  const renderMerchantTable = (title, data , enablePagination) => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = enablePagination
@@ -158,6 +159,7 @@ const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
       <div className={styles.tableContent}>
         <table>
           <thead>
+
             <tr>
               <th colSpan={3}>{title} Merchant List</th>
             </tr>
@@ -340,16 +342,9 @@ const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
     );
   };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.childElement}>
-        <div className={styles.header}>
-          <div className={styles.headElement}>
-            <CalendarInput />
-          </div>
-          <div className={styles.headElement}>Preview Button</div>
-        </div>
-      </div>
+
+  const componentElement = (enablePagination) => (
+    <span>
       <div className={styles.childElement}>
         <div className={styles.chartSelect}>
           <select onChange={handleChartChange} value={chart}>
@@ -385,7 +380,7 @@ const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
       </div>
       <div className={styles.childElement}>
         <div className={styles.tableContainer}>
-          {renderMerchantTable("Current", Object.values(segmentData).flat())}
+          {renderMerchantTable("Current", Object.values(segmentData).flat(),enablePagination)}
           {platform === "shopify" &&
             renderCheckoutTypeTable("Checkout Type", checkoutCount)}
           {platform === "nonshopify" &&
@@ -393,6 +388,24 @@ const MainAnalyticsdataViewer = ({ merchants, platform, enablePagination }) => {
           {renderCategoryType("Cateogry", category)}
         </div>
       </div>
+      </span>
+  )
+  
+
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.childElement}>
+        <div className={styles.header}>
+          <div className={styles.headElement}>
+            <CalendarInput />
+          </div>
+          <div className={styles.headElement}>
+            <PopupTemplate templateData={componentElement(false)}  />
+          </div>
+        </div>
+      </div>
+        {componentElement(true)}
     </div>
   );
 };

@@ -94,7 +94,7 @@ export const MqmLineChart = ({ data }) => {
   };
 
   return (
-    <div style={{ height: "300px", width: "auto" }}>
+    <div style={{ height: "300px", width: "auto" }} id='chartReport'>
       <Line data={chartData} options={options} />
     </div>
   );
@@ -141,7 +141,7 @@ export const MerchantStatusLineChart = ({ data }) => {
     };
   
     return (
-      <div style={{ height: '300px', width: 'auto' }}>
+      <div style={{ height: '300px', width: 'auto' }} id='chartReport'>
         <Line data={chartData} options={options} />
       </div>
     );

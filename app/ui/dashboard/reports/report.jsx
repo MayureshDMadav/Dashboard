@@ -6,7 +6,7 @@ import {
 import styles from "./report.module.css";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import CalendarInput from "../calendar/calendar";
-import Popup from "reactjs-popup";
+import PopupTemplate from "../reports/previewtemplate/popuptemplate";
 import { ReportContext } from "@/app/component/contextProvider";
 import { MainSubComponent } from "./subcomponents/mainsubcomponent";
 
@@ -76,6 +76,10 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
     [smbEnt, smbEntPending, emerging, emergingPending]
   );
 
+  const reportComponent = (
+    <MainSubComponent openDetail="open" enablePagination={false} />
+  );
+
   return (
     <ReportContext.Provider value={contextValues}>
       <div className={styles.container}>
@@ -84,25 +88,7 @@ const Report = ({ smbEntMerchant, emergingMerchant }) => {
             <CalendarInput />
           </div>
           <div className={styles.popElem}>
-            <Popup
-              trigger={<button className={styles.popupButton}>Preview</button>}
-              position="center"
-              modal
-              contentStyle={{ width: "100%" }}
-            >
-              {(close) => (
-                <div className={styles.popup}>
-                  <div className={styles.button}>
-                    <button>Send Email</button>
-                    <button onClick={close}>Close</button>
-                  </div>
-                  <MainSubComponent
-                    openDetail="open"
-                    enablePagination={false}
-                  />
-                </div>
-              )}
-            </Popup>
+            <PopupTemplate templateData={reportComponent} />
           </div>
         </div>
         <MainSubComponent openDetail="" enablePagination={true} />

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.json();
     const { status } = await createUserData(formData);
 
-    return NextResponse.json({ message: "Hi Server is Running" }, { status });
+    return NextResponse.json({ message: "User is Created Successfully" }, { status });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "An error occurred" }, { status: 500 });

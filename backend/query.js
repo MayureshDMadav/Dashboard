@@ -30,6 +30,7 @@ export const findUserByUserName = async (data) => {
 
 // Add New Users
 export const createUserData = async (data) => {
+  console.log(JSON.stringify(data),"data")
   try {
     await prisma.user.create({
       data: data,

@@ -11,7 +11,7 @@ const commonOptions = {
     legend: {
       position: 'bottom',
       labels: {
-        color: 'white',
+        color: 'black',
         font: {
           size: 12
         }
@@ -20,7 +20,7 @@ const commonOptions = {
     title: {
       display: true,
       position: 'top',
-      color: 'white',
+      color: 'black',
       font: {
         size: 16,
         weight: 'bold'

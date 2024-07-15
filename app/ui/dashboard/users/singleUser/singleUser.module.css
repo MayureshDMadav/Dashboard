@@ -6,7 +6,7 @@
   
   .infoContainer {
     flex: 1;
-    background-color: var(--bgSoft);
+    background-color: var(--content);
     padding: 20px;
     border-radius: 10px;
     font-weight: bold;

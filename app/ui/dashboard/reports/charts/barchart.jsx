@@ -14,7 +14,7 @@ const commonOptions = {
     title: {
       display: true,
       position: 'top',
-      color: 'white',
+      color: 'black',
       font: {
         size: 16,
         weight: 'bold'
@@ -27,11 +27,11 @@ const commonOptions = {
   },
   scales: {
     x: {
-      ticks: { color: 'white' },
+      ticks: { color: 'black' },
       grid: { color: 'rgba(255, 255, 255, 0.1)' }
     },
     y: {
-      ticks: { color: 'white' },
+      ticks: { color: 'black' },
       grid: { color: 'rgba(255, 255, 255, 0.1)' }
     }
   }

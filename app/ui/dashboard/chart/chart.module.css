@@ -1,6 +1,6 @@
 .container {
   height: 450px;
-  background-color: var(--bgSoft);
+  background-color: var(--content);
   padding: 20px;
   border-radius: 10px;
   justify-content: center;
@@ -22,7 +22,7 @@
   color: #888;
 }
 .customTooltip {
-  background-color: var(--bgSoft);
+  background-color: var(--content);
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 4px;

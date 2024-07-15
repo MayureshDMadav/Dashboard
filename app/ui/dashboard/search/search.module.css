@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: #2e374a;
+    background-color: transparent;
     border-radius: 10px;
     width: max-content;
   }
@@ -10,15 +10,15 @@
 
   .selectChild{
     padding: 0.7rem;
-    color: wheat;
+    color: var(--fontcolor);
     font-size: 0.9rem;
     text-transform: capitalize;
-    border-radius: 3px;
-    border: none;
+    border-radius: 5px;
+    border: 1px dotted var(--fontcolor);
     background-color: transparent;
   }
 
   .selectChild option{
-    background-color: var(--bgSoft);
-    color: wheat;
+    background-color: transparent;
+    color: var(--fontcolor);
   }

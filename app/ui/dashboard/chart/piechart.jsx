@@ -8,18 +8,17 @@ import { findUniqueElementInArray } from "@/backend/backendservice";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 let backgroundColors = [
-  "#1A365D", // Dark blue
-  "#2C5282", // Navy blue
-  "#2F4858", // Dark slate grey
-  "#1F2937", // Charcoal
-  "#374151", // Dark grey
-  "#065F46", // Dark green
-  "#064E3B", // Forest green
-  "#1E3A8A", // Midnight blue
-  "#3730A3", // Indigo
-  "#312E81", // Dark indigo
+  "#FFB6C1", // Light Pink
+  "#90EE90", // Light Green
+  "#ADD8E6", // Light Blue
+  "#FFC0CB", // Another Light Pink
+  "#98FB98", // Another Light Green
+  "#B0E0E6", // Powder Blue
+  "#F0FFF0", // Honeydew (Very Light Green)
+  "#E6E6FA", // Lavender (Light Purple-Blue)
+  "#FFF0F5", // Lavender Blush (Very Light Pink)
+  "#F0FFFF", // Azure (Very Light Blue)
 ];
-
 export const MerchantPieChart = ({ merchantData }) => {
   const [chartData, setChartData] = useState(null);
 
@@ -101,13 +100,13 @@ export const MerchantPieChart = ({ merchantData }) => {
       legend: {
         position: "bottom",
         labels: {
-          color: "white",
+          color: "black",
         },
       },
       title: {
         display: true,
         text: "Contribution of ARR by CE",
-        color: "white",
+        color: "grey",
       },
       tooltip: {
         callbacks: {
@@ -201,13 +200,13 @@ export const MerchantCountChart = ({ merchantData }) => {
       legend: {
         position: "bottom",
         labels: {
-          color: "white",
+          color: "black",
         },
       },
       title: {
         display: true,
         text: "Count of Merchants per CE",
-        color: "white",
+        color: "grey",
       },
     },
   };

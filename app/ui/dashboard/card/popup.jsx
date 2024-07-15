@@ -45,6 +45,7 @@ const PopupComponent = ({ merchantData }) => {
       padding: 1px;
       border-radius:3px;
       width:1.3rem;
+      color:black;
       border: 1px solid #ccc;
       background-color: #fff;
       cursor: pointer;

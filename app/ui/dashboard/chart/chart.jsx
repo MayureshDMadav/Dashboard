@@ -94,13 +94,13 @@ const MerchantStatusChart = ({ merchantData }) => {
       legend: {
         position: "bottom",
         labels: {
-          color: "white",
+          color: "black",
         },
       },
       title: {
         display: true,
         text: "CE Name Data Summary",
-        color: "white",
+        color: "grey",
       },
       tooltip: {
         callbacks: {
@@ -121,13 +121,13 @@ const MerchantStatusChart = ({ merchantData }) => {
       x: {
         stacked: false,
         ticks: {
-          color: "white",
+          color: "black",
         },
       },
       y: {
         stacked: false,
         ticks: {
-          color: "white",
+          color: "black",
         },
       },
     },

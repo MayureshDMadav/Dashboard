@@ -55,7 +55,8 @@
   }
   
   .logout:hover{
-    background-color: #2e374a;
+    background-color:var(--hoverBackground);
+    color: var(--hovertext);
   }
 
 
@@ -70,7 +71,7 @@
   }
 
   .item:hover{
-    background-color: #2e374a;
+    background-color:var(--hoverBackground);
   }
   
 

@@ -14,7 +14,7 @@ const PopupTemplate = ({ templateData }) => {
   const [loader, setLoader] = useState(false);
   const styling = `
     .downloadPDF #chartReport{
-     background: grey !important;
+     
     }
   `;
 

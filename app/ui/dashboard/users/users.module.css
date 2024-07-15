@@ -1,8 +1,9 @@
 .container{
-    background-color: var(--bgSoft);
+    background-color: var(--content);
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
+    color: var(--fontcolor);
   }
   
   .top{
